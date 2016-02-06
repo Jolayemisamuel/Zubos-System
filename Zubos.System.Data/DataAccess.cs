@@ -16,7 +16,6 @@ namespace Zubos.System.Data
         /// Holds a SQL connection.
         /// </summary>
         private static SqlConnection _SQLConnection;
-
         public static SqlConnection SQLConnection
         {
             get
@@ -46,7 +45,7 @@ namespace Zubos.System.Data
             return connection;
         }
         /// <summary>
-        /// A method to close SQL connection.
+        /// A method to close the SQL connection.
         /// </summary>
         /// <returns>Returns true if closed successfully.</returns>
         public static bool CloseSQLConnection()
