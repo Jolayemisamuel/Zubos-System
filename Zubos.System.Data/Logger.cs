@@ -33,12 +33,12 @@ namespace Zubos.System.Data
 
         }
 
-        public static void WriteLine(string LoggerType, string LogMessage_param)
+        public static void WriteLine(string LoggerType_param, string LogMessage_param)
         {
 
         }
 
-        public static void Write(string LoggerType, string[] LogMessages_param)
+        public static void Write(string LoggerType_param, string[] LogMessages_param)
         {
 
         }
