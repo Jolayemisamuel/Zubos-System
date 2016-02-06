@@ -33,10 +33,21 @@ namespace Zubos.System.Business
         {
             bool isError = !DataAccess.CloseSQLConnection();
 
+            Logger.FinaliseLogger();
+
             if(!isError)
             {
                 Environment.Exit(0);
             }
+        }
+
+        public static void test()
+        {
+            Logger.WriteLine("WARNING", "TESTING TEST TESTSFNSGJDNGJG");
+            Logger.WriteLine("ERROR", "TESTING TEST TESTSFNSGJDNGJG");
+            Logger.WriteLine("DEBUG", "TESTING TEST TESTSFNSGJDNGJG");
+            Logger.WriteLine("EVENT", "TESTING TEST TESTSFNSGJDNGJG");
+            Logger.WriteLine(null, "TESTING TEST TESTSFNSGJDNGJG");
         }
     }
 }
