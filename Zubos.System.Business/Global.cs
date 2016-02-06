@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
+using System.Configuration;
 
 namespace Zubos.System.Business
 {
@@ -11,7 +13,8 @@ namespace Zubos.System.Business
     /// </summary>
     public static class Global
     {
-        public static SortedList<int, RoomContainer> allRoomContainers { get; }
-        public static SortedList<int, Customer> allCustomers { get; }
+        public static SortedList<int, RoomContainer> AllRoomContainers { get; }
+        public static SortedList<int, Customer> AllCustomers { get; }
+
     }
 }

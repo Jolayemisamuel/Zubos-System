@@ -13,20 +13,30 @@ namespace Zubos.System.Data
     public static class DataAccess
     {
         /// <summary>
-        /// Holds a SQL connection for use by Business layer.
+        /// Holds a SQL connection.
         /// </summary>
+        private static SqlConnection _SQLConnection;
+
         public static SqlConnection SQLConnection
         {
-            get {
-                   return (SQLConnection == null) ? GetSQLConnection() : SQLConnection;
+            get
+            {
+                if (_SQLConnection == null)
+                {
+                    _SQLConnection = GetSQLConnection();
+                    return _SQLConnection;
                 }
+                else
+                {
+                    return _SQLConnection;
+                }
+            }
         }
-
         /// <summary>
-        /// A method to get a SQL connection.
+        /// A method to create a new SQL connection using ODS connection string.
         /// </summary>
-        /// <returns></returns>
-        public static SqlConnection GetSQLConnection()
+        /// <returns>Returns a SQL connection if none exist</returns>
+        private static SqlConnection GetSQLConnection()
         {
             string connectionString = ConfigurationManager.ConnectionStrings["ODS"].ConnectionString;
 
@@ -36,7 +46,7 @@ namespace Zubos.System.Data
             return connection;
         }
         /// <summary>
-        /// A method to close ODS SQL connection.
+        /// A method to close SQL connection.
         /// </summary>
         /// <returns>Returns true if closed successfully.</returns>
         public static bool CloseSQLConnection()
@@ -48,7 +58,11 @@ namespace Zubos.System.Data
             }
             catch (SqlException sqlEx)
             {
-                MessageBox.Show("An exception has occured. \n" + sqlEx.LineNumber + "::" + sqlEx.Message, "SQL Exception:" + sqlEx.Number + "::" + sqlEx.Server);
+                MessageBox.Show("An exception with SQL has occured. \n" + sqlEx.LineNumber + "::" + sqlEx.Message, "SQL Exception:" + sqlEx.Number + "::" + sqlEx.Server);
+            }
+            catch (Exception Ex)
+            {
+                MessageBox.Show("An exception has occured. \n" + Ex.Message);
             }
             return (SQLConnection == null) ? true : false;
         }
