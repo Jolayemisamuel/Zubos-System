@@ -31,8 +31,12 @@ namespace Zubos.System.Business
         /// </summary>
         public static void FinaliseApplication()
         {
-            DataAccess.CloseSQLConnection();
-            Environment.Exit(0);
+            bool isError = !DataAccess.CloseSQLConnection();
+
+            if(!isError)
+            {
+                Environment.Exit(0);
+            }
         }
     }
 }

@@ -16,21 +16,23 @@ namespace Zubos.System.Business
         public Room                             myRoom { get; set; }
         public DateTime                         DateStart { get; }
         public DateTime                         DateComplete { get; }
+        public double                           PaymentAmount { get; }
 
         /// <summary>
         /// Default constructor for BookingDetail object.
         /// </summary>
-        /// <param name="ID_Param"></param>
-        /// <param name="Customers_Param"></param>
-        /// <param name="Room_Param"></param>
+        /// <param name="ID_param"></param>
+        /// <param name="Customers_param"></param>
+        /// <param name="Room_param"></param>
         public BookingDetail
-                            (int                        ID_Param, 
-                            SortedList<int, Customer>   Customers_Param,
-                            Room                        Room_Param)
+                            (int                        ID_param, 
+                            SortedList<int, Customer>   Customers_param,
+                            Room                        Room_param,
+                            DateTime                    DateStart_param)
         {
-            ID = ID_Param;
-            myCustomers = Customers_Param;
-            myRoom = Room_Param;
+            ID = ID_param;
+            myCustomers = Customers_param;
+            myRoom = Room_param;
         }
     }
 }

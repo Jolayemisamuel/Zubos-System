@@ -13,16 +13,15 @@ namespace Zubos.System.Business
     {
         public int                              ID { get; }
         public SortedList<int, Customer>        myCustomers { get; set; }
-
+        public SortedList<int, RoomContainer>   myRoomContainers { get; set; }
 
         /// <summary>
         /// Default constructor for Room object.
         /// </summary>
-        /// <param name="ID_Param"></param>
-        public Room(int ID_Param)
+        /// <param name="ID_param"></param>
+        public Room(int ID_param)
         {
-            ID = ID_Param;
-            
+            ID = ID_param;
         }
     }
 }

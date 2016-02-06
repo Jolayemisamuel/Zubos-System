@@ -23,7 +23,7 @@ namespace Zubos.System.Data
             {
                 if (_SQLConnection == null)
                 {
-                    _SQLConnection = GetSQLConnection();
+                    _SQLConnection = GetNewSQLConnection();
                     return _SQLConnection;
                 }
                 else
@@ -36,7 +36,7 @@ namespace Zubos.System.Data
         /// A method to create a new SQL connection using ODS connection string.
         /// </summary>
         /// <returns>Returns a SQL connection if none exist</returns>
-        private static SqlConnection GetSQLConnection()
+        private static SqlConnection GetNewSQLConnection()
         {
             string connectionString = ConfigurationManager.ConnectionStrings["ODS"].ConnectionString;
 
@@ -51,20 +51,23 @@ namespace Zubos.System.Data
         /// <returns>Returns true if closed successfully.</returns>
         public static bool CloseSQLConnection()
         {
-            try
+            if (SQLConnection != null)
             {
-                SQLConnection.Close();
-                SQLConnection.Dispose();
+                try
+                {
+                    SQLConnection.Close();
+                    SQLConnection.Dispose();
+                }
+                catch (SqlException sqlEx)
+                {
+                    MessageBox.Show("An exception with SQL has occured. \n" + sqlEx.LineNumber + "::" + sqlEx.Message, "SQL Exception:" + sqlEx.Number + "::" + sqlEx.Server);
+                }
+                catch (Exception Ex)
+                {
+                    MessageBox.Show("An exception has occured. \n" + Ex.Message);
+                }
             }
-            catch (SqlException sqlEx)
-            {
-                MessageBox.Show("An exception with SQL has occured. \n" + sqlEx.LineNumber + "::" + sqlEx.Message, "SQL Exception:" + sqlEx.Number + "::" + sqlEx.Server);
-            }
-            catch (Exception Ex)
-            {
-                MessageBox.Show("An exception has occured. \n" + Ex.Message);
-            }
-            return (SQLConnection == null) ? true : false;
+            return (SQLConnection.State == ConnectionState.Closed) ? true : false;
         }
 
     }
