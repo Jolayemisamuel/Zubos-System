@@ -21,6 +21,8 @@ namespace Zubos.System.Business
         /// Default constructor for BookingDetail object.
         /// </summary>
         /// <param name="ID_Param"></param>
+        /// <param name="Customers_Param"></param>
+        /// <param name="Room_Param"></param>
         public BookingDetail
                             (int                        ID_Param, 
                             SortedList<int, Customer>   Customers_Param,
