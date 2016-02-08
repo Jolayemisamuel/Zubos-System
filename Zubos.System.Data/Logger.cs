@@ -10,52 +10,36 @@ namespace Zubos.System.Data
     public static class Logger
     {
         private static string LogDirectory = Application.StartupPath + "\\_Logs\\";
+        private static string CurrentLogPath;
 
-        private static StreamWriter _LogWriter;
-        private static StreamWriter LogWriter
+        /// <summary>
+        /// Initialises log directory and log file with date.
+        /// </summary>
+        /// <returns></returns>
+        public static void InitialiseLogger()
         {
-            get
-            {
-                if (_LogWriter == null)
-                {
-                    _LogWriter = InitialiseLogger();
-                    return _LogWriter;
-                }
-                else
-                {
-                    return _LogWriter;
-                }
-            }
-        }
+            char padValue = '0';
 
-        private static StreamWriter InitialiseLogger()
-        {
             if (!Directory.Exists(LogDirectory))
             {
                 Directory.CreateDirectory(LogDirectory);
             }
 
-            string nowTimeString = DateTime.Now.Day + "-" + 
-                                    DateTime.Now.Month + "-" + 
-                                    DateTime.Now.Year + "_" + 
-                                    DateTime.Now.Hour + "." +
-                                    DateTime.Now.Minute + "." +
-                                    DateTime.Now.Second;
+            if (CurrentLogPath == null)
+            {
+                string TempString = DateTime.Now.Day.ToString().PadLeft(2, padValue) + "-" +
+                                     DateTime.Now.Month.ToString().PadLeft(2, padValue) + "-" +
+                                     DateTime.Now.Year.ToString().PadLeft(4, padValue);
 
-            Console.WriteLine(LogDirectory + "zubos_log-" + nowTimeString + ".log");
-            StreamWriter LogStreamWriter = new StreamWriter(LogDirectory + "zubos_log-" + nowTimeString + ".log");
-
-            return LogStreamWriter;
+                CurrentLogPath = LogDirectory + "zubos_log_" + TempString + ".log";
+            }
         }
         /// <summary>
         /// Method to close any open loggers.
         /// </summary>
         public static void FinaliseLogger()
         {
-            _LogWriter.Close();
-            _LogWriter.Dispose();
-            LogWriter.Close();
-            LogWriter.Dispose();
+
         }
         /// <summary>
         /// Writes a line to log file. Types: DEBUG/WARNING/ERROR/EVENT(Default)
@@ -68,23 +52,9 @@ namespace Zubos.System.Data
             {
                 LoggerType_param = "EVENT";
             }
-            switch (LoggerType_param.ToUpper())
+            if (CurrentLogPath != null)
             {
-                case "DEBUG":
-                    LogWriter.WriteLine(LoggerType_param.ToUpper() + @"// " + LogMessage_param);
-                    break;
-                case "ERROR":
-                    LogWriter.WriteLine(LoggerType_param.ToUpper() + @"// " + LogMessage_param);
-                    break;
-                case "EVENT":
-                    LogWriter.WriteLine(LoggerType_param.ToUpper() + @"// " + LogMessage_param);
-                    break;
-                case "WARNING":
-                    LogWriter.WriteLine(LoggerType_param.ToUpper() + @"// " + LogMessage_param);
-                    break;
-                default:
-                    LogWriter.WriteLine("EVENT" + @"// " + LogMessage_param);
-                    break;
+                File.AppendAllText(CurrentLogPath, LoggerType_param.ToUpper().PadLeft(7) + @"/ " + GetTimeStampAsString() + @" / " + LogMessage_param + Environment.NewLine);
             }
         }
         /// <summary>
@@ -98,30 +68,31 @@ namespace Zubos.System.Data
             {
                 LoggerType_param = "EVENT";
             }
-
+            if (CurrentLogPath == null)
+            {
+                return;
+            }
             int loopCounter = 0;
             foreach (string logString in LogMessages_param)
             {
-                switch (LoggerType_param.ToUpper())
-                {
-                    case "DEBUG":
-                        LogWriter.WriteLine(LoggerType_param.ToUpper() + @"// " + LogMessages_param[loopCounter]);
-                        break;
-                    case "ERROR":
-                        LogWriter.WriteLine(LoggerType_param.ToUpper() + @"// " + LogMessages_param[loopCounter]);
-                        break;
-                    case "EVENT":
-                        LogWriter.WriteLine(LoggerType_param.ToUpper() + @"// " + LogMessages_param[loopCounter]);
-                        break;
-                    case "WARNING":
-                        LogWriter.WriteLine(LoggerType_param.ToUpper() + @"// " + LogMessages_param[loopCounter]);
-                        break;
-                    default:
-                        LogWriter.WriteLine("EVENT" + @"// " + LogMessages_param[loopCounter]);
-                        break;
-                }
+                File.AppendAllText(CurrentLogPath, LoggerType_param.ToUpper().PadLeft(7) + @"/ " + GetTimeStampAsString() + @" / " + LogMessages_param[loopCounter] + Environment.NewLine);
                 loopCounter++;
             }
+        }
+        /// <summary>
+        /// Returns a string timestamp in format dd/mm/yy | hh:mm:ss
+        /// </summary>
+        /// <returns></returns>
+        private static string GetTimeStampAsString()
+        {
+            char padValue = '0';
+            string TimeStamp = DateTime.Now.Day.ToString().PadLeft(2, padValue) + "-"
+                             + DateTime.Now.Month.ToString().PadLeft(2, padValue) + "-"
+                             + DateTime.Now.Year.ToString().PadLeft(4, padValue) + " | "
+                             + DateTime.Now.Hour.ToString().PadLeft(2, padValue) + ":"
+                             + DateTime.Now.Minute.ToString().PadLeft(2, padValue) + ":"
+                             + DateTime.Now.Second.ToString().PadLeft(2, padValue);
+            return TimeStamp;
         }
     }
 }

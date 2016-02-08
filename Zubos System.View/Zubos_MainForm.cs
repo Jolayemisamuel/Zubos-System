@@ -16,6 +16,7 @@ namespace Zubos_System
         public Zubos_MainForm()
         {
             InitializeComponent();
+            Global.AllOpenForms.Add(this);
         }
 
         /// <summary>
@@ -40,9 +41,11 @@ namespace Zubos_System
             Global.InitialiseApplication();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void BtnNewBooking_Click(object sender, EventArgs e)
         {
-            Global.test();
+            Form FrmNewBooking = new ZubosFrmNewBooking();
+            FrmNewBooking.Show();
         }
+
     }
 }

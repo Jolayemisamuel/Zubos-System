@@ -59,11 +59,11 @@ namespace Zubos.System.Data
                 }
                 catch (SqlException sqlEx)
                 {
-                    MessageBox.Show("An exception with SQL has occured. \n" + sqlEx.LineNumber + "::" + sqlEx.Message, "SQL Exception:" + sqlEx.Number + "::" + sqlEx.Server);
+                    MessageBox.Show("An exception with SQL has occured. " + Environment.NewLine + sqlEx.LineNumber + "::" + sqlEx.Message, "SQL Exception:" + sqlEx.Number + "::" + sqlEx.Server);
                 }
                 catch (Exception Ex)
                 {
-                    MessageBox.Show("An exception has occured. \n" + Ex.Message);
+                    MessageBox.Show("An exception has occured. \n" + Environment.NewLine + Ex.Message);
                 }
             }
             return (SQLConnection.State == ConnectionState.Closed) ? true : false;

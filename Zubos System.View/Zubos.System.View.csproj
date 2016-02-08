@@ -50,6 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ZubosFrmNewBooking.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ZubosFrmNewBooking.Designer.cs">
+      <DependentUpon>ZubosFrmNewBooking.cs</DependentUpon>
+    </Compile>
     <Compile Include="Zubos_MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -58,6 +64,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ZubosFrmNewBooking.resx">
+      <DependentUpon>ZubosFrmNewBooking.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Zubos_MainForm.resx">
       <DependentUpon>Zubos_MainForm.cs</DependentUpon>
     </EmbeddedResource>

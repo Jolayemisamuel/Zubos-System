@@ -18,22 +18,23 @@ namespace Zubos.System.Business
     {
         public static SortedList<int, RoomContainer> AllRoomContainers { get; }
         public static SortedList<int, Customer> AllCustomers { get; }
+        public static List<Form> AllOpenForms { get; } = new List<Form>();
 
         /// <summary>
         /// Method to initialise application for boot up.
         /// </summary>
         public static void InitialiseApplication()
         {
-
+            Logger.InitialiseLogger();
         }
         /// <summary>
         /// Method to finalise for application exit.
         /// </summary>
         public static void FinaliseApplication()
         {
-            bool isError = !DataAccess.CloseSQLConnection();
-
             Logger.FinaliseLogger();
+
+            bool isError = !DataAccess.CloseSQLConnection();
 
             if(!isError)
             {
@@ -43,11 +44,7 @@ namespace Zubos.System.Business
 
         public static void test()
         {
-            Logger.WriteLine("WARNING", "TESTING TEST TESTSFNSGJDNGJG");
-            Logger.WriteLine("ERROR", "TESTING TEST TESTSFNSGJDNGJG");
-            Logger.WriteLine("DEBUG", "TESTING TEST TESTSFNSGJDNGJG");
-            Logger.WriteLine("EVENT", "TESTING TEST TESTSFNSGJDNGJG");
-            Logger.WriteLine(null, "TESTING TEST TESTSFNSGJDNGJG");
+
         }
     }
 }

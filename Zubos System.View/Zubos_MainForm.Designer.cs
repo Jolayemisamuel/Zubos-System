@@ -31,13 +31,13 @@
             this.zMainStatusStrip = new System.Windows.Forms.StatusStrip();
             this.LblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.PanelSideBar = new System.Windows.Forms.Panel();
             this.GrpBoxNav = new System.Windows.Forms.GroupBox();
             this.GrpBoxAdmin = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.BtnNewBooking = new System.Windows.Forms.Button();
             this.BtnExitApp = new System.Windows.Forms.Button();
             this.zMainStatusStrip.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.PanelSideBar.SuspendLayout();
             this.GrpBoxNav.SuspendLayout();
             this.GrpBoxAdmin.SuspendLayout();
             this.SuspendLayout();
@@ -75,16 +75,16 @@
             this.toolStripStatusLabel1.Text = "Zubos Management System";
             this.toolStripStatusLabel1.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal;
             // 
-            // panel1
+            // PanelSideBar
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.GrpBoxNav);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(215, 581);
-            this.panel1.TabIndex = 4;
+            this.PanelSideBar.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.PanelSideBar.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.PanelSideBar.Controls.Add(this.GrpBoxNav);
+            this.PanelSideBar.Dock = System.Windows.Forms.DockStyle.Left;
+            this.PanelSideBar.Location = new System.Drawing.Point(0, 0);
+            this.PanelSideBar.Name = "PanelSideBar";
+            this.PanelSideBar.Size = new System.Drawing.Size(215, 581);
+            this.PanelSideBar.TabIndex = 4;
             // 
             // GrpBoxNav
             // 
@@ -102,7 +102,7 @@
             // 
             this.GrpBoxAdmin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.GrpBoxAdmin.Controls.Add(this.button1);
+            this.GrpBoxAdmin.Controls.Add(this.BtnNewBooking);
             this.GrpBoxAdmin.Location = new System.Drawing.Point(6, 23);
             this.GrpBoxAdmin.Name = "GrpBoxAdmin";
             this.GrpBoxAdmin.Size = new System.Drawing.Size(199, 226);
@@ -110,17 +110,17 @@
             this.GrpBoxAdmin.TabStop = false;
             this.GrpBoxAdmin.Text = "Admin";
             // 
-            // button1
+            // BtnNewBooking
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.BtnNewBooking.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(8, 21);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(185, 45);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "New Booking";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.BtnNewBooking.Location = new System.Drawing.Point(8, 21);
+            this.BtnNewBooking.Name = "BtnNewBooking";
+            this.BtnNewBooking.Size = new System.Drawing.Size(185, 45);
+            this.BtnNewBooking.TabIndex = 8;
+            this.BtnNewBooking.Text = "New Booking";
+            this.BtnNewBooking.UseVisualStyleBackColor = true;
+            this.BtnNewBooking.Click += new System.EventHandler(this.BtnNewBooking_Click);
             // 
             // BtnExitApp
             // 
@@ -141,10 +141,9 @@
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1008, 610);
             this.ControlBox = false;
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.PanelSideBar);
             this.Controls.Add(this.zMainStatusStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.IsMdiContainer = true;
             this.Name = "Zubos_MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Zubos Management System";
@@ -152,7 +151,7 @@
             this.Load += new System.EventHandler(this.Zubos_MainForm_Load);
             this.zMainStatusStrip.ResumeLayout(false);
             this.zMainStatusStrip.PerformLayout();
-            this.panel1.ResumeLayout(false);
+            this.PanelSideBar.ResumeLayout(false);
             this.GrpBoxNav.ResumeLayout(false);
             this.GrpBoxAdmin.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -162,13 +161,13 @@
 
         #endregion
         private System.Windows.Forms.StatusStrip zMainStatusStrip;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel PanelSideBar;
         private System.Windows.Forms.GroupBox GrpBoxNav;
         private System.Windows.Forms.Button BtnExitApp;
         private System.Windows.Forms.ToolStripStatusLabel LblStatus;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.GroupBox GrpBoxAdmin;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button BtnNewBooking;
     }
 }
 
