@@ -11,7 +11,7 @@ namespace Zubos.System.Business
     /// </summary>
     public class BookingDetail
     {
-        public int                              ID { get; }
+        public int                              BookingReference { get; }
         public SortedList<int, Customer>        myCustomers { get; set; }
         public Room                             myRoom { get; set; }
         public DateTime                         DateStart { get; }
@@ -30,7 +30,7 @@ namespace Zubos.System.Business
                             Room                        Room_param,
                             DateTime                    DateStart_param)
         {
-            ID = ID_param;
+            BookingReference = ID_param;
             myCustomers = Customers_param;
             myRoom = Room_param;
         }

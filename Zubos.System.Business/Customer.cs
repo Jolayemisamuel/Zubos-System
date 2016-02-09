@@ -17,15 +17,24 @@ namespace Zubos.System.Business
         public string       HouseName { get; set; }
         public string       Street { get; set; }
         public string       Postcode { get; set; }
-        public string       Gender { get; set; }
 
         /// <summary>
         /// Default constructor for customer object.
         /// </summary>
-        /// <param name="ID_Param"></param>
-        public Customer(int ID_Param)
+        public Customer()
         {
-            ID = ID_Param;
+           
+        }
+
+        public void CreateCustomer(string Name_param, string HouseNumber_param, string HouseName_param, string Street_param, string PostCode_param)
+        {
+            Customer cust = new Customer();
+            cust.Name = Name_param;
+            cust.HouseNumber = HouseNumber_param;
+            cust.HouseName = HouseName_param;
+            cust.Street = Street_param;
+            cust.Postcode = PostCode_param;
+
         }
     }
 }

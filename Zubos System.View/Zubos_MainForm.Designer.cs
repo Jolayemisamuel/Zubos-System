@@ -144,6 +144,7 @@
             this.Controls.Add(this.PanelSideBar);
             this.Controls.Add(this.zMainStatusStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.IsMdiContainer = true;
             this.Name = "Zubos_MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Zubos Management System";

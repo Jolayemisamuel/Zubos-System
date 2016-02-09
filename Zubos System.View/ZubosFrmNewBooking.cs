@@ -15,5 +15,15 @@ namespace Zubos_System
         {
             InitializeComponent();
         }
+
+        private void ChkDone_CheckedChanged(object sender, EventArgs e)
+        {
+            BtnSubmit.Enabled = ChkDone.Checked;
+        }
+
+        private void BtnSubmit_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

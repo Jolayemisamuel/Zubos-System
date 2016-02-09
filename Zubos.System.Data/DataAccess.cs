@@ -69,5 +69,24 @@ namespace Zubos.System.Data
             return (SQLConnection.State == ConnectionState.Closed) ? true : false;
         }
 
+        public static List<T> ExecuteQuery(SqlConnection Connection_param, string Query_param)
+        {
+            using (Connection_param)
+            {
+                SqlCommand sqlCmd = new SqlCommand(Query_param, Connection_param);
+                sqlCmd.CommandType = CommandType.Text;
+
+                SqlDataReader cmdReader = sqlCmd.ExecuteReader();
+
+                if(cmdReader.HasRows)
+                {
+                    while(cmdReader.Read())
+                    {
+
+                    }
+                }
+                cmdReader.Close();
+            }
+        }
     }
 }

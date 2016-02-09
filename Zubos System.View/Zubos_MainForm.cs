@@ -13,6 +13,11 @@ namespace Zubos_System
 {
     public partial class Zubos_MainForm : Form
     {
+        public string StatusLine
+        {
+            set { LblStatus.Text = value; }
+        }
+
         public Zubos_MainForm()
         {
             InitializeComponent();
@@ -46,6 +51,5 @@ namespace Zubos_System
             Form FrmNewBooking = new ZubosFrmNewBooking();
             FrmNewBooking.Show();
         }
-
     }
 }
