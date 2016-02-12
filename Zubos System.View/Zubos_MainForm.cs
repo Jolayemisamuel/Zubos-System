@@ -51,5 +51,10 @@ namespace Zubos_System
             Form FrmNewBooking = new ZubosFrmNewBooking();
             FrmNewBooking.Show();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Global.test();
+        }
     }
 }

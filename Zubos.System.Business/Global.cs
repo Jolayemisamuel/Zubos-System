@@ -44,6 +44,19 @@ namespace Zubos.System.Business
 
         public static void test()
         {
+            List<Customer> newlist = DataAccess.ExecuteSelectQuery<Customer>(DataAccess.SQLConnection, "SELECT * FROM [ODS].[Zubos].[Customer]");
+            int i = 0;
+            foreach (var item in newlist)
+            {
+
+                Logger.WriteLine("EVENT", newlist[i].ID.ToString());
+                Logger.WriteLine("EVENT", newlist[i].Name.ToString());
+                Logger.WriteLine("EVENT", newlist[i].HouseNumber.ToString());
+                Logger.WriteLine("EVENT", newlist[i].HouseName.ToString());
+                Logger.WriteLine("EVENT", newlist[i].Street.ToString());
+                Logger.WriteLine("EVENT", newlist[i].Postcode.ToString());
+                i++;
+                    }
 
         }
     }

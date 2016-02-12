@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace Zubos.System.Data
 {
@@ -69,23 +70,42 @@ namespace Zubos.System.Data
             return (SQLConnection.State == ConnectionState.Closed) ? true : false;
         }
 
-        public static List<T> ExecuteQuery(SqlConnection Connection_param, string Query_param)
+        public static List<T> ExecuteSelectQuery<T>(SqlConnection Connection_param, string Query_param) where T : new()
         {
             using (Connection_param)
             {
+                List<PropertyInfo> TProperties = typeof(T).GetProperties().ToList();
+
                 SqlCommand sqlCmd = new SqlCommand(Query_param, Connection_param);
                 sqlCmd.CommandType = CommandType.Text;
 
-                SqlDataReader cmdReader = sqlCmd.ExecuteReader();
+                SqlDataReader DataReader = sqlCmd.ExecuteReader();
 
-                if(cmdReader.HasRows)
+                List<T> resultsList = new List<T>();
+                if (DataReader.HasRows)
                 {
-                    while(cmdReader.Read())
+                    while (DataReader.Read())
                     {
+                        var GenericObject = new T();
+                        string readValue = null;
 
+                        foreach (var property in TProperties)
+                        {
+                            if (DataReader[property.Name] != DBNull.Value)
+                            {
+                                readValue = DataReader[property.Name].ToString();
+                            }
+
+                            if(!String.IsNullOrEmpty(readValue))
+                            {
+                                property.SetValue(GenericObject, Convert.ChangeType(readValue, property.PropertyType), null);
+                            }
+                        }
+                        resultsList.Add(GenericObject);
                     }
                 }
-                cmdReader.Close();
+                DataReader.Close();
+                return resultsList;
             }
         }
     }
