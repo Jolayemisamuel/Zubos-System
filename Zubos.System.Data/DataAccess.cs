@@ -41,6 +41,7 @@ namespace Zubos.System.Data
             string connectionString = ConfigurationManager.ConnectionStrings["ODS"].ConnectionString;
 
             SqlConnection connection = new SqlConnection(connectionString);
+           
             connection.Open();
 
             return connection;
@@ -101,7 +102,7 @@ namespace Zubos.System.Data
                                 property.SetValue(GenericObject, Convert.ChangeType(readValue, property.PropertyType), null);
                             }
                         }
-                        resultsList.Add(GenericObject);
+                        resultsList.Add((T)GenericObject);
                     }
                 }
                 DataReader.Close();

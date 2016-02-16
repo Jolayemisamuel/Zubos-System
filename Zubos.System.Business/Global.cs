@@ -44,7 +44,7 @@ namespace Zubos.System.Business
 
         public static void test()
         {
-            List<Customer> newlist = DataAccess.ExecuteSelectQuery<Customer>(DataAccess.SQLConnection, "SELECT * FROM [ODS].[Zubos].[Customer]");
+            List<Customer> newlist = DataAccess.ExecuteSelectQuery<Customer>(DataAccess.SQLConnection, "SELECT * FROM Zubos.Customer");
             int i = 0;
             foreach (var item in newlist)
             {
