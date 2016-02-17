@@ -97,7 +97,7 @@ namespace Zubos.System.Data
                                 readValue = DataReader[property.Name].ToString();
                             }
 
-                            if(!String.IsNullOrEmpty(readValue))
+                            if (!String.IsNullOrEmpty(readValue))
                             {
                                 property.SetValue(GenericObject, Convert.ChangeType(readValue, property.PropertyType), null);
                             }
@@ -105,9 +105,12 @@ namespace Zubos.System.Data
                         resultsList.Add((T)GenericObject);
                     }
                 }
+
+
                 DataReader.Close();
                 return resultsList;
             }
+
         }
     }
 }
