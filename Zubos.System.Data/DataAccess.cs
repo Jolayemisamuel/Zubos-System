@@ -77,6 +77,9 @@ namespace Zubos.System.Data
             {
                 List<PropertyInfo> TProperties = typeof(T).GetProperties().ToList();
 
+                SqlCommand check_table = new SqlCommand("select case when exists((select * from information_schema.tables where table_name = 'Zubos.Customer')) then 1 else 0 end",Connection_param);
+                int IsTableExists = (int)check_table.ExecuteScalar();
+
                 SqlCommand sqlCmd = new SqlCommand(Query_param, Connection_param);
                 sqlCmd.CommandType = CommandType.Text;
 
