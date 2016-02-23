@@ -16,7 +16,7 @@ namespace Zubos.System.Data
         /// <summary>
         /// Holds a SQL connection.
         /// </summary>
-        private static SqlConnection _ODSConnection;
+        internal static SqlConnection _ODSConnection;
         public static SqlConnection ODSConnection
         {
             get { return _ODSConnection; }
@@ -26,15 +26,15 @@ namespace Zubos.System.Data
         /// A method to create a new SQL connection using ODS connection string.
         /// </summary>
         /// <returns>Returns a SQL connection if none exist</returns>
-        private static SqlConnection GetNewODSConnection()
+        private static bool OpenSQLConnection(string ConnectionStringConfigurationName)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["ODS"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings[ConnectionStringConfigurationName].ConnectionString;
 
             SqlConnection connection = new SqlConnection(connectionString);
            
             connection.Open();
 
-            return connection;
+            return (connection.State == ConnectionState.Open) ? true : false;
         }
         /// <summary>
         /// A method to close the SQL connection.
@@ -65,9 +65,13 @@ namespace Zubos.System.Data
         /// </summary>
         /// <param name="ConnectionToCheck"></param>
         /// <returns></returns>
-        public static bool CheckConnectionIsAlive(SqlConnection ConnectionToCheck)
+        public static bool CheckConnectionIsReady(SqlConnection ConnectionToCheck)
         {
-            return true;
+            if(ConnectionToCheck.State == ConnectionState.Open)
+            {
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -79,47 +83,52 @@ namespace Zubos.System.Data
         /// <returns></returns>
         public static List<T> ReturnTableResultsAsList<T>(SqlConnection Connection_param, string TableName_param) where T : new()
         {
-            SqlCommand Verify_Table = new SqlCommand("SELECT CASE WHEN EXISTS((SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '" 
-                                                        + TableName_param + "')) THEN 1 ELSE 0 END;", Connection_param);
-            int DoesTableExists = (int)Verify_Table.ExecuteScalar();
-
-            if (DoesTableExists == 1)
+            if (CheckConnectionIsReady(ODSConnection))
             {
-                List<PropertyInfo> TProperties = typeof(T).GetProperties().ToList();
+                SqlCommand Verify_Table_Cmd = new SqlCommand("SELECT CASE WHEN EXISTS((SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '"
+                                                        + TableName_param + "')) THEN 1 ELSE 0 END;", Connection_param);
+                int DoesTableExists = (int)Verify_Table_Cmd.ExecuteScalar();
 
-                SqlCommand sqlCmd = new SqlCommand("SELECT * FROM d" + TableName_param, Connection_param);
-                sqlCmd.CommandType = CommandType.Text;
-
-                SqlDataReader DataReader = sqlCmd.ExecuteReader();
-
-                List<T> resultsList = new List<T>();
-                if (DataReader.HasRows)
+                if (DoesTableExists == 1)
                 {
-                    while (DataReader.Read())
+                    List<PropertyInfo> TProperties = typeof(T).GetProperties().ToList();
+                    SqlCommand sqlCmd = new SqlCommand("SELECT * FROM d" + TableName_param, Connection_param);
+                    sqlCmd.CommandType = CommandType.Text;
+                    SqlDataReader DataReader = sqlCmd.ExecuteReader();
+                    List<T> resultsList = new List<T>();
+                    if (DataReader.HasRows)
                     {
-                        var GenericObject = new T();
-                        string readValue = null;
-
-                        foreach (var property in TProperties)
+                        while (DataReader.Read())
                         {
-                            readValue = null;
-                            if (DataReader[property.Name] != DBNull.Value)
-                            {
-                                readValue = DataReader[property.Name].ToString();
-                            }
+                            var GenericObject = new T();
+                            string readValue = null;
 
-                            if (!String.IsNullOrEmpty(readValue))
+                            foreach (var property in TProperties)
                             {
-                                property.SetValue(GenericObject, readValue, null);
+                                readValue = null;
+                                if (DataReader[property.Name] != DBNull.Value)
+                                {
+                                    readValue = DataReader[property.Name].ToString();
+                                }
+                                if (!String.IsNullOrEmpty(readValue))
+                                {
+                                    property.SetValue(GenericObject, readValue, null);
+                                }
                             }
+                            Logger.WriteLine("DEBUG", "Propertys mapped, returning table results list.");
+                            resultsList.Add((T)GenericObject);
                         }
-                        resultsList.Add((T)GenericObject);
                     }
+                    DataReader.Close();
+                    return resultsList;
                 }
-                DataReader.Close();
-                return resultsList;
+                Logger.WriteLine("ERROR", "Could not find table, query execution failed.");
             }
-            Logger.WriteLine("ERROR", "Could not find table, query execution failed.");
+            else
+            {
+                Logger.WriteLine("ERROR", "No open connection, query execution failed.");
+            }
+            //-------//
             return null;
         }
     }

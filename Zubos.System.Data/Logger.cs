@@ -4,6 +4,7 @@ using System.Linq;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using System.Configuration;
 using System.Diagnostics;
 using System.Reflection;
 
@@ -37,7 +38,7 @@ namespace Zubos.System.Data
             }
         }
         /// <summary>
-        /// Method to close any open loggers.
+        /// Method to Finalise loggers.
         /// </summary>
         public static void FinaliseLogger()
         {
@@ -50,7 +51,11 @@ namespace Zubos.System.Data
         /// <param name="LogMessage_param"></param>
         public static void WriteLine(string LoggerType_param, string LogMessage_param)
         {
-            if (String.IsNullOrEmpty(LoggerType_param))
+            if(LoggerType_param.ToUpper() == "DEBUG")
+            {
+                return;
+            }
+            else if(String.IsNullOrEmpty(LoggerType_param))
             {
                 LoggerType_param = "EVENT";
             }
@@ -64,9 +69,13 @@ namespace Zubos.System.Data
         /// </summary>
         /// <param name="LoggerType_param"></param>
         /// <param name="LogMessages_param"></param>
-        public static void WriteLines(string LoggerType_param, string[] LogMessages_param)
+        public static void WriteLine(string LoggerType_param, string[] LogMessages_param)
         {
-            if (String.IsNullOrEmpty(LoggerType_param))
+            if (LoggerType_param.ToUpper() == "DEBUG")
+            {
+                return;
+            }
+            else if (String.IsNullOrEmpty(LoggerType_param))
             {
                 LoggerType_param = "EVENT";
             }
