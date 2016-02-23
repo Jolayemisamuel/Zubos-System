@@ -47,46 +47,46 @@ namespace Zubos.System.Data
         /// <summary>
         /// Writes a line to log file. Types: DEBUG/WARNING/ERROR/EVENT(Default)
         /// </summary>
-        /// <param name="LoggerType_param"></param>
-        /// <param name="LogMessage_param"></param>
-        public static void WriteLine(string LoggerType_param, string LogMessage_param)
+        /// <param name="LoggerType"></param>
+        /// <param name="LogMessage"></param>
+        public static void WriteLine(string LoggerType, string LogMessage)
         {
-            if(LoggerType_param.ToUpper() == "DEBUG")
+            if(LoggerType.ToUpper() == "DEBUG")
             {
                 return;
             }
-            else if(String.IsNullOrEmpty(LoggerType_param))
+            else if(String.IsNullOrEmpty(LoggerType))
             {
-                LoggerType_param = "EVENT";
+                LoggerType = "EVENT";
             }
             if (CurrentLogPath != null)
             {
-                File.AppendAllText(CurrentLogPath, LoggerType_param.ToUpper().PadLeft(7) + @"/" + GetTimeStampAsString() + GetCallingMethodName(2) + LogMessage_param + Environment.NewLine);
+                File.AppendAllText(CurrentLogPath, LoggerType.ToUpper().PadLeft(7) + @"/" + GetTimeStampAsString() + GetCallingMethodName(2) + LogMessage + Environment.NewLine);
             }
         }
         /// <summary>
         /// Writes several lines to log file. Types: DEBUG/WARNING/ERROR/EVENT(Default)
         /// </summary>
-        /// <param name="LoggerType_param"></param>
-        /// <param name="LogMessages_param"></param>
-        public static void WriteLine(string LoggerType_param, string[] LogMessages_param)
+        /// <param name="LoggerType"></param>
+        /// <param name="LogMessages"></param>
+        public static void WriteLine(string LoggerType, string[] LogMessages)
         {
-            if (LoggerType_param.ToUpper() == "DEBUG")
+            if (LoggerType.ToUpper() == "DEBUG")
             {
                 return;
             }
-            else if (String.IsNullOrEmpty(LoggerType_param))
+            else if (String.IsNullOrEmpty(LoggerType))
             {
-                LoggerType_param = "EVENT";
+                LoggerType = "EVENT";
             }
             if (CurrentLogPath == null)
             {
                 return;
             }
             int loopCounter = 0;
-            foreach (string logString in LogMessages_param)
+            foreach (string logString in LogMessages)
             {
-                File.AppendAllText(CurrentLogPath, LoggerType_param.ToUpper().PadLeft(7) + @"/" + GetTimeStampAsString() + GetCallingMethodName(2) + LogMessages_param[loopCounter] + Environment.NewLine);
+                File.AppendAllText(CurrentLogPath, LoggerType.ToUpper().PadLeft(7) + @"/" + GetTimeStampAsString() + GetCallingMethodName(2) + LogMessages[loopCounter] + Environment.NewLine);
                 loopCounter++;
             }
         }
@@ -109,10 +109,10 @@ namespace Zubos.System.Data
         /// Returns the calling method name as string for log output
         /// </summary>
         /// <returns></returns>
-        private static string GetCallingMethodName(int FrameIndex_param)
+        private static string GetCallingMethodName(int FrameIndex)
         {
             StackTrace st = new StackTrace();
-            StackFrame sf = st.GetFrame(FrameIndex_param);
+            StackFrame sf = st.GetFrame(FrameIndex);
 
             return " | " + sf.GetMethod().Name.PadRight(5) + " | ";
         }

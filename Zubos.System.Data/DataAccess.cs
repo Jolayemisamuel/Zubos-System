@@ -14,7 +14,7 @@ namespace Zubos.System.Data
     public static class DataAccess
     {
         /// <summary>
-        /// Holds a SQL connection.
+        /// Holds ODS connection.
         /// </summary>
         internal static SqlConnection _ODSConnection;
         public static SqlConnection ODSConnection
@@ -40,14 +40,14 @@ namespace Zubos.System.Data
         /// A method to close the SQL connection.
         /// </summary>
         /// <returns>Returns true if closed successfully.</returns>
-        public static bool CloseSQLConnection(SqlConnection ConnectionToClose_param)
+        public static bool CloseSQLConnection(SqlConnection ConnectionToClose)
         {
-            if (ConnectionToClose_param != null)
+            if (ConnectionToClose != null)
             {
                 try
                 {
-                    ConnectionToClose_param.Close();
-                    ConnectionToClose_param.Dispose();
+                    ConnectionToClose.Close();
+                    ConnectionToClose.Dispose();
                 }
                 catch (SqlException sqlEx)
                 {
@@ -58,7 +58,7 @@ namespace Zubos.System.Data
                     MessageBox.Show("An exception has occured. \n" + Environment.NewLine + Ex.Message);
                 }
             }
-            return (ConnectionToClose_param.State == ConnectionState.Closed) ? true : false;
+            return (ConnectionToClose.State == ConnectionState.Closed) ? true : false;
         }
         /// <summary>
         /// This method will return true if the passed in SQL connection is Open and ready for use, else false.
@@ -67,7 +67,7 @@ namespace Zubos.System.Data
         /// <returns></returns>
         public static bool CheckConnectionIsReady(SqlConnection ConnectionToCheck)
         {
-            if(ConnectionToCheck.State == ConnectionState.Open)
+            if(ConnectionToCheck != null && ConnectionToCheck.State == ConnectionState.Open)
             {
                 return true;
             }
@@ -78,21 +78,21 @@ namespace Zubos.System.Data
         /// This method will execute a SELECT * FROM a table taken as a parameter and return the results as a List of type T.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="Connection_param"></param>
-        /// <param name="TableName_param"></param>
+        /// <param name="pConnectionToUse"></param>
+        /// <param name="pTableName"></param>
         /// <returns></returns>
-        public static List<T> ReturnTableResultsAsList<T>(SqlConnection Connection_param, string TableName_param) where T : new()
+        public static List<T> ReturnTableResultsAsList<T>(SqlConnection pConnectionToUse, string pTableName) where T : new()
         {
             if (CheckConnectionIsReady(ODSConnection))
             {
                 SqlCommand Verify_Table_Cmd = new SqlCommand("SELECT CASE WHEN EXISTS((SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '"
-                                                        + TableName_param + "')) THEN 1 ELSE 0 END;", Connection_param);
+                                                            + pTableName + "')) THEN 1 ELSE 0 END;", pConnectionToUse);
                 int DoesTableExists = (int)Verify_Table_Cmd.ExecuteScalar();
 
                 if (DoesTableExists == 1)
                 {
                     List<PropertyInfo> TProperties = typeof(T).GetProperties().ToList();
-                    SqlCommand sqlCmd = new SqlCommand("SELECT * FROM d" + TableName_param, Connection_param);
+                    SqlCommand sqlCmd = new SqlCommand("SELECT * FROM d" + pTableName, pConnectionToUse);
                     sqlCmd.CommandType = CommandType.Text;
                     SqlDataReader DataReader = sqlCmd.ExecuteReader();
                     List<T> resultsList = new List<T>();

@@ -56,11 +56,12 @@ namespace Zubos.System.Data
             }
             catch (Exception ex)
             {
-
+                string[] errorMsgs = new string[] { "Cannot write value to configuration file.", ex.Message };
+                Logger.WriteLine("ERROR", errorMsgs);
             }
         }
         /// <summary>
-        /// Writes to AppSettings by Key and Value, will overwrite existing value.
+        /// Writes to AppSettings by ConfigKeyValue object, will overwrite existing value.
         /// </summary>
         /// <param name="configObject"></param>
         public static void WriteSetting(ConfigKeyValue configObject)
@@ -71,7 +72,8 @@ namespace Zubos.System.Data
             }
             catch (Exception ex)
             {
-
+                string[] errorMsgs = new string[] { "Cannot write value to configuration file.", ex.Message };
+                Logger.WriteLine("ERROR", errorMsgs);
             }
         }
     }

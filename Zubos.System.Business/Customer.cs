@@ -13,7 +13,7 @@ namespace Zubos.System.Business
         /// </summary>
         public int          ID { get; set; }
         public string       Name { get; set; }
-        public int       HouseNumber { get; set; }
+        public int          HouseNumber { get; set; }
         public string       HouseName { get; set; }
         public string       Street { get; set; }
         public string       Postcode { get; set; }
@@ -23,18 +23,23 @@ namespace Zubos.System.Business
         /// </summary>
         public Customer()
         {
-           
+
         }
-
-        public void CreateCustomer(string Name_param, int HouseNumber_param, string HouseName_param, string Street_param, string PostCode_param)
+        /// <summary>
+        /// Constructor for customer object.
+        /// </summary>
+        /// <param name="pName"></param>
+        /// <param name="pHouseNumber"></param>
+        /// <param name="pHouseName"></param>
+        /// <param name="pStreet"></param>
+        /// <param name="pPostCode"></param>
+        public Customer(string pName, int pHouseNumber, string pHouseName, string pStreet, string pPostCode)
         {
-            Customer cust = new Customer();
-            cust.Name = Name_param;
-            cust.HouseNumber = HouseNumber_param;
-            cust.HouseName = HouseName_param;
-            cust.Street = Street_param;
-            cust.Postcode = PostCode_param;
-
+            Name = pName;
+            HouseNumber = pHouseNumber;
+            HouseName = pHouseName;
+            Street = pStreet;
+            Postcode = pPostCode;
         }
     }
 }
