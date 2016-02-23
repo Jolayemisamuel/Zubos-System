@@ -34,9 +34,10 @@
             this.PanelSideBar = new System.Windows.Forms.Panel();
             this.GrpBoxNav = new System.Windows.Forms.GroupBox();
             this.GrpBoxAdmin = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.BtnNewBooking = new System.Windows.Forms.Button();
             this.BtnExitApp = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.BtnLogs = new System.Windows.Forms.Button();
             this.zMainStatusStrip.SuspendLayout();
             this.PanelSideBar.SuspendLayout();
             this.GrpBoxNav.SuspendLayout();
@@ -103,6 +104,7 @@
             // 
             this.GrpBoxAdmin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.GrpBoxAdmin.Controls.Add(this.BtnLogs);
             this.GrpBoxAdmin.Controls.Add(this.button1);
             this.GrpBoxAdmin.Controls.Add(this.BtnNewBooking);
             this.GrpBoxAdmin.Location = new System.Drawing.Point(6, 23);
@@ -111,6 +113,16 @@
             this.GrpBoxAdmin.TabIndex = 8;
             this.GrpBoxAdmin.TabStop = false;
             this.GrpBoxAdmin.Text = "Admin";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(46, 114);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(48, 30);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // BtnNewBooking
             // 
@@ -136,15 +148,15 @@
             this.BtnExitApp.UseVisualStyleBackColor = true;
             this.BtnExitApp.Click += new System.EventHandler(this.BtnExitApp_Click);
             // 
-            // button1
+            // BtnLogs
             // 
-            this.button1.Location = new System.Drawing.Point(46, 114);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(48, 30);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.BtnLogs.Location = new System.Drawing.Point(8, 72);
+            this.BtnLogs.Name = "BtnLogs";
+            this.BtnLogs.Size = new System.Drawing.Size(86, 26);
+            this.BtnLogs.TabIndex = 6;
+            this.BtnLogs.Text = "button2";
+            this.BtnLogs.UseVisualStyleBackColor = true;
+            this.BtnLogs.Click += new System.EventHandler(this.BtnLogs_Click);
             // 
             // Zubos_MainForm
             // 
@@ -182,6 +194,7 @@
         private System.Windows.Forms.GroupBox GrpBoxAdmin;
         private System.Windows.Forms.Button BtnNewBooking;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button BtnLogs;
     }
 }
 

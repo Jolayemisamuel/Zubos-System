@@ -4,6 +4,8 @@ using System.Linq;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace Zubos.System.Data
 {
@@ -54,7 +56,7 @@ namespace Zubos.System.Data
             }
             if (CurrentLogPath != null)
             {
-                File.AppendAllText(CurrentLogPath, LoggerType_param.ToUpper().PadLeft(7) + @"/ " + GetTimeStampAsString() + @" / " + LogMessage_param + Environment.NewLine);
+                File.AppendAllText(CurrentLogPath, LoggerType_param.ToUpper().PadLeft(7) + @"/" + GetTimeStampAsString() + GetCallingMethodName(2) + LogMessage_param + Environment.NewLine);
             }
         }
         /// <summary>
@@ -75,7 +77,7 @@ namespace Zubos.System.Data
             int loopCounter = 0;
             foreach (string logString in LogMessages_param)
             {
-                File.AppendAllText(CurrentLogPath, LoggerType_param.ToUpper().PadLeft(7) + @"/ " + GetTimeStampAsString() + @" / " + LogMessages_param[loopCounter] + Environment.NewLine);
+                File.AppendAllText(CurrentLogPath, LoggerType_param.ToUpper().PadLeft(7) + @"/" + GetTimeStampAsString() + GetCallingMethodName(2) + LogMessages_param[loopCounter] + Environment.NewLine);
                 loopCounter++;
             }
         }
@@ -93,6 +95,25 @@ namespace Zubos.System.Data
                              + DateTime.Now.Minute.ToString().PadLeft(2, padValue) + ":"
                              + DateTime.Now.Second.ToString().PadLeft(2, padValue);
             return TimeStamp;
+        }
+        /// <summary>
+        /// Returns the calling method name as string for log output
+        /// </summary>
+        /// <returns></returns>
+        private static string GetCallingMethodName(int FrameIndex_param)
+        {
+            StackTrace st = new StackTrace();
+            StackFrame sf = st.GetFrame(FrameIndex_param);
+
+            return " | " + sf.GetMethod().Name.PadRight(5) + " | ";
+        }
+        /// <summary>
+        /// Returns active log file path
+        /// </summary>
+        /// <returns></returns>
+        public static string GetCurrentLogPath()
+        {
+            return CurrentLogPath;
         }
     }
 }

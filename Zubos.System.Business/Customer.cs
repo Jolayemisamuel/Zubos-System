@@ -11,9 +11,9 @@ namespace Zubos.System.Business
         /// <summary>
         /// Customer object class to hold data about the customer.
         /// </summary>
-        public int          ID { get; }
+        public int          ID { get; set; }
         public string       Name { get; set; }
-        public string       HouseNumber { get; set; }
+        public int       HouseNumber { get; set; }
         public string       HouseName { get; set; }
         public string       Street { get; set; }
         public string       Postcode { get; set; }
@@ -26,7 +26,7 @@ namespace Zubos.System.Business
            
         }
 
-        public void CreateCustomer(string Name_param, string HouseNumber_param, string HouseName_param, string Street_param, string PostCode_param)
+        public void CreateCustomer(string Name_param, int HouseNumber_param, string HouseName_param, string Street_param, string PostCode_param)
         {
             Customer cust = new Customer();
             cust.Name = Name_param;

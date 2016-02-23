@@ -56,5 +56,10 @@ namespace Zubos_System
         {
             Global.test();
         }
+
+        private void BtnLogs_Click(object sender, EventArgs e)
+        {
+            Global.OpenTodaysLog();
+        }
     }
 }

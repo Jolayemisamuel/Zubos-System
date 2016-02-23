@@ -16,27 +16,17 @@ namespace Zubos.System.Data
         /// <summary>
         /// Holds a SQL connection.
         /// </summary>
-        private static SqlConnection _SQLConnection;
-        public static SqlConnection SQLConnection
+        private static SqlConnection _ODSConnection;
+        public static SqlConnection ODSConnection
         {
-            get
-            {
-                if (_SQLConnection == null)
-                {
-                    _SQLConnection = GetNewSQLConnection();
-                    return _SQLConnection;
-                }
-                else
-                {
-                    return _SQLConnection;
-                }
-            }
+            get { return _ODSConnection; }
+            set { _ODSConnection = value; }
         }
         /// <summary>
         /// A method to create a new SQL connection using ODS connection string.
         /// </summary>
         /// <returns>Returns a SQL connection if none exist</returns>
-        private static SqlConnection GetNewSQLConnection()
+        private static SqlConnection GetNewODSConnection()
         {
             string connectionString = ConfigurationManager.ConnectionStrings["ODS"].ConnectionString;
 
@@ -50,14 +40,14 @@ namespace Zubos.System.Data
         /// A method to close the SQL connection.
         /// </summary>
         /// <returns>Returns true if closed successfully.</returns>
-        public static bool CloseSQLConnection()
+        public static bool CloseSQLConnection(SqlConnection ConnectionToClose_param)
         {
-            if (SQLConnection != null)
+            if (ConnectionToClose_param != null)
             {
                 try
                 {
-                    SQLConnection.Close();
-                    SQLConnection.Dispose();
+                    ConnectionToClose_param.Close();
+                    ConnectionToClose_param.Dispose();
                 }
                 catch (SqlException sqlEx)
                 {
@@ -68,19 +58,36 @@ namespace Zubos.System.Data
                     MessageBox.Show("An exception has occured. \n" + Environment.NewLine + Ex.Message);
                 }
             }
-            return (SQLConnection.State == ConnectionState.Closed) ? true : false;
+            return (ConnectionToClose_param.State == ConnectionState.Closed) ? true : false;
+        }
+        /// <summary>
+        /// This method will return true if the passed in SQL connection is Open and ready for use, else false.
+        /// </summary>
+        /// <param name="ConnectionToCheck"></param>
+        /// <returns></returns>
+        public static bool CheckConnectionIsAlive(SqlConnection ConnectionToCheck)
+        {
+            return true;
         }
 
-        public static List<T> ExecuteSelectQuery<T>(SqlConnection Connection_param, string Query_param) where T : new()
+        /// <summary>
+        /// This method will execute a SELECT * FROM a table taken as a parameter and return the results as a List of type T.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="Connection_param"></param>
+        /// <param name="TableName_param"></param>
+        /// <returns></returns>
+        public static List<T> ReturnTableResultsAsList<T>(SqlConnection Connection_param, string TableName_param) where T : new()
         {
-            using (Connection_param)
+            SqlCommand Verify_Table = new SqlCommand("SELECT CASE WHEN EXISTS((SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '" 
+                                                        + TableName_param + "')) THEN 1 ELSE 0 END;", Connection_param);
+            int DoesTableExists = (int)Verify_Table.ExecuteScalar();
+
+            if (DoesTableExists == 1)
             {
                 List<PropertyInfo> TProperties = typeof(T).GetProperties().ToList();
 
-                SqlCommand check_table = new SqlCommand("select case when exists((select * from information_schema.tables where table_name = 'Zubos.Customer')) then 1 else 0 end",Connection_param);
-                int IsTableExists = (int)check_table.ExecuteScalar();
-
-                SqlCommand sqlCmd = new SqlCommand(Query_param, Connection_param);
+                SqlCommand sqlCmd = new SqlCommand("SELECT * FROM d" + TableName_param, Connection_param);
                 sqlCmd.CommandType = CommandType.Text;
 
                 SqlDataReader DataReader = sqlCmd.ExecuteReader();
@@ -95,6 +102,7 @@ namespace Zubos.System.Data
 
                         foreach (var property in TProperties)
                         {
+                            readValue = null;
                             if (DataReader[property.Name] != DBNull.Value)
                             {
                                 readValue = DataReader[property.Name].ToString();
@@ -102,18 +110,17 @@ namespace Zubos.System.Data
 
                             if (!String.IsNullOrEmpty(readValue))
                             {
-                                property.SetValue(GenericObject, Convert.ChangeType(readValue, property.PropertyType), null);
+                                property.SetValue(GenericObject, readValue, null);
                             }
                         }
                         resultsList.Add((T)GenericObject);
                     }
                 }
-
-
                 DataReader.Close();
                 return resultsList;
             }
-
+            Logger.WriteLine("ERROR", "Could not find table, query execution failed.");
+            return null;
         }
     }
 }

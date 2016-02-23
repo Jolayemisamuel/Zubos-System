@@ -11,7 +11,7 @@ namespace Zubos.System.Business
     /// </summary>
     public class RoomContainer
     {
-        public int                              ID { get; }
+        public int                              ID { get; set; }
         public static SortedList<int, Room>     myRooms { get; }
 
         /// <summary>

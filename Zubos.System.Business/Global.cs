@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Diagnostics;
 using System.Windows.Forms;
 using Zubos.System.Data;
 
@@ -34,27 +35,31 @@ namespace Zubos.System.Business
         {
             Logger.FinaliseLogger();
 
-            bool isError = !DataAccess.CloseSQLConnection();
+            bool isError = !DataAccess.CloseSQLConnection(DataAccess.ODSConnection);
 
             if(!isError)
             {
                 Environment.Exit(0);
             }
         }
+        public static void OpenTodaysLog()
+        {
+            Process.Start(Logger.GetCurrentLogPath());
+        }
 
         public static void test()
         {
-            List<Customer> newlist = DataAccess.ExecuteSelectQuery<Customer>(DataAccess.SQLConnection, "SELECT * FROM Zubos.Customer");
+            List<Customer> newlist = DataAccess.ReturnTableResultsAsList<Customer>(DataAccess.ODSConnection, "Customer");
             int i = 0;
             foreach (var item in newlist)
             {
 
-                Logger.WriteLine("EVENT", newlist[i].ID.ToString());
-                Logger.WriteLine("EVENT", newlist[i].Name.ToString());
-                Logger.WriteLine("EVENT", newlist[i].HouseNumber.ToString());
-                Logger.WriteLine("EVENT", newlist[i].HouseName.ToString());
-                Logger.WriteLine("EVENT", newlist[i].Street.ToString());
-                Logger.WriteLine("EVENT", newlist[i].Postcode.ToString());
+                Logger.WriteLine("EVENT", newlist[i].ID.ToSafeString());
+                Logger.WriteLine("EVENT", newlist[i].Name.ToSafeString());
+                Logger.WriteLine("EVENT", newlist[i].HouseNumber.ToSafeString());
+                Logger.WriteLine("EVENT", newlist[i].HouseName.ToSafeString());
+                Logger.WriteLine("EVENT", newlist[i].Street.ToSafeString());
+                Logger.WriteLine("EVENT", newlist[i].Postcode.ToSafeString());
                 i++;
                     }
 
