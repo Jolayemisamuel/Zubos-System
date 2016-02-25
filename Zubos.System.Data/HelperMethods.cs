@@ -58,7 +58,12 @@ namespace Zubos.System.Data
             TypeInt = 0;
             return false;
         }
-
+        /// <summary>
+        /// Returns a combined list but only where property doesnt exist in both.
+        /// </summary>
+        /// <param name="pColumnsListToSearchFor"></param>
+        /// <param name="pColumnsListToRemoveFrom"></param>
+        /// <returns></returns>
         public static List<PropertyInfo> RemoveUnwantedProperties(List<string> pColumnsListToSearchFor, List<PropertyInfo> pColumnsListToRemoveFrom)
         {
             List<PropertyInfo> ProcessedColumnsList = new List<PropertyInfo>();

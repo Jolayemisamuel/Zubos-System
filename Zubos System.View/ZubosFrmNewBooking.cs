@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Zubos.System.Business;
 
 namespace Zubos_System
 {
@@ -33,7 +34,8 @@ namespace Zubos_System
 
         private void ZubosFrmNewBooking_Load(object sender, EventArgs e)
         {
-
+            CmbRoom.DataSource = Room.GetRoomsSelectiveAsList(new List<string> { "RoomID", "Name" });
+            CmbRoom.DisplayMember = 
         }
     }
 }

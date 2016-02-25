@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Zubos.System.Data;
 
 namespace Zubos.System.Business
 {
@@ -40,10 +41,23 @@ namespace Zubos.System.Business
             myCustomers = pMyCustomers;
             myRoomContainers = pMyRoomContainers;
         }
-
+        /// <summary>
+        /// Returns a string of RoomID and Name.
+        /// </summary>
+        /// <returns></returns>
         public string RoomToString()
         {
             return "[ " + this.RoomID.ToString() + " ] " + this.Name.ToString();
+        }
+
+        public static List<Room> GetRoomsSelectiveAsList(List<string> pRoomFieldNames)
+        {
+            return DataAccess.ReturnResultsAsList<Room>("ODS", "Room", pRoomFieldNames);
+        }
+
+        public static List<Room> GetRoomsAllAsList(List<string> pRoomFieldNames)
+        {
+            return DataAccess.ReturnTableResultsAsList<Room>("ODS", "Room");
         }
     }
 }

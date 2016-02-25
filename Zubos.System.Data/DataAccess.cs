@@ -229,7 +229,14 @@ namespace Zubos.System.Data
             //-------//
             return null;
         }
-
+        /// <summary>
+        /// This method will execute a SELECT all columns in pColumnsToSelect FROM pTableName and return the results of a list of type T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="pConnectionToUse"></param>
+        /// <param name="pTableName"></param>
+        /// <param name="pColumnsToSelect"></param>
+        /// <returns></returns>
         public static List<T> ReturnResultsAsList<T>(string pConnectionToUse, string pTableName, List<string> pColumnsToSelect) where T : new()
         {
             SqlConnection SQL_CONNECTION = LookupConnection(pConnectionToUse);
@@ -247,7 +254,7 @@ namespace Zubos.System.Data
                     SqlDataReader DataReader = sqlCmd.ExecuteReader();
 
                     if (DataReader.HasRows)
-                    {
+                    {//Some Data Exists
                         List<PropertyInfo> TProperties = HelperMethods.RemoveUnwantedProperties(pColumnsToSelect, typeof(T).GetProperties().ToList());
                         List<T> resultsList = new List<T>();
                         while (DataReader.Read())
@@ -266,6 +273,64 @@ namespace Zubos.System.Data
                                 if (!String.IsNullOrEmpty(readValue))
                                 {
                                     if(HelperMethods.isTypeSafeForDataMap<T>(property, out outType))
+                                    {
+                                        property.SetValue(GenericObject, Convert.ChangeType(readValue, property.PropertyType), null);
+                                    }
+                                }
+                            }
+                            resultsList.Add((T)GenericObject);
+                        }
+                        Logger.WriteLine("DEBUG", "Propertys mapped, returning table results list.");
+                        DataReader.Close();
+                        return resultsList;
+                    }
+                }
+                Logger.WriteLine("ERROR", "Could not find table, query execution failed. Table may not exist.");
+            }
+            else
+            {
+                Logger.WriteLine("ERROR", "No open connection, query execution failed.");
+            }
+            //-------//
+            return null;
+        }
+
+        public static SortedList<T, T> ReturnResultsAsSortedList<T>(string pConnectionToUse, string pTableName, List<string> pColumnsToSelect) where T : new()
+        {
+            SqlConnection SQL_CONNECTION = LookupConnection(pConnectionToUse);
+            if (CheckConnectionIsReady(ref SQL_CONNECTION, "ODS") == 1)
+            {
+                SqlCommand Verify_Table_Cmd = new SqlCommand("SELECT CASE WHEN EXISTS((SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '"
+                                                            + pTableName + "')) THEN 1 ELSE 0 END;", SQL_CONNECTION);
+                int DoesTableExists = (int)Verify_Table_Cmd.ExecuteScalar();
+
+                if (DoesTableExists == 1)
+                {
+                    string columnsToSelect = HelperMethods.BuildSQLColumnCmdString(pColumnsToSelect);
+                    SqlCommand sqlCmd = new SqlCommand("SELECT " + columnsToSelect + " FROM " + pTableName, SQL_CONNECTION);
+                    sqlCmd.CommandType = CommandType.Text;
+                    SqlDataReader DataReader = sqlCmd.ExecuteReader();
+
+                    if (DataReader.HasRows)
+                    {//Some Data Exists
+                        List<PropertyInfo> TProperties = HelperMethods.RemoveUnwantedProperties(pColumnsToSelect, typeof(T).GetProperties().ToList());
+                        SortedList<T, T> resultsList = new SortedList<T, T>();
+                        while (DataReader.Read())
+                        {
+                            var GenericObject = new T();
+                            string readValue = null;
+                            int outType = 0;
+
+                            foreach (var property in TProperties)
+                            {
+                                readValue = null;
+                                if (DataReader[property.Name] != DBNull.Value)
+                                {
+                                    readValue = DataReader[property.Name].ToString();
+                                }
+                                if (!String.IsNullOrEmpty(readValue))
+                                {
+                                    if (HelperMethods.isTypeSafeForDataMap<T>(property, out outType))
                                     {
                                         property.SetValue(GenericObject, Convert.ChangeType(readValue, property.PropertyType), null);
                                     }
