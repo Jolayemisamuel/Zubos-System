@@ -11,31 +11,33 @@ namespace Zubos.System.Business
     /// </summary>
     public class BookingDetail
     {
-        public int                              BookingReference { get; }
-        public SortedList<int, Customer>        myCustomers { get; set; }
+        public int                              BookingDetailID { get; set; }
+        public DateTime                         DateStart { get; set; }
+        public DateTime                         DateComplete { get; set; }
+        public double                           PaymentAmount { get; set; }
         public Room                             myRoom { get; set; }
-        public DateTime                         DateStart { get; }
-        public DateTime                         DateComplete { get; }
-        public double                           PaymentAmount { get; }
+        public SortedList<int, Customer>        myCustomers { get; set; }
 
         /// <summary>
         /// Default constructor for BookingDetail object.
         /// </summary>
-        /// <param name="pID"></param>
-        /// <param name="pCustomers"></param>
-        /// <param name="pRoom"></param>
-        public BookingDetail
-                            (int                        pID, 
-                            SortedList<int, Customer>   pCustomers,
-                            Room                        pRoom,
-                            DateTime                    pDateStart,
-                            double                      pPaymentAmount)
+        public BookingDetail()
         {
-            BookingReference = pID;
-            myCustomers = pCustomers;
-            myRoom = pRoom;
+
+        }
+
+        public BookingDetail
+                            (int pID, 
+                            DateTime pDateStart,
+                            double pPaymentAmount,
+                            Room pMyRoom,
+                            SortedList<int, Customer> pMyCustomers)
+        {
+            BookingDetailID = pID;
             DateStart = pDateStart;
             PaymentAmount = pPaymentAmount;
+            myRoom = pMyRoom;
+            myCustomers = pMyCustomers;
         }
     }
 }

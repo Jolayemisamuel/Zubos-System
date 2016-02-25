@@ -79,15 +79,14 @@ namespace Zubos.System.Data
             {
                 LoggerType = "EVENT";
             }
-            if (CurrentLogPath == null)
+            if (CurrentLogPath != null)
             {
-                return;
-            }
-            int loopCounter = 0;
-            foreach (string logString in LogMessages)
-            {
-                File.AppendAllText(CurrentLogPath, LoggerType.ToUpper().PadLeft(7) + @"/" + GetTimeStampAsString() + GetCallingMethodName(2) + LogMessages[loopCounter] + Environment.NewLine);
-                loopCounter++;
+                int loopCounter = 0;
+                foreach (string logString in LogMessages)
+                {
+                    File.AppendAllText(CurrentLogPath, LoggerType.ToUpper().PadLeft(7) + @"/" + GetTimeStampAsString() + GetCallingMethodName(2) + LogMessages[loopCounter] + Environment.NewLine);
+                    loopCounter++;
+                }
             }
         }
         /// <summary>

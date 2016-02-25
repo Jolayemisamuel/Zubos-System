@@ -44,16 +44,26 @@ namespace Zubos.System.Business
 
         public static void test()
         {
-            Logger.WriteLine("DEBUG", "This is a test log.");
-            Logger.WriteLine("WARNING", "This is a test log.");
-            Logger.WriteLine("ERROR", "This is a test log.");
-            Logger.WriteLine("EVENT", "This is a test log.");
+            List<Room> newRoomList = DataAccess.ReturnResultsAsList<Room>("ODS", "Room", new List<string> { "RoomID", "Name", "Price" });
+            List<Room> newRoomList2 = DataAccess.ReturnTableResultsAsList<Room>("ODS", "Room");
+            int i2 = 0;
+            foreach (var item in newRoomList2)
+            {
+
+                Logger.WriteLine("EVENT", newRoomList2[i2].RoomID.ToSafeString());
+                Logger.WriteLine("EVENT", newRoomList2[i2].Name.ToSafeString());
+                Logger.WriteLine("EVENT", newRoomList2[i2].Price.ToSafeString());
+                Logger.WriteLine("EVENT", newRoomList2[i2].AdditionalInfo.ToSafeString());
+                Logger.WriteLine("EVENT", newRoomList2[i2].myCustomers.ToSafeString());
+                Logger.WriteLine("EVENT", newRoomList2[i2].myRoomContainers.ToSafeString());
+                i2++;
+            }
             List<Customer> newlist = DataAccess.ReturnTableResultsAsList<Customer>("ODS", "Customer");
             int i = 0;
             foreach (var item in newlist)
             {
 
-                Logger.WriteLine("EVENT", newlist[i].ID.ToSafeString());
+                Logger.WriteLine("EVENT", newlist[i].CustomerID.ToSafeString());
                 Logger.WriteLine("EVENT", newlist[i].Name.ToSafeString());
                 Logger.WriteLine("EVENT", newlist[i].HouseNumber.ToSafeString());
                 Logger.WriteLine("EVENT", newlist[i].HouseName.ToSafeString());

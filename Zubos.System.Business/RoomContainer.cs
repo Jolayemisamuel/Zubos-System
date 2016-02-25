@@ -11,16 +11,27 @@ namespace Zubos.System.Business
     /// </summary>
     public class RoomContainer
     {
-        public int                              ID { get; set; }
-        public static SortedList<int, Room>     myRooms { get; }
+        public int                              RoomContainerID { get; set; }
+        public string                           Name { get; set; }
+        public string                           Description { get; set; }
+        public static SortedList<int, Room>     myRooms { get; set; }
 
         /// <summary>
         /// Default constructor for RoomContainer
         /// </summary>
-        /// <param name="ID_Param"></param>
-        public RoomContainer(int ID_Param)
+        public RoomContainer()
         {
-            ID = ID_Param;
+        }
+        
+        public RoomContainer(int pID, 
+                             string pName,
+                             string pDescription,
+                             SortedList<int, Room> pMyRooms)
+        {
+            RoomContainerID = pID;
+            Name = pName;
+            Description = pDescription;
+            myRooms = pMyRooms;
         }
     }
 }

@@ -30,28 +30,32 @@
         {
             this.TxtName = new System.Windows.Forms.TextBox();
             this.GrpBoxNewBooking = new System.Windows.Forms.GroupBox();
-            this.LblName = new System.Windows.Forms.Label();
-            this.LblHouseNumber = new System.Windows.Forms.Label();
-            this.TxtHouseNumber = new System.Windows.Forms.TextBox();
-            this.LblHouseName = new System.Windows.Forms.Label();
-            this.TxtHouseName = new System.Windows.Forms.TextBox();
-            this.LblStreet = new System.Windows.Forms.Label();
-            this.TxtStreet = new System.Windows.Forms.TextBox();
-            this.LblPostcode = new System.Windows.Forms.Label();
-            this.TxtPostcode = new System.Windows.Forms.TextBox();
-            this.DtpDateFrom = new System.Windows.Forms.DateTimePicker();
-            this.LblDateFrom = new System.Windows.Forms.Label();
+            this.ChkDone = new System.Windows.Forms.CheckBox();
+            this.BtnSubmit = new System.Windows.Forms.Button();
+            this.GrpBoxRoomDetail = new System.Windows.Forms.GroupBox();
+            this.TxtAdditionalInfo = new System.Windows.Forms.TextBox();
+            this.TxtPrice = new System.Windows.Forms.TextBox();
+            this.TxtRoomNumber = new System.Windows.Forms.TextBox();
+            this.TxtRoomName = new System.Windows.Forms.TextBox();
+            this.LblExtraRoomDetail = new System.Windows.Forms.Label();
+            this.LblNumberRoomDetail = new System.Windows.Forms.Label();
+            this.LblPriceRoomDetail = new System.Windows.Forms.Label();
+            this.LblNameRoomDetail = new System.Windows.Forms.Label();
+            this.LblRoom = new System.Windows.Forms.Label();
+            this.CmbRoom = new System.Windows.Forms.ComboBox();
             this.LblDateTo = new System.Windows.Forms.Label();
             this.DtpDateTo = new System.Windows.Forms.DateTimePicker();
-            this.CmbRoom = new System.Windows.Forms.ComboBox();
-            this.LblRoom = new System.Windows.Forms.Label();
-            this.GrpBoxRoomDetail = new System.Windows.Forms.GroupBox();
-            this.LblNameRoomDetail = new System.Windows.Forms.Label();
-            this.LblPriceRoomDetail = new System.Windows.Forms.Label();
-            this.LblNumberRoomDetail = new System.Windows.Forms.Label();
-            this.LblExtraRoomDetail = new System.Windows.Forms.Label();
-            this.BtnSubmit = new System.Windows.Forms.Button();
-            this.ChkDone = new System.Windows.Forms.CheckBox();
+            this.LblDateFrom = new System.Windows.Forms.Label();
+            this.DtpDateFrom = new System.Windows.Forms.DateTimePicker();
+            this.LblPostcode = new System.Windows.Forms.Label();
+            this.TxtPostcode = new System.Windows.Forms.TextBox();
+            this.LblStreet = new System.Windows.Forms.Label();
+            this.TxtStreet = new System.Windows.Forms.TextBox();
+            this.LblHouseName = new System.Windows.Forms.Label();
+            this.TxtHouseName = new System.Windows.Forms.TextBox();
+            this.LblHouseNumber = new System.Windows.Forms.Label();
+            this.TxtHouseNumber = new System.Windows.Forms.TextBox();
+            this.LblName = new System.Windows.Forms.Label();
             this.GrpBoxNewBooking.SuspendLayout();
             this.GrpBoxRoomDetail.SuspendLayout();
             this.SuspendLayout();
@@ -92,65 +96,185 @@
             this.GrpBoxNewBooking.TabIndex = 1;
             this.GrpBoxNewBooking.TabStop = false;
             // 
-            // LblName
+            // ChkDone
             // 
-            this.LblName.AutoSize = true;
-            this.LblName.Location = new System.Drawing.Point(13, 24);
-            this.LblName.Name = "LblName";
-            this.LblName.Size = new System.Drawing.Size(104, 17);
-            this.LblName.TabIndex = 1;
-            this.LblName.Text = "Booking Name:";
+            this.ChkDone.AutoSize = true;
+            this.ChkDone.Location = new System.Drawing.Point(364, 393);
+            this.ChkDone.Name = "ChkDone";
+            this.ChkDone.Size = new System.Drawing.Size(64, 21);
+            this.ChkDone.TabIndex = 18;
+            this.ChkDone.Text = "Done";
+            this.ChkDone.UseVisualStyleBackColor = true;
+            this.ChkDone.CheckedChanged += new System.EventHandler(this.ChkDone_CheckedChanged);
             // 
-            // LblHouseNumber
+            // BtnSubmit
             // 
-            this.LblHouseNumber.AutoSize = true;
-            this.LblHouseNumber.Location = new System.Drawing.Point(13, 72);
-            this.LblHouseNumber.Name = "LblHouseNumber";
-            this.LblHouseNumber.Size = new System.Drawing.Size(107, 17);
-            this.LblHouseNumber.TabIndex = 3;
-            this.LblHouseNumber.Text = "House Number:";
+            this.BtnSubmit.Enabled = false;
+            this.BtnSubmit.Location = new System.Drawing.Point(434, 384);
+            this.BtnSubmit.Name = "BtnSubmit";
+            this.BtnSubmit.Size = new System.Drawing.Size(132, 30);
+            this.BtnSubmit.TabIndex = 17;
+            this.BtnSubmit.Text = "Submit";
+            this.BtnSubmit.UseVisualStyleBackColor = true;
+            this.BtnSubmit.Click += new System.EventHandler(this.BtnSubmit_Click);
             // 
-            // TxtHouseNumber
+            // GrpBoxRoomDetail
             // 
-            this.TxtHouseNumber.Location = new System.Drawing.Point(12, 95);
-            this.TxtHouseNumber.MaxLength = 4;
-            this.TxtHouseNumber.Name = "TxtHouseNumber";
-            this.TxtHouseNumber.Size = new System.Drawing.Size(63, 22);
-            this.TxtHouseNumber.TabIndex = 2;
+            this.GrpBoxRoomDetail.Controls.Add(this.TxtAdditionalInfo);
+            this.GrpBoxRoomDetail.Controls.Add(this.TxtPrice);
+            this.GrpBoxRoomDetail.Controls.Add(this.TxtRoomNumber);
+            this.GrpBoxRoomDetail.Controls.Add(this.TxtRoomName);
+            this.GrpBoxRoomDetail.Controls.Add(this.LblExtraRoomDetail);
+            this.GrpBoxRoomDetail.Controls.Add(this.LblNumberRoomDetail);
+            this.GrpBoxRoomDetail.Controls.Add(this.LblPriceRoomDetail);
+            this.GrpBoxRoomDetail.Controls.Add(this.LblNameRoomDetail);
+            this.GrpBoxRoomDetail.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GrpBoxRoomDetail.Location = new System.Drawing.Point(297, 77);
+            this.GrpBoxRoomDetail.Name = "GrpBoxRoomDetail";
+            this.GrpBoxRoomDetail.Size = new System.Drawing.Size(269, 282);
+            this.GrpBoxRoomDetail.TabIndex = 16;
+            this.GrpBoxRoomDetail.TabStop = false;
+            this.GrpBoxRoomDetail.Text = "Room Details";
             // 
-            // LblHouseName
+            // TxtAdditionalInfo
             // 
-            this.LblHouseName.AutoSize = true;
-            this.LblHouseName.Location = new System.Drawing.Point(13, 120);
-            this.LblHouseName.Name = "LblHouseName";
-            this.LblHouseName.Size = new System.Drawing.Size(94, 17);
-            this.LblHouseName.TabIndex = 5;
-            this.LblHouseName.Text = "House Name:";
+            this.TxtAdditionalInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TxtAdditionalInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TxtAdditionalInfo.Location = new System.Drawing.Point(9, 134);
+            this.TxtAdditionalInfo.MaxLength = 500;
+            this.TxtAdditionalInfo.Multiline = true;
+            this.TxtAdditionalInfo.Name = "TxtAdditionalInfo";
+            this.TxtAdditionalInfo.ReadOnly = true;
+            this.TxtAdditionalInfo.Size = new System.Drawing.Size(254, 132);
+            this.TxtAdditionalInfo.TabIndex = 24;
             // 
-            // TxtHouseName
+            // TxtPrice
             // 
-            this.TxtHouseName.Location = new System.Drawing.Point(12, 143);
-            this.TxtHouseName.MaxLength = 45;
-            this.TxtHouseName.Name = "TxtHouseName";
-            this.TxtHouseName.Size = new System.Drawing.Size(176, 22);
-            this.TxtHouseName.TabIndex = 4;
+            this.TxtPrice.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TxtPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TxtPrice.Location = new System.Drawing.Point(115, 80);
+            this.TxtPrice.MaxLength = 300;
+            this.TxtPrice.Name = "TxtPrice";
+            this.TxtPrice.ReadOnly = true;
+            this.TxtPrice.Size = new System.Drawing.Size(148, 22);
+            this.TxtPrice.TabIndex = 23;
+            this.TxtPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // LblStreet
+            // TxtRoomNumber
             // 
-            this.LblStreet.AutoSize = true;
-            this.LblStreet.Location = new System.Drawing.Point(13, 168);
-            this.LblStreet.Name = "LblStreet";
-            this.LblStreet.Size = new System.Drawing.Size(50, 17);
-            this.LblStreet.TabIndex = 7;
-            this.LblStreet.Text = "Street:";
+            this.TxtRoomNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TxtRoomNumber.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TxtRoomNumber.Location = new System.Drawing.Point(115, 50);
+            this.TxtRoomNumber.MaxLength = 300;
+            this.TxtRoomNumber.Name = "TxtRoomNumber";
+            this.TxtRoomNumber.ReadOnly = true;
+            this.TxtRoomNumber.Size = new System.Drawing.Size(148, 22);
+            this.TxtRoomNumber.TabIndex = 22;
+            this.TxtRoomNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // TxtStreet
+            // TxtRoomName
             // 
-            this.TxtStreet.Location = new System.Drawing.Point(12, 191);
-            this.TxtStreet.MaxLength = 60;
-            this.TxtStreet.Name = "TxtStreet";
-            this.TxtStreet.Size = new System.Drawing.Size(223, 22);
-            this.TxtStreet.TabIndex = 6;
+            this.TxtRoomName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TxtRoomName.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TxtRoomName.Location = new System.Drawing.Point(61, 23);
+            this.TxtRoomName.MaxLength = 300;
+            this.TxtRoomName.Name = "TxtRoomName";
+            this.TxtRoomName.ReadOnly = true;
+            this.TxtRoomName.Size = new System.Drawing.Size(202, 22);
+            this.TxtRoomName.TabIndex = 21;
+            this.TxtRoomName.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // LblExtraRoomDetail
+            // 
+            this.LblExtraRoomDetail.AutoSize = true;
+            this.LblExtraRoomDetail.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblExtraRoomDetail.Location = new System.Drawing.Point(8, 114);
+            this.LblExtraRoomDetail.Name = "LblExtraRoomDetail";
+            this.LblExtraRoomDetail.Size = new System.Drawing.Size(101, 17);
+            this.LblExtraRoomDetail.TabIndex = 20;
+            this.LblExtraRoomDetail.Text = "Additional Info:";
+            // 
+            // LblNumberRoomDetail
+            // 
+            this.LblNumberRoomDetail.AutoSize = true;
+            this.LblNumberRoomDetail.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblNumberRoomDetail.Location = new System.Drawing.Point(6, 52);
+            this.LblNumberRoomDetail.Name = "LblNumberRoomDetail";
+            this.LblNumberRoomDetail.Size = new System.Drawing.Size(103, 17);
+            this.LblNumberRoomDetail.TabIndex = 19;
+            this.LblNumberRoomDetail.Text = "Room Number:";
+            // 
+            // LblPriceRoomDetail
+            // 
+            this.LblPriceRoomDetail.AutoSize = true;
+            this.LblPriceRoomDetail.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblPriceRoomDetail.Location = new System.Drawing.Point(6, 82);
+            this.LblPriceRoomDetail.Name = "LblPriceRoomDetail";
+            this.LblPriceRoomDetail.Size = new System.Drawing.Size(44, 17);
+            this.LblPriceRoomDetail.TabIndex = 18;
+            this.LblPriceRoomDetail.Text = "Price:";
+            // 
+            // LblNameRoomDetail
+            // 
+            this.LblNameRoomDetail.AutoSize = true;
+            this.LblNameRoomDetail.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblNameRoomDetail.Location = new System.Drawing.Point(6, 23);
+            this.LblNameRoomDetail.Name = "LblNameRoomDetail";
+            this.LblNameRoomDetail.Size = new System.Drawing.Size(49, 17);
+            this.LblNameRoomDetail.TabIndex = 17;
+            this.LblNameRoomDetail.Text = "Name:";
+            // 
+            // LblRoom
+            // 
+            this.LblRoom.AutoSize = true;
+            this.LblRoom.Location = new System.Drawing.Point(294, 24);
+            this.LblRoom.Name = "LblRoom";
+            this.LblRoom.Size = new System.Drawing.Size(49, 17);
+            this.LblRoom.TabIndex = 15;
+            this.LblRoom.Text = "Room:";
+            // 
+            // CmbRoom
+            // 
+            this.CmbRoom.FormattingEnabled = true;
+            this.CmbRoom.Location = new System.Drawing.Point(297, 47);
+            this.CmbRoom.Name = "CmbRoom";
+            this.CmbRoom.Size = new System.Drawing.Size(269, 24);
+            this.CmbRoom.TabIndex = 14;
+            this.CmbRoom.ValueMember = "Room.RoomID";
+            this.CmbRoom.SelectionChangeCommitted += new System.EventHandler(this.CmbRoom_SelectionChangeCommitted);
+            // 
+            // LblDateTo
+            // 
+            this.LblDateTo.AutoSize = true;
+            this.LblDateTo.Location = new System.Drawing.Point(13, 313);
+            this.LblDateTo.Name = "LblDateTo";
+            this.LblDateTo.Size = new System.Drawing.Size(63, 17);
+            this.LblDateTo.TabIndex = 13;
+            this.LblDateTo.Text = "Date To:";
+            // 
+            // DtpDateTo
+            // 
+            this.DtpDateTo.Location = new System.Drawing.Point(16, 337);
+            this.DtpDateTo.Name = "DtpDateTo";
+            this.DtpDateTo.Size = new System.Drawing.Size(200, 22);
+            this.DtpDateTo.TabIndex = 12;
+            // 
+            // LblDateFrom
+            // 
+            this.LblDateFrom.AutoSize = true;
+            this.LblDateFrom.Location = new System.Drawing.Point(13, 264);
+            this.LblDateFrom.Name = "LblDateFrom";
+            this.LblDateFrom.Size = new System.Drawing.Size(78, 17);
+            this.LblDateFrom.TabIndex = 11;
+            this.LblDateFrom.Text = "Date From:";
+            // 
+            // DtpDateFrom
+            // 
+            this.DtpDateFrom.Location = new System.Drawing.Point(16, 288);
+            this.DtpDateFrom.Name = "DtpDateFrom";
+            this.DtpDateFrom.Size = new System.Drawing.Size(200, 22);
+            this.DtpDateFrom.TabIndex = 10;
+            this.DtpDateFrom.Value = new System.DateTime(2016, 2, 25, 18, 35, 24, 0);
             // 
             // LblPostcode
             // 
@@ -169,130 +293,65 @@
             this.TxtPostcode.Size = new System.Drawing.Size(78, 22);
             this.TxtPostcode.TabIndex = 8;
             // 
-            // DtpDateFrom
+            // LblStreet
             // 
-            this.DtpDateFrom.Location = new System.Drawing.Point(16, 288);
-            this.DtpDateFrom.Name = "DtpDateFrom";
-            this.DtpDateFrom.Size = new System.Drawing.Size(200, 22);
-            this.DtpDateFrom.TabIndex = 10;
+            this.LblStreet.AutoSize = true;
+            this.LblStreet.Location = new System.Drawing.Point(13, 168);
+            this.LblStreet.Name = "LblStreet";
+            this.LblStreet.Size = new System.Drawing.Size(50, 17);
+            this.LblStreet.TabIndex = 7;
+            this.LblStreet.Text = "Street:";
             // 
-            // LblDateFrom
+            // TxtStreet
             // 
-            this.LblDateFrom.AutoSize = true;
-            this.LblDateFrom.Location = new System.Drawing.Point(13, 264);
-            this.LblDateFrom.Name = "LblDateFrom";
-            this.LblDateFrom.Size = new System.Drawing.Size(78, 17);
-            this.LblDateFrom.TabIndex = 11;
-            this.LblDateFrom.Text = "Date From:";
+            this.TxtStreet.Location = new System.Drawing.Point(12, 191);
+            this.TxtStreet.MaxLength = 60;
+            this.TxtStreet.Name = "TxtStreet";
+            this.TxtStreet.Size = new System.Drawing.Size(223, 22);
+            this.TxtStreet.TabIndex = 6;
             // 
-            // LblDateTo
+            // LblHouseName
             // 
-            this.LblDateTo.AutoSize = true;
-            this.LblDateTo.Location = new System.Drawing.Point(13, 313);
-            this.LblDateTo.Name = "LblDateTo";
-            this.LblDateTo.Size = new System.Drawing.Size(63, 17);
-            this.LblDateTo.TabIndex = 13;
-            this.LblDateTo.Text = "Date To:";
+            this.LblHouseName.AutoSize = true;
+            this.LblHouseName.Location = new System.Drawing.Point(13, 120);
+            this.LblHouseName.Name = "LblHouseName";
+            this.LblHouseName.Size = new System.Drawing.Size(94, 17);
+            this.LblHouseName.TabIndex = 5;
+            this.LblHouseName.Text = "House Name:";
             // 
-            // DtpDateTo
+            // TxtHouseName
             // 
-            this.DtpDateTo.Location = new System.Drawing.Point(16, 337);
-            this.DtpDateTo.Name = "DtpDateTo";
-            this.DtpDateTo.Size = new System.Drawing.Size(200, 22);
-            this.DtpDateTo.TabIndex = 12;
+            this.TxtHouseName.Location = new System.Drawing.Point(12, 143);
+            this.TxtHouseName.MaxLength = 45;
+            this.TxtHouseName.Name = "TxtHouseName";
+            this.TxtHouseName.Size = new System.Drawing.Size(176, 22);
+            this.TxtHouseName.TabIndex = 4;
             // 
-            // CmbRoom
+            // LblHouseNumber
             // 
-            this.CmbRoom.FormattingEnabled = true;
-            this.CmbRoom.Location = new System.Drawing.Point(297, 47);
-            this.CmbRoom.Name = "CmbRoom";
-            this.CmbRoom.Size = new System.Drawing.Size(269, 24);
-            this.CmbRoom.TabIndex = 14;
+            this.LblHouseNumber.AutoSize = true;
+            this.LblHouseNumber.Location = new System.Drawing.Point(13, 72);
+            this.LblHouseNumber.Name = "LblHouseNumber";
+            this.LblHouseNumber.Size = new System.Drawing.Size(107, 17);
+            this.LblHouseNumber.TabIndex = 3;
+            this.LblHouseNumber.Text = "House Number:";
             // 
-            // LblRoom
+            // TxtHouseNumber
             // 
-            this.LblRoom.AutoSize = true;
-            this.LblRoom.Location = new System.Drawing.Point(294, 24);
-            this.LblRoom.Name = "LblRoom";
-            this.LblRoom.Size = new System.Drawing.Size(49, 17);
-            this.LblRoom.TabIndex = 15;
-            this.LblRoom.Text = "Room:";
+            this.TxtHouseNumber.Location = new System.Drawing.Point(12, 95);
+            this.TxtHouseNumber.MaxLength = 4;
+            this.TxtHouseNumber.Name = "TxtHouseNumber";
+            this.TxtHouseNumber.Size = new System.Drawing.Size(63, 22);
+            this.TxtHouseNumber.TabIndex = 2;
             // 
-            // GrpBoxRoomDetail
+            // LblName
             // 
-            this.GrpBoxRoomDetail.Controls.Add(this.LblExtraRoomDetail);
-            this.GrpBoxRoomDetail.Controls.Add(this.LblNumberRoomDetail);
-            this.GrpBoxRoomDetail.Controls.Add(this.LblPriceRoomDetail);
-            this.GrpBoxRoomDetail.Controls.Add(this.LblNameRoomDetail);
-            this.GrpBoxRoomDetail.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GrpBoxRoomDetail.Location = new System.Drawing.Point(297, 77);
-            this.GrpBoxRoomDetail.Name = "GrpBoxRoomDetail";
-            this.GrpBoxRoomDetail.Size = new System.Drawing.Size(269, 282);
-            this.GrpBoxRoomDetail.TabIndex = 16;
-            this.GrpBoxRoomDetail.TabStop = false;
-            this.GrpBoxRoomDetail.Text = "Room Details";
-            // 
-            // LblNameRoomDetail
-            // 
-            this.LblNameRoomDetail.AutoSize = true;
-            this.LblNameRoomDetail.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblNameRoomDetail.Location = new System.Drawing.Point(6, 23);
-            this.LblNameRoomDetail.Name = "LblNameRoomDetail";
-            this.LblNameRoomDetail.Size = new System.Drawing.Size(49, 17);
-            this.LblNameRoomDetail.TabIndex = 17;
-            this.LblNameRoomDetail.Text = "Name:";
-            // 
-            // LblPriceRoomDetail
-            // 
-            this.LblPriceRoomDetail.AutoSize = true;
-            this.LblPriceRoomDetail.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblPriceRoomDetail.Location = new System.Drawing.Point(6, 82);
-            this.LblPriceRoomDetail.Name = "LblPriceRoomDetail";
-            this.LblPriceRoomDetail.Size = new System.Drawing.Size(44, 17);
-            this.LblPriceRoomDetail.TabIndex = 18;
-            this.LblPriceRoomDetail.Text = "Price:";
-            // 
-            // LblNumberRoomDetail
-            // 
-            this.LblNumberRoomDetail.AutoSize = true;
-            this.LblNumberRoomDetail.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblNumberRoomDetail.Location = new System.Drawing.Point(6, 52);
-            this.LblNumberRoomDetail.Name = "LblNumberRoomDetail";
-            this.LblNumberRoomDetail.Size = new System.Drawing.Size(103, 17);
-            this.LblNumberRoomDetail.TabIndex = 19;
-            this.LblNumberRoomDetail.Text = "Room Number:";
-            // 
-            // LblExtraRoomDetail
-            // 
-            this.LblExtraRoomDetail.AutoSize = true;
-            this.LblExtraRoomDetail.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblExtraRoomDetail.Location = new System.Drawing.Point(8, 114);
-            this.LblExtraRoomDetail.Name = "LblExtraRoomDetail";
-            this.LblExtraRoomDetail.Size = new System.Drawing.Size(101, 17);
-            this.LblExtraRoomDetail.TabIndex = 20;
-            this.LblExtraRoomDetail.Text = "Additional Info:";
-            // 
-            // BtnSubmit
-            // 
-            this.BtnSubmit.Enabled = false;
-            this.BtnSubmit.Location = new System.Drawing.Point(434, 384);
-            this.BtnSubmit.Name = "BtnSubmit";
-            this.BtnSubmit.Size = new System.Drawing.Size(132, 30);
-            this.BtnSubmit.TabIndex = 17;
-            this.BtnSubmit.Text = "Submit";
-            this.BtnSubmit.UseVisualStyleBackColor = true;
-            this.BtnSubmit.Click += new System.EventHandler(this.BtnSubmit_Click);
-            // 
-            // ChkDone
-            // 
-            this.ChkDone.AutoSize = true;
-            this.ChkDone.Location = new System.Drawing.Point(364, 384);
-            this.ChkDone.Name = "ChkDone";
-            this.ChkDone.Size = new System.Drawing.Size(64, 21);
-            this.ChkDone.TabIndex = 18;
-            this.ChkDone.Text = "Done";
-            this.ChkDone.UseVisualStyleBackColor = true;
-            this.ChkDone.CheckedChanged += new System.EventHandler(this.ChkDone_CheckedChanged);
+            this.LblName.AutoSize = true;
+            this.LblName.Location = new System.Drawing.Point(13, 24);
+            this.LblName.Name = "LblName";
+            this.LblName.Size = new System.Drawing.Size(104, 17);
+            this.LblName.TabIndex = 1;
+            this.LblName.Text = "Booking Name:";
             // 
             // ZubosFrmNewBooking
             // 
@@ -306,6 +365,7 @@
             this.ShowInTaskbar = false;
             this.Text = "New Booking";
             this.TopMost = true;
+            this.Load += new System.EventHandler(this.ZubosFrmNewBooking_Load);
             this.GrpBoxNewBooking.ResumeLayout(false);
             this.GrpBoxNewBooking.PerformLayout();
             this.GrpBoxRoomDetail.ResumeLayout(false);
@@ -340,5 +400,9 @@
         private System.Windows.Forms.Label LblNameRoomDetail;
         private System.Windows.Forms.CheckBox ChkDone;
         private System.Windows.Forms.Button BtnSubmit;
+        private System.Windows.Forms.TextBox TxtAdditionalInfo;
+        private System.Windows.Forms.TextBox TxtPrice;
+        private System.Windows.Forms.TextBox TxtRoomNumber;
+        private System.Windows.Forms.TextBox TxtRoomName;
     }
 }

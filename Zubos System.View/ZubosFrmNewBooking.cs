@@ -25,5 +25,15 @@ namespace Zubos_System
         {
 
         }
+
+        private void CmbRoom_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void ZubosFrmNewBooking_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

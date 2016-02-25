@@ -11,7 +11,7 @@ namespace Zubos.System.Business
         /// <summary>
         /// Customer object class to hold data about the customer.
         /// </summary>
-        public int          ID { get; set; }
+        public int          CustomerID { get; set; }
         public string       Name { get; set; }
         public int          HouseNumber { get; set; }
         public string       HouseName { get; set; }
@@ -33,8 +33,9 @@ namespace Zubos.System.Business
         /// <param name="pHouseName"></param>
         /// <param name="pStreet"></param>
         /// <param name="pPostCode"></param>
-        public Customer(string pName, int pHouseNumber, string pHouseName, string pStreet, string pPostCode)
+        public Customer(int pID, string pName, int pHouseNumber, string pHouseName, string pStreet, string pPostCode)
         {
+            CustomerID = pID;
             Name = pName;
             HouseNumber = pHouseNumber;
             HouseName = pHouseName;
