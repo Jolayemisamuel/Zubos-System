@@ -19,7 +19,6 @@ namespace Zubos.System.Business
     {
         public static SortedList<int, RoomContainer> AllRoomContainers { get; }
         public static SortedList<int, Customer> AllCustomers { get; }
-        public static List<Form> AllOpenForms { get; } = new List<Form>();
 
         /// <summary>
         /// Method to initialise application for boot up.
@@ -34,13 +33,9 @@ namespace Zubos.System.Business
         public static void FinaliseApplication()
         {
             Logger.FinaliseLogger();
+            DataAccess.CloseAllSQLConnections();
 
-            bool isError = !DataAccess.CloseSQLConnection(DataAccess.ODSConnection);
-
-            if(!isError)
-            {
-                Environment.Exit(0);
-            }
+            Environment.Exit(0);
         }
         public static void OpenTodaysLog()
         {
@@ -49,7 +44,11 @@ namespace Zubos.System.Business
 
         public static void test()
         {
-            List<Customer> newlist = DataAccess.ReturnTableResultsAsList<Customer>(DataAccess.ODSConnection, "Customer");
+            Logger.WriteLine("DEBUG", "This is a test log.");
+            Logger.WriteLine("WARNING", "This is a test log.");
+            Logger.WriteLine("ERROR", "This is a test log.");
+            Logger.WriteLine("EVENT", "This is a test log.");
+            List<Customer> newlist = DataAccess.ReturnTableResultsAsList<Customer>("ODS", "Customer");
             int i = 0;
             foreach (var item in newlist)
             {

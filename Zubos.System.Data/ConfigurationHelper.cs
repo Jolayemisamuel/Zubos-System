@@ -13,9 +13,9 @@ namespace Zubos.System.Data
         /// </summary>
         public class ConfigKeyValue
         {
-            string Key;
-            string Value;
-            bool isSaved { get { return ConfigurationManager.AppSettings[Key] == Value; } }
+            public string Key;
+            public string Value;
+            public bool isSaved { get { return ConfigurationManager.AppSettings[Key] == Value; } }
 
             public ConfigKeyValue(string configKey, string configValue)
             {
@@ -28,7 +28,7 @@ namespace Zubos.System.Data
         /// </summary>
         /// <param name="Key"></param>
         /// <returns></returns>
-        public static ConfigKeyValue ReadSetting(string Key)
+        public static ConfigKeyValue ReadSettingAsObject(string Key)
         {
             try
             {
@@ -46,13 +46,31 @@ namespace Zubos.System.Data
             return null;
         }
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <returns></returns>
+        public static string ReadSettingAsString(string Key)
+        {
+            try
+            {
+                return ConfigurationManager.AppSettings[Key];
+            }
+            catch (Exception ex)
+            {
+                string[] errorMsgs = new string[] { "Cannot read value from configuration file.", ex.Message };
+                Logger.WriteLine("ERROR", errorMsgs);
+            }
+            return null;
+        }
+        /// <summary>
         /// Writes to AppSettings by Key and Value, will overwrite existing value.
         /// </summary>
         public static void WriteSetting(string Key, string Value)
         {
             try
             {
-
+                ConfigurationManager.AppSettings[Key] = Value;
             }
             catch (Exception ex)
             {
@@ -68,7 +86,7 @@ namespace Zubos.System.Data
         {
             try
             {
-
+                ConfigurationManager.AppSettings[configObject.Key] = configObject.Value;
             }
             catch (Exception ex)
             {

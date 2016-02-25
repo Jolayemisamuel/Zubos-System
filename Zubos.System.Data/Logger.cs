@@ -51,7 +51,7 @@ namespace Zubos.System.Data
         /// <param name="LogMessage"></param>
         public static void WriteLine(string LoggerType, string LogMessage)
         {
-            if(LoggerType.ToUpper() == "DEBUG")
+            if(ConfigurationHelper.ReadSettingAsString("isDebugMode").ToLower() == "false" && LoggerType.ToUpper() == "DEBUG")
             {
                 return;
             }
@@ -71,7 +71,7 @@ namespace Zubos.System.Data
         /// <param name="LogMessages"></param>
         public static void WriteLine(string LoggerType, string[] LogMessages)
         {
-            if (LoggerType.ToUpper() == "DEBUG")
+            if (ConfigurationHelper.ReadSettingAsString("isDebugMode").ToLower() == "false" && LoggerType.ToUpper() == "DEBUG")
             {
                 return;
             }
@@ -106,7 +106,7 @@ namespace Zubos.System.Data
             return TimeStamp;
         }
         /// <summary>
-        /// Returns the calling method name as string for log output
+        /// Returns the calling method name as string for log output.
         /// </summary>
         /// <returns></returns>
         private static string GetCallingMethodName(int FrameIndex)

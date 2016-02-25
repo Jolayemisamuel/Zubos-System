@@ -21,7 +21,6 @@ namespace Zubos_System
         public Zubos_MainForm()
         {
             InitializeComponent();
-            Global.AllOpenForms.Add(this);
         }
 
         /// <summary>
