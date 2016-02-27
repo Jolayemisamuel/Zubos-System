@@ -56,6 +56,8 @@
             this.LblHouseNumber = new System.Windows.Forms.Label();
             this.TxtHouseNumber = new System.Windows.Forms.TextBox();
             this.LblName = new System.Windows.Forms.Label();
+            this.LblBookingNotes = new System.Windows.Forms.Label();
+            this.TxtBookingNotes = new System.Windows.Forms.TextBox();
             this.GrpBoxNewBooking.SuspendLayout();
             this.GrpBoxRoomDetail.SuspendLayout();
             this.SuspendLayout();
@@ -70,6 +72,8 @@
             // 
             // GrpBoxNewBooking
             // 
+            this.GrpBoxNewBooking.Controls.Add(this.TxtBookingNotes);
+            this.GrpBoxNewBooking.Controls.Add(this.LblBookingNotes);
             this.GrpBoxNewBooking.Controls.Add(this.ChkDone);
             this.GrpBoxNewBooking.Controls.Add(this.BtnSubmit);
             this.GrpBoxNewBooking.Controls.Add(this.GrpBoxRoomDetail);
@@ -131,7 +135,7 @@
             this.GrpBoxRoomDetail.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GrpBoxRoomDetail.Location = new System.Drawing.Point(297, 77);
             this.GrpBoxRoomDetail.Name = "GrpBoxRoomDetail";
-            this.GrpBoxRoomDetail.Size = new System.Drawing.Size(269, 282);
+            this.GrpBoxRoomDetail.Size = new System.Drawing.Size(269, 215);
             this.GrpBoxRoomDetail.TabIndex = 16;
             this.GrpBoxRoomDetail.TabStop = false;
             this.GrpBoxRoomDetail.Text = "Room Details";
@@ -145,7 +149,7 @@
             this.TxtAdditionalInfo.Multiline = true;
             this.TxtAdditionalInfo.Name = "TxtAdditionalInfo";
             this.TxtAdditionalInfo.ReadOnly = true;
-            this.TxtAdditionalInfo.Size = new System.Drawing.Size(254, 132);
+            this.TxtAdditionalInfo.Size = new System.Drawing.Size(254, 70);
             this.TxtAdditionalInfo.TabIndex = 24;
             // 
             // TxtPrice
@@ -235,13 +239,18 @@
             // 
             // CmbRoom
             // 
+            this.CmbRoom.DisplayMember = "Name";
+            this.CmbRoom.DropDownHeight = 300;
+            this.CmbRoom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CmbRoom.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.CmbRoom.FormattingEnabled = true;
+            this.CmbRoom.IntegralHeight = false;
             this.CmbRoom.Location = new System.Drawing.Point(297, 47);
             this.CmbRoom.Name = "CmbRoom";
             this.CmbRoom.Size = new System.Drawing.Size(269, 24);
             this.CmbRoom.TabIndex = 14;
-            this.CmbRoom.ValueMember = "Room.RoomID";
-            this.CmbRoom.SelectionChangeCommitted += new System.EventHandler(this.CmbRoom_SelectionChangeCommitted);
+            this.CmbRoom.ValueMember = "RoomID";
+            this.CmbRoom.SelectedIndexChanged += new System.EventHandler(this.CmbRoom_SelectedIndexChanged);
             // 
             // LblDateTo
             // 
@@ -353,6 +362,27 @@
             this.LblName.TabIndex = 1;
             this.LblName.Text = "Booking Name:";
             // 
+            // LblBookingNotes
+            // 
+            this.LblBookingNotes.AutoSize = true;
+            this.LblBookingNotes.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblBookingNotes.Location = new System.Drawing.Point(294, 295);
+            this.LblBookingNotes.Name = "LblBookingNotes";
+            this.LblBookingNotes.Size = new System.Drawing.Size(104, 17);
+            this.LblBookingNotes.TabIndex = 25;
+            this.LblBookingNotes.Text = "Booking Notes:";
+            // 
+            // TxtBookingNotes
+            // 
+            this.TxtBookingNotes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TxtBookingNotes.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TxtBookingNotes.Location = new System.Drawing.Point(297, 317);
+            this.TxtBookingNotes.MaxLength = 500;
+            this.TxtBookingNotes.Multiline = true;
+            this.TxtBookingNotes.Name = "TxtBookingNotes";
+            this.TxtBookingNotes.Size = new System.Drawing.Size(269, 61);
+            this.TxtBookingNotes.TabIndex = 25;
+            // 
             // ZubosFrmNewBooking
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -363,6 +393,7 @@
             this.MaximizeBox = false;
             this.Name = "ZubosFrmNewBooking";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "New Booking";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.ZubosFrmNewBooking_Load);
@@ -404,5 +435,7 @@
         private System.Windows.Forms.TextBox TxtPrice;
         private System.Windows.Forms.TextBox TxtRoomNumber;
         private System.Windows.Forms.TextBox TxtRoomName;
+        private System.Windows.Forms.TextBox TxtBookingNotes;
+        private System.Windows.Forms.Label LblBookingNotes;
     }
 }

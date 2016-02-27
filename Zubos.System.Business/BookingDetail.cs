@@ -17,6 +17,7 @@ namespace Zubos.System.Business
         public double                           PaymentAmount { get; set; }
         public Room                             myRoom { get; set; }
         public SortedList<int, Customer>        myCustomers { get; set; }
+        public string                           Notes { get; set; }
 
         /// <summary>
         /// Default constructor for BookingDetail object.
@@ -31,13 +32,15 @@ namespace Zubos.System.Business
                             DateTime pDateStart,
                             double pPaymentAmount,
                             Room pMyRoom,
-                            SortedList<int, Customer> pMyCustomers)
+                            SortedList<int, Customer> pMyCustomers,
+                            string pNotes)
         {
             BookingDetailID = pID;
             DateStart = pDateStart;
             PaymentAmount = pPaymentAmount;
             myRoom = pMyRoom;
             myCustomers = pMyCustomers;
+            Notes = pNotes;
         }
     }
 }

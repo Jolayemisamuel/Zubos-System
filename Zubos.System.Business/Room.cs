@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Zubos.System.Data;
 
 namespace Zubos.System.Business
@@ -41,23 +43,81 @@ namespace Zubos.System.Business
             myCustomers = pMyCustomers;
             myRoomContainers = pMyRoomContainers;
         }
+
         /// <summary>
         /// Returns a string of RoomID and Name.
         /// </summary>
         /// <returns></returns>
-        public string RoomToString()
+        public override string ToString()
         {
-            return "[ " + this.RoomID.ToString() + " ] " + this.Name.ToString();
+            return Name.ToString();
         }
 
-        public static List<Room> GetRoomsSelectiveAsList(List<string> pRoomFieldNames)
+        public static List<Room> GetAllRoomsSelectiveAsList(List<string> pRoomFieldNames)
         {
-            return DataAccess.ReturnResultsAsList<Room>("ODS", "Room", pRoomFieldNames);
+            List<Room> ResultsList = DataAccess.ReturnSelectiveResultsAsList<Room>("ODS", "Room", pRoomFieldNames);
+            if (ResultsList != null)
+            {
+                return ResultsList;
+            }
+            else
+            {
+                MessageBox.Show("An error occured retrieving rooms data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
         }
-
-        public static List<Room> GetRoomsAllAsList(List<string> pRoomFieldNames)
+        public static List<Room> GetAllRoomsAsList()
         {
-            return DataAccess.ReturnTableResultsAsList<Room>("ODS", "Room");
+            List<Room> ResultsList = DataAccess.ReturnAllResultsAsList<Room>("ODS", "Room");
+            if (ResultsList != null)
+            {
+                return ResultsList;
+            }
+            else
+            {
+                MessageBox.Show("An error occured retrieving rooms data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
+        public static SortedList<int, Room> GetAllRoomsAsSortedList()
+        {
+            SortedList<int, Room> ResultsSortedList = DataAccess.ReturnAllResultsAsSortedList<Room>("ODS", "Room");
+            if (ResultsSortedList != null)
+            {
+                return ResultsSortedList;
+            }
+            else
+            {
+                MessageBox.Show("An error occured retrieving rooms data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
+        public static DataTable GetAllRoomsAsDataTable()
+        {
+            DataTable ResultsDataTable = DataAccess.ReturnAllResultsAsDataTable("ODS", "Room");
+            if (ResultsDataTable != null)
+            {
+                return ResultsDataTable;
+            }
+            else
+            {
+                MessageBox.Show("An error occured retrieving rooms data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
+        public static Room GetRoomByID(int pRoomID)
+        {
+            Room RoomToReturn = DataAccess.ReturnObjectByID<Room>("ODS", "Room", pRoomID);
+            if (RoomToReturn != null)
+            {
+                return RoomToReturn;
+            }
+            else
+            {
+                MessageBox.Show("An error occured retrieving room data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+           
         }
     }
 }

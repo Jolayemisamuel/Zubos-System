@@ -14,6 +14,7 @@ namespace Zubos.System.Data
     {
         private static string LogDirectory = Application.StartupPath + "\\_Logs\\";
         private static string CurrentLogPath;
+        private static bool isDebugMode;
 
         /// <summary>
         /// Initialises log directory and log file with date.
@@ -27,6 +28,7 @@ namespace Zubos.System.Data
             {
                 Directory.CreateDirectory(LogDirectory);
             }
+            isDebugMode = ConfigurationHelper.ReadSettingAsString("isDebugMode").ToLower() == "true";
 
             if (CurrentLogPath == null)
             {
@@ -51,7 +53,7 @@ namespace Zubos.System.Data
         /// <param name="LogMessage"></param>
         public static void WriteLine(string LoggerType, string LogMessage)
         {
-            if(ConfigurationHelper.ReadSettingAsString("isDebugMode").ToLower() == "false" && LoggerType.ToUpper() == "DEBUG")
+            if(!isDebugMode && LoggerType.ToUpper() == "DEBUG")
             {
                 return;
             }
@@ -71,7 +73,7 @@ namespace Zubos.System.Data
         /// <param name="LogMessages"></param>
         public static void WriteLine(string LoggerType, string[] LogMessages)
         {
-            if (ConfigurationHelper.ReadSettingAsString("isDebugMode").ToLower() == "false" && LoggerType.ToUpper() == "DEBUG")
+            if (!isDebugMode && LoggerType.ToUpper() == "DEBUG")
             {
                 return;
             }

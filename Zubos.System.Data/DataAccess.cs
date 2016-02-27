@@ -36,7 +36,7 @@ namespace Zubos.System.Data
         /// </summary>
         /// <param name="pConnectionToAdd"></param>
         /// <returns></returns>
-        public static void AddToAllConnections(string pConnectionKey, SqlConnection pConnection)
+        private static void AddToAllConnections(string pConnectionKey, SqlConnection pConnection)
         {
             int connectionIndex = allConnections.Keys.IndexOf(pConnectionKey);
             if (connectionIndex == -1)
@@ -53,30 +53,25 @@ namespace Zubos.System.Data
             string connectionString = ConfigurationManager.ConnectionStrings[pConnectionStringConfigurationName].ConnectionString;
 
             if (!String.IsNullOrEmpty(connectionString))
-            {
-                if (LookupConnection(pConnectionStringConfigurationName) == null)
+            {//Connection string exists in config.
+                try
                 {
-                    try
-                    {
-                        SqlConnection connection = new SqlConnection(connectionString);
+                    SqlConnection connection = new SqlConnection(connectionString);
 
-                        connection.Open();
-                        AddToAllConnections(pConnectionStringConfigurationName, connection);
-
-                        SqlConnection createdConnection = (LookupConnection(pConnectionStringConfigurationName));
-                        return (createdConnection.State == ConnectionState.Open) ? 
-                                 createdConnection : null;
-                    }
-                    catch (SqlException sqlEx)
-                    {
-                        string[] errorMsgs = new string[] { "A SQL exception occurred.", sqlEx.Message };
-                        Logger.WriteLine("ERROR", errorMsgs);
-                    }
-                    catch (Exception Ex)
-                    {
-                        string[] errorMsgs = new string[] { "An exception occured.", Ex.Message };
-                        Logger.WriteLine("ERROR", errorMsgs);
-                    }
+                    connection.Open();
+                    AddToAllConnections(pConnectionStringConfigurationName, connection);
+                    
+                    return (connection.State == ConnectionState.Open) ? connection : null;
+                }
+                catch (SqlException sqlEx)
+                {
+                    string[] errorMsgs = new string[] { "A SQL exception occurred.", sqlEx.Message };
+                    Logger.WriteLine("ERROR", errorMsgs);
+                }
+                catch (Exception Ex)
+                {
+                    string[] errorMsgs = new string[] { "An exception occured.", Ex.Message };
+                    Logger.WriteLine("ERROR", errorMsgs);
                 }
             }
             return null;
@@ -112,7 +107,7 @@ namespace Zubos.System.Data
         /// </summary>
         /// <param name="pConnectionToCheck"></param>
         /// <returns></returns>
-        public static int CheckConnectionIsReady(ref SqlConnection pConnectionToCheck, string pConnectionConfigurationName)
+        private static int CheckConnectionIsReady(ref SqlConnection pConnectionToCheck, string pConnectionConfigurationName)
         {
             if(pConnectionToCheck != null && pConnectionToCheck.State == ConnectionState.Open)
             {//Connection Ready to use
@@ -124,21 +119,25 @@ namespace Zubos.System.Data
             }
             else if(pConnectionToCheck == null)
             {//No connection, try to create one.
+                Logger.WriteLine("DEBUG", "No connection, trying to create one...");
                 int maximumRetrys = 3;
-                for (int connectionRetrys = 1; connectionRetrys < maximumRetrys; connectionRetrys++)
+                for (int connectionRetrys = 1; connectionRetrys <= maximumRetrys; connectionRetrys++)
                 {
                     pConnectionToCheck = CreateSQLConnection(pConnectionConfigurationName);
                     if (pConnectionToCheck != null && pConnectionToCheck.State == ConnectionState.Open)
-                    {
+                    {//Connection created and Ready to use
+                        Logger.WriteLine("DEBUG", "Retry: " + connectionRetrys + ", Connection established successfully.");
                         return 1;
                     }
+                    Logger.WriteLine("DEBUG", "Retry: " + connectionRetrys + ", Attempt to establish connection failed.");
                 }
                 if(pConnectionToCheck == null)
-                {
+                {//Connection still null after 3 tries to create.
+                    Logger.WriteLine("DEBUG", "Application has failed to create a connection.");
                     return 3;
                 }
-                //Connection still null after 3 tries to create.
             }
+            Logger.WriteLine("DEBUG", "Unknown error occured. Application has failed to create a connection.");
             return 4;
         }
         /// <summary>
@@ -174,53 +173,48 @@ namespace Zubos.System.Data
         /// <param name="pConnectionToUse"></param>
         /// <param name="pTableName"></param>
         /// <returns></returns>
-        public static List<T> ReturnTableResultsAsList<T>(string pConnectionToUse, string pTableName) where T : new()
+        public static List<T> ReturnAllResultsAsList<T>(string pConnectionToUse, string pTableName) where T : new()
         {
             SqlConnection SQL_CONNECTION = LookupConnection(pConnectionToUse);
             if (CheckConnectionIsReady(ref SQL_CONNECTION, "ODS") == 1)
             {
-                SqlCommand Verify_Table_Cmd = new SqlCommand("SELECT CASE WHEN EXISTS((SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '"
-                                                            + pTableName + "')) THEN 1 ELSE 0 END;", SQL_CONNECTION);
-                int DoesTableExists = (int)Verify_Table_Cmd.ExecuteScalar();
+                SqlCommand sqlCmd = new SqlCommand("SELECT * FROM " + pTableName, SQL_CONNECTION);
+                sqlCmd.CommandType = CommandType.Text;
+                SqlDataReader DataReader = sqlCmd.ExecuteReader();
 
-                if (DoesTableExists == 1)
-                {
-                    SqlCommand sqlCmd = new SqlCommand("SELECT * FROM " + pTableName, SQL_CONNECTION);
-                    sqlCmd.CommandType = CommandType.Text;
-                    SqlDataReader DataReader = sqlCmd.ExecuteReader();
+                if (DataReader.HasRows)
+                {//Some Data exists
+                    Logger.WriteLine("DEBUG", "Retrieving data...");
+                    List<PropertyInfo> TProperties = typeof(T).GetProperties().ToList();
+                    List<T> resultsList = new List<T>();
+                    string readValue = null;
+                    int outType = 0;
 
-                    if (DataReader.HasRows)
+                    while (DataReader.Read())
                     {
-                        List<PropertyInfo> TProperties = typeof(T).GetProperties().ToList();
-                        List<T> resultsList = new List<T>();
-                        while (DataReader.Read())
+                        var GenericObject = new T();
+                        foreach (var property in TProperties)
                         {
-                            var GenericObject = new T();
-                            string readValue = null;
-                            int outType = 0;
-                            foreach (var property in TProperties)
+                            outType = 0;
+                            readValue = null;
+                            if (DataReader[property.Name] != DBNull.Value)
                             {
-                                readValue = null;
-                                if (DataReader[property.Name] != DBNull.Value)
+                                readValue = DataReader[property.Name].ToString();
+                            }
+                            if (!String.IsNullOrEmpty(readValue))
+                            {
+                                if (HelperMethods.isTypeSafeForDataMap<T>(property, out outType))
                                 {
-                                    readValue = DataReader[property.Name].ToString();
-                                }
-                                if (!String.IsNullOrEmpty(readValue))
-                                {
-                                    if (HelperMethods.isTypeSafeForDataMap<T>(property, out outType))
-                                    {
-                                        property.SetValue(GenericObject, Convert.ChangeType(readValue, property.PropertyType), null);
-                                    }
+                                    property.SetValue(GenericObject, Convert.ChangeType(readValue, property.PropertyType), null);
                                 }
                             }
-                            resultsList.Add((T)GenericObject);
                         }
-                        Logger.WriteLine("DEBUG", "Propertys mapped, returning table results list.");
-                        DataReader.Close();
-                        return resultsList;
+                        resultsList.Add(GenericObject);
                     }
+                    Logger.WriteLine("DEBUG", "Propertys mapped, returning table results list.");
+                    DataReader.Close();
+                    return resultsList;
                 }
-                Logger.WriteLine("ERROR", "Could not find table, query execution failed. Table may not exist.");
             }
             else
             {
@@ -237,55 +231,50 @@ namespace Zubos.System.Data
         /// <param name="pTableName"></param>
         /// <param name="pColumnsToSelect"></param>
         /// <returns></returns>
-        public static List<T> ReturnResultsAsList<T>(string pConnectionToUse, string pTableName, List<string> pColumnsToSelect) where T : new()
+        public static List<T> ReturnSelectiveResultsAsList<T>(string pConnectionToUse, string pTableName, List<string> pColumnsToSelect) where T : new()
         {
             SqlConnection SQL_CONNECTION = LookupConnection(pConnectionToUse);
             if (CheckConnectionIsReady(ref SQL_CONNECTION, "ODS") == 1)
             {
-                SqlCommand Verify_Table_Cmd = new SqlCommand("SELECT CASE WHEN EXISTS((SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '"
-                                                            + pTableName + "')) THEN 1 ELSE 0 END;", SQL_CONNECTION);
-                int DoesTableExists = (int)Verify_Table_Cmd.ExecuteScalar();
+                string columnsToSelect = HelperMethods.BuildSQLColumnCmdString(pColumnsToSelect);
+                SqlCommand sqlCmd = new SqlCommand("SELECT " + columnsToSelect + " FROM " + pTableName, SQL_CONNECTION);
+                sqlCmd.CommandType = CommandType.Text;
+                SqlDataReader DataReader = sqlCmd.ExecuteReader();
 
-                if (DoesTableExists == 1)
-                {
-                    string columnsToSelect = HelperMethods.BuildSQLColumnCmdString(pColumnsToSelect);
-                    SqlCommand sqlCmd = new SqlCommand("SELECT " + columnsToSelect + " FROM " + pTableName, SQL_CONNECTION);
-                    sqlCmd.CommandType = CommandType.Text;
-                    SqlDataReader DataReader = sqlCmd.ExecuteReader();
+                if (DataReader.HasRows)
+                {//Some Data Exists
+                    Logger.WriteLine("DEBUG", "Retrieving data...");
+                    List<PropertyInfo> TProperties = HelperMethods.RemoveUnwantedProperties(pColumnsToSelect, typeof(T).GetProperties().ToList());
+                    List<T> resultsList = new List<T>();
+                    string readValue;
+                    int outType;
 
-                    if (DataReader.HasRows)
-                    {//Some Data Exists
-                        List<PropertyInfo> TProperties = HelperMethods.RemoveUnwantedProperties(pColumnsToSelect, typeof(T).GetProperties().ToList());
-                        List<T> resultsList = new List<T>();
-                        while (DataReader.Read())
+                    while (DataReader.Read())
+                    {
+                        var GenericObject = new T();
+
+                        foreach (var property in TProperties)
                         {
-                            var GenericObject = new T();
-                            string readValue = null;
-                            int outType = 0;
-
-                            foreach (var property in TProperties)
+                            readValue = null;
+                            outType = 0;
+                            if (DataReader[property.Name] != DBNull.Value)
                             {
-                                readValue = null;
-                                if (DataReader[property.Name] != DBNull.Value)
+                                readValue = DataReader[property.Name].ToString();
+                            }
+                            if (!String.IsNullOrEmpty(readValue))
+                            {
+                                if(HelperMethods.isTypeSafeForDataMap<T>(property, out outType))
                                 {
-                                    readValue = DataReader[property.Name].ToString();
-                                }
-                                if (!String.IsNullOrEmpty(readValue))
-                                {
-                                    if(HelperMethods.isTypeSafeForDataMap<T>(property, out outType))
-                                    {
-                                        property.SetValue(GenericObject, Convert.ChangeType(readValue, property.PropertyType), null);
-                                    }
+                                    property.SetValue(GenericObject, Convert.ChangeType(readValue, property.PropertyType), null);
                                 }
                             }
-                            resultsList.Add((T)GenericObject);
                         }
-                        Logger.WriteLine("DEBUG", "Propertys mapped, returning table results list.");
-                        DataReader.Close();
-                        return resultsList;
+                        resultsList.Add(GenericObject);
                     }
+                    Logger.WriteLine("DEBUG", "Propertys mapped, returning table results list.");
+                    DataReader.Close();
+                    return resultsList;
                 }
-                Logger.WriteLine("ERROR", "Could not find table, query execution failed. Table may not exist.");
             }
             else
             {
@@ -294,56 +283,64 @@ namespace Zubos.System.Data
             //-------//
             return null;
         }
-
-        public static SortedList<T, T> ReturnResultsAsSortedList<T>(string pConnectionToUse, string pTableName, List<string> pColumnsToSelect) where T : new()
+        /// <summary>
+        /// Will return a sorted list of objects with objects ID as key and object as value.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="pConnectionToUse"></param>
+        /// <param name="pTableName"></param>
+        /// <param name="pColumnsToSelect"></param>
+        /// <returns></returns>
+        public static SortedList<int, T> ReturnAllResultsAsSortedList<T>(string pConnectionToUse, string pTableName) where T : new()
         {
             SqlConnection SQL_CONNECTION = LookupConnection(pConnectionToUse);
             if (CheckConnectionIsReady(ref SQL_CONNECTION, "ODS") == 1)
             {
-                SqlCommand Verify_Table_Cmd = new SqlCommand("SELECT CASE WHEN EXISTS((SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '"
-                                                            + pTableName + "')) THEN 1 ELSE 0 END;", SQL_CONNECTION);
-                int DoesTableExists = (int)Verify_Table_Cmd.ExecuteScalar();
+                SqlCommand sqlCmd = new SqlCommand("SELECT * FROM " + pTableName, SQL_CONNECTION);
+                sqlCmd.CommandType = CommandType.Text;
+                SqlDataReader DataReader = sqlCmd.ExecuteReader();
 
-                if (DoesTableExists == 1)
-                {
-                    string columnsToSelect = HelperMethods.BuildSQLColumnCmdString(pColumnsToSelect);
-                    SqlCommand sqlCmd = new SqlCommand("SELECT " + columnsToSelect + " FROM " + pTableName, SQL_CONNECTION);
-                    sqlCmd.CommandType = CommandType.Text;
-                    SqlDataReader DataReader = sqlCmd.ExecuteReader();
+                if (DataReader.HasRows)
+                {//Some Data Exists
+                    Logger.WriteLine("DEBUG", "Retrieving data...");
+                    List<PropertyInfo> TProperties = typeof(T).GetProperties().ToList();
+                    SortedList<int, T> resultsList = new SortedList<int, T>();
+                    int PropertyIndex;
+                    int ObjectsID;
+                    int outType;
+                    string readValue;
 
-                    if (DataReader.HasRows)
-                    {//Some Data Exists
-                        List<PropertyInfo> TProperties = HelperMethods.RemoveUnwantedProperties(pColumnsToSelect, typeof(T).GetProperties().ToList());
-                        SortedList<T, T> resultsList = new SortedList<T, T>();
-                        while (DataReader.Read())
+                    while (DataReader.Read())
+                    {
+                        var GenericObject = new T();
+                        outType = 0;
+                        PropertyIndex = 0;
+                        ObjectsID = 0;
+
+                        foreach (var property in TProperties)
                         {
-                            var GenericObject = new T();
-                            string readValue = null;
-                            int outType = 0;
-
-                            foreach (var property in TProperties)
+                            readValue = null;
+                            PropertyIndex++;
+                            if (DataReader[property.Name] != DBNull.Value)
                             {
-                                readValue = null;
-                                if (DataReader[property.Name] != DBNull.Value)
+                                readValue = DataReader[property.Name].ToString();
+                                if(PropertyIndex == 1) { ObjectsID = Convert.ToInt32(readValue); }
+                            }
+                            if (!String.IsNullOrEmpty(readValue))
+                            {
+                                if (HelperMethods.isTypeSafeForDataMap<T>(property, out outType))
                                 {
-                                    readValue = DataReader[property.Name].ToString();
-                                }
-                                if (!String.IsNullOrEmpty(readValue))
-                                {
-                                    if (HelperMethods.isTypeSafeForDataMap<T>(property, out outType))
-                                    {
-                                        property.SetValue(GenericObject, Convert.ChangeType(readValue, property.PropertyType), null);
-                                    }
+                                    property.SetValue(GenericObject, Convert.ChangeType(readValue, property.PropertyType), null);
                                 }
                             }
-                            resultsList.Add((T)GenericObject);
                         }
+                        resultsList.Add(ObjectsID, GenericObject);
+                        PropertyIndex = 0;
+                    }
                         Logger.WriteLine("DEBUG", "Propertys mapped, returning table results list.");
                         DataReader.Close();
                         return resultsList;
-                    }
                 }
-                Logger.WriteLine("ERROR", "Could not find table, query execution failed. Table may not exist.");
             }
             else
             {
@@ -351,6 +348,87 @@ namespace Zubos.System.Data
             }
             //-------//
             return null;
+        }
+        /// <summary>
+        /// This method will execute a SELECT * FROM table as parameter and return results as a datatable.
+        /// </summary>
+        /// <param name="pConnectionToUse"></param>
+        /// <param name="pTableName"></param>
+        /// <returns></returns>
+        public static DataTable ReturnAllResultsAsDataTable(string pConnectionToUse, string pTableName)
+        {
+            SqlConnection SQL_CONNECTION = LookupConnection(pConnectionToUse);
+            if (CheckConnectionIsReady(ref SQL_CONNECTION, "ODS") == 1)
+            {
+                SqlCommand sqlCmd = new SqlCommand("SELECT * FROM " + pTableName, SQL_CONNECTION);
+                sqlCmd.CommandType = CommandType.Text;
+                SqlDataReader DataReader = sqlCmd.ExecuteReader();
+
+                if (DataReader.HasRows)
+                {//Some Data exists
+                    Logger.WriteLine("DEBUG", "Retrieving data...");
+                    DataTable resultsDataTable = new DataTable();
+                    resultsDataTable.Load(DataReader);
+                    Logger.WriteLine("DEBUG", "DataTable loaded, returning table results list.");
+                    DataReader.Close();
+                    return resultsDataTable;
+                }
+            }
+            else
+            {
+                Logger.WriteLine("ERROR", "No open connection, query execution failed.");
+            }
+            //-------//
+            return null;
+        }
+        
+        public static T ReturnObjectByID<T>(string pConnectionToUse, string pTableName, int pID) where T : new()
+        {
+            SqlConnection SQL_CONNECTION = LookupConnection(pConnectionToUse);
+            if (CheckConnectionIsReady(ref SQL_CONNECTION, "ODS") == 1)
+            {
+                List<PropertyInfo> TProperties = typeof(T).GetProperties().ToList();
+
+                SqlCommand sqlCmd = new SqlCommand("SELECT TOP 1 * FROM " + pTableName + " WHERE " + TProperties[0].Name + " = " + pID, SQL_CONNECTION);
+                sqlCmd.CommandType = CommandType.Text;
+                SqlDataReader DataReader = sqlCmd.ExecuteReader();
+
+                if (DataReader.HasRows)
+                {//Some Data Exists
+                    Logger.WriteLine("DEBUG", "Retrieving data...");
+                    int outType = 0;
+                    string readValue;
+                    var GenericObject = new T();
+
+                    while (DataReader.Read())
+                    {
+                        foreach (var property in TProperties)
+                        {
+                            readValue = null;
+                            if (DataReader[property.Name] != DBNull.Value)
+                            {
+                                readValue = DataReader[property.Name].ToString();
+                            }
+                            if (!String.IsNullOrEmpty(readValue))
+                            {
+                                if (HelperMethods.isTypeSafeForDataMap<T>(property, out outType))
+                                {
+                                    property.SetValue(GenericObject, Convert.ChangeType(readValue, property.PropertyType), null);
+                                }
+                            }
+                        }
+                    }
+                    Logger.WriteLine("DEBUG", "Propertys mapped, returning object.");
+                    DataReader.Close();
+                    return GenericObject;
+                }
+            }
+            else
+            {
+                Logger.WriteLine("ERROR", "No open connection, query execution failed.");
+            }
+            //-------//
+            return default(T);
         }
     }
 }

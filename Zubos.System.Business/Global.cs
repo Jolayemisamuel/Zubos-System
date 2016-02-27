@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.IO;
 using Zubos.System.Data;
 
 namespace Zubos.System.Business
@@ -26,12 +27,14 @@ namespace Zubos.System.Business
         public static void InitialiseApplication()
         {
             Logger.InitialiseLogger();
+            Logger.WriteLine("EVENT", "Application Started.");
         }
         /// <summary>
         /// Method to finalise for application exit.
         /// </summary>
         public static void FinaliseApplication()
         {
+            Logger.WriteLine("EVENT", "Application Ended.");
             Logger.FinaliseLogger();
             DataAccess.CloseAllSQLConnections();
 
@@ -39,37 +42,15 @@ namespace Zubos.System.Business
         }
         public static void OpenTodaysLog()
         {
-            Process.Start(Logger.GetCurrentLogPath());
+            string logPath = Logger.GetCurrentLogPath();
+            if (File.Exists(logPath))
+            {
+                Process.Start(logPath);
+            }
         }
 
         public static void test()
         {
-            List<Room> newRoomList = DataAccess.ReturnResultsAsList<Room>("ODS", "Room", new List<string> { "RoomID", "Price" });
-            List<Room> newRoomList2 = DataAccess.ReturnTableResultsAsList<Room>("ODS", "Room");
-            int i2 = 0;
-            foreach (var item in newRoomList2)
-            {
-                Logger.WriteLine("EVENT", newRoomList[i2].RoomID.ToSafeString());
-                Logger.WriteLine("EVENT", newRoomList[i2].Name.ToSafeString());
-                Logger.WriteLine("EVENT", newRoomList[i2].Price.ToSafeString());
-                Logger.WriteLine("EVENT", newRoomList[i2].AdditionalInfo.ToSafeString());
-                Logger.WriteLine("EVENT", newRoomList[i2].myCustomers.ToSafeString());
-                Logger.WriteLine("EVENT", newRoomList[i2].myRoomContainers.ToSafeString());
-                i2++;
-            }
-            List<Customer> newlist = DataAccess.ReturnTableResultsAsList<Customer>("ODS", "Customer");
-            int i = 0;
-            foreach (var item in newlist)
-            {
-
-                Logger.WriteLine("EVENT", newlist[i].CustomerID.ToSafeString());
-                Logger.WriteLine("EVENT", newlist[i].Name.ToSafeString());
-                Logger.WriteLine("EVENT", newlist[i].HouseNumber.ToSafeString());
-                Logger.WriteLine("EVENT", newlist[i].HouseName.ToSafeString());
-                Logger.WriteLine("EVENT", newlist[i].Street.ToSafeString());
-                Logger.WriteLine("EVENT", newlist[i].Postcode.ToSafeString());
-                i++;
-                    }
 
         }
     }

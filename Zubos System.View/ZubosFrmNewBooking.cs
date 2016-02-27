@@ -27,15 +27,20 @@ namespace Zubos_System
 
         }
 
-        private void CmbRoom_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            
-        }
-
         private void ZubosFrmNewBooking_Load(object sender, EventArgs e)
         {
-            CmbRoom.DataSource = Room.GetRoomsSelectiveAsList(new List<string> { "RoomID", "Name" });
-            CmbRoom.DisplayMember = 
+            TxtName.Focus();
+            CmbRoom.DataSource = Room.GetAllRoomsAsList();
+        }
+
+        private void CmbRoom_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int SelectedRoomID = (int)CmbRoom.SelectedValue;
+            Room ReturnedRoom = Room.GetRoomByID(SelectedRoomID);
+            TxtRoomName.Text = ReturnedRoom.Name;
+            TxtRoomNumber.Text = ReturnedRoom.RoomID.ToString();
+            TxtPrice.Text = ReturnedRoom.Price.ToString();
+            TxtAdditionalInfo.Text = ReturnedRoom.AdditionalInfo;
         }
     }
 }
