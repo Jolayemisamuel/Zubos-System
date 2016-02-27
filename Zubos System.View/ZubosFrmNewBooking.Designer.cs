@@ -30,6 +30,8 @@
         {
             this.TxtName = new System.Windows.Forms.TextBox();
             this.GrpBoxNewBooking = new System.Windows.Forms.GroupBox();
+            this.TxtBookingNotes = new System.Windows.Forms.TextBox();
+            this.LblBookingNotes = new System.Windows.Forms.Label();
             this.ChkDone = new System.Windows.Forms.CheckBox();
             this.BtnSubmit = new System.Windows.Forms.Button();
             this.GrpBoxRoomDetail = new System.Windows.Forms.GroupBox();
@@ -56,8 +58,8 @@
             this.LblHouseNumber = new System.Windows.Forms.Label();
             this.TxtHouseNumber = new System.Windows.Forms.TextBox();
             this.LblName = new System.Windows.Forms.Label();
-            this.LblBookingNotes = new System.Windows.Forms.Label();
-            this.TxtBookingNotes = new System.Windows.Forms.TextBox();
+            this.LblDays = new System.Windows.Forms.Label();
+            this.TxtDays = new System.Windows.Forms.TextBox();
             this.GrpBoxNewBooking.SuspendLayout();
             this.GrpBoxRoomDetail.SuspendLayout();
             this.SuspendLayout();
@@ -72,6 +74,8 @@
             // 
             // GrpBoxNewBooking
             // 
+            this.GrpBoxNewBooking.Controls.Add(this.LblDays);
+            this.GrpBoxNewBooking.Controls.Add(this.TxtDays);
             this.GrpBoxNewBooking.Controls.Add(this.TxtBookingNotes);
             this.GrpBoxNewBooking.Controls.Add(this.LblBookingNotes);
             this.GrpBoxNewBooking.Controls.Add(this.ChkDone);
@@ -99,6 +103,27 @@
             this.GrpBoxNewBooking.Size = new System.Drawing.Size(588, 426);
             this.GrpBoxNewBooking.TabIndex = 1;
             this.GrpBoxNewBooking.TabStop = false;
+            // 
+            // TxtBookingNotes
+            // 
+            this.TxtBookingNotes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TxtBookingNotes.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TxtBookingNotes.Location = new System.Drawing.Point(297, 317);
+            this.TxtBookingNotes.MaxLength = 500;
+            this.TxtBookingNotes.Multiline = true;
+            this.TxtBookingNotes.Name = "TxtBookingNotes";
+            this.TxtBookingNotes.Size = new System.Drawing.Size(269, 61);
+            this.TxtBookingNotes.TabIndex = 18;
+            // 
+            // LblBookingNotes
+            // 
+            this.LblBookingNotes.AutoSize = true;
+            this.LblBookingNotes.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblBookingNotes.Location = new System.Drawing.Point(294, 295);
+            this.LblBookingNotes.Name = "LblBookingNotes";
+            this.LblBookingNotes.Size = new System.Drawing.Size(104, 17);
+            this.LblBookingNotes.TabIndex = 25;
+            this.LblBookingNotes.Text = "Booking Notes:";
             // 
             // ChkDone
             // 
@@ -255,7 +280,7 @@
             // LblDateTo
             // 
             this.LblDateTo.AutoSize = true;
-            this.LblDateTo.Location = new System.Drawing.Point(13, 313);
+            this.LblDateTo.Location = new System.Drawing.Point(13, 366);
             this.LblDateTo.Name = "LblDateTo";
             this.LblDateTo.Size = new System.Drawing.Size(63, 17);
             this.LblDateTo.TabIndex = 13;
@@ -263,7 +288,8 @@
             // 
             // DtpDateTo
             // 
-            this.DtpDateTo.Location = new System.Drawing.Point(16, 337);
+            this.DtpDateTo.Enabled = false;
+            this.DtpDateTo.Location = new System.Drawing.Point(12, 386);
             this.DtpDateTo.Name = "DtpDateTo";
             this.DtpDateTo.Size = new System.Drawing.Size(200, 22);
             this.DtpDateTo.TabIndex = 12;
@@ -279,7 +305,7 @@
             // 
             // DtpDateFrom
             // 
-            this.DtpDateFrom.Location = new System.Drawing.Point(16, 288);
+            this.DtpDateFrom.Location = new System.Drawing.Point(12, 284);
             this.DtpDateFrom.Name = "DtpDateFrom";
             this.DtpDateFrom.Size = new System.Drawing.Size(200, 22);
             this.DtpDateFrom.TabIndex = 10;
@@ -362,26 +388,22 @@
             this.LblName.TabIndex = 1;
             this.LblName.Text = "Booking Name:";
             // 
-            // LblBookingNotes
+            // LblDays
             // 
-            this.LblBookingNotes.AutoSize = true;
-            this.LblBookingNotes.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblBookingNotes.Location = new System.Drawing.Point(294, 295);
-            this.LblBookingNotes.Name = "LblBookingNotes";
-            this.LblBookingNotes.Size = new System.Drawing.Size(104, 17);
-            this.LblBookingNotes.TabIndex = 25;
-            this.LblBookingNotes.Text = "Booking Notes:";
+            this.LblDays.AutoSize = true;
+            this.LblDays.Location = new System.Drawing.Point(13, 317);
+            this.LblDays.Name = "LblDays";
+            this.LblDays.Size = new System.Drawing.Size(44, 17);
+            this.LblDays.TabIndex = 27;
+            this.LblDays.Text = "Days:";
             // 
-            // TxtBookingNotes
+            // TxtDays
             // 
-            this.TxtBookingNotes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.TxtBookingNotes.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TxtBookingNotes.Location = new System.Drawing.Point(297, 317);
-            this.TxtBookingNotes.MaxLength = 500;
-            this.TxtBookingNotes.Multiline = true;
-            this.TxtBookingNotes.Name = "TxtBookingNotes";
-            this.TxtBookingNotes.Size = new System.Drawing.Size(269, 61);
-            this.TxtBookingNotes.TabIndex = 25;
+            this.TxtDays.Location = new System.Drawing.Point(12, 337);
+            this.TxtDays.MaxLength = 2;
+            this.TxtDays.Name = "TxtDays";
+            this.TxtDays.Size = new System.Drawing.Size(48, 22);
+            this.TxtDays.TabIndex = 11;
             // 
             // ZubosFrmNewBooking
             // 
@@ -437,5 +459,7 @@
         private System.Windows.Forms.TextBox TxtRoomName;
         private System.Windows.Forms.TextBox TxtBookingNotes;
         private System.Windows.Forms.Label LblBookingNotes;
+        private System.Windows.Forms.Label LblDays;
+        private System.Windows.Forms.TextBox TxtDays;
     }
 }

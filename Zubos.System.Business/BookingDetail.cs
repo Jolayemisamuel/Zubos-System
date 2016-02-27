@@ -12,6 +12,7 @@ namespace Zubos.System.Business
     public class BookingDetail
     {
         public int                              BookingDetailID { get; set; }
+        public int                              Days { get; set; }
         public DateTime                         DateStart { get; set; }
         public DateTime                         DateComplete { get; set; }
         public double                           PaymentAmount { get; set; }
@@ -27,8 +28,8 @@ namespace Zubos.System.Business
 
         }
 
-        public BookingDetail
-                            (int pID, 
+        public BookingDetail(int pID, 
+                            int pDays,
                             DateTime pDateStart,
                             double pPaymentAmount,
                             Room pMyRoom,
@@ -37,10 +38,21 @@ namespace Zubos.System.Business
         {
             BookingDetailID = pID;
             DateStart = pDateStart;
+            Days = pDays;
             PaymentAmount = pPaymentAmount;
             myRoom = pMyRoom;
             myCustomers = pMyCustomers;
             Notes = pNotes;
+        }
+
+        public static void CreateBooking(string pName, DateTime pDateFrom, int pDaysDuration, double pPaymentAmount)
+        {
+
+        }
+
+        public static int GetNextID()
+        {
+
         }
     }
 }
