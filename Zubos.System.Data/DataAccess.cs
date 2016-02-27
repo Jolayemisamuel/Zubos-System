@@ -430,5 +430,44 @@ namespace Zubos.System.Data
             //-------//
             return default(T);
         }
+
+        public static int ReturnNextID<T>(string pConnectionToUse)
+        {
+            SqlConnection SQL_CONNECTION = LookupConnection(pConnectionToUse);
+            if (CheckConnectionIsReady(ref SQL_CONNECTION, "ODS") == 1)
+            {
+                List<PropertyInfo> TProperties = typeof(T).GetProperties().ToList();
+                string TableName = typeof(T).Name;
+                SqlCommand sqlCmd = new SqlCommand("SELECT MAX(" + TProperties[0].Name + ") FROM " + TableName, SQL_CONNECTION);
+                sqlCmd.CommandType = CommandType.Text;
+
+                Logger.WriteLine("DEBUG", "Retrieving next ID...");
+                int NextID;
+                try
+                {
+                    NextID = (1 + (int)sqlCmd.ExecuteScalar());
+                }
+                catch (SqlException sqlEx)
+                {
+                    string[] errorMsgs = new string[] { "A SQL exception occurred.", sqlEx.Message };
+                    Logger.WriteLine("ERROR", errorMsgs);
+                    return 0;
+                }
+                catch (Exception Ex)
+                {
+                    string[] errorMsgs = new string[] { "An exception occured.", Ex.Message };
+                    Logger.WriteLine("ERROR", errorMsgs);
+                    return 0;
+                }
+                Logger.WriteLine("DEBUG", "Next ID query successful.");
+                return NextID;
+            }
+            else
+            {
+                Logger.WriteLine("ERROR", "No open connection, query execution failed.");
+            }
+            //-------//
+            return 0;
+        }
     }
 }

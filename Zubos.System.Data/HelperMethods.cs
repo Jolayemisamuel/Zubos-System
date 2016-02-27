@@ -83,5 +83,14 @@ namespace Zubos.System.Data
             }
             return (ProcessedColumnsList.Count != 0) ? ProcessedColumnsList : null;
         }
+        /// <summary>
+        /// Will return the next the next ID for allocation to new objects.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static int GetNextID<T>()
+        {
+            return DataAccess.ReturnNextID<T>("ODS");
+        }
     }
 }

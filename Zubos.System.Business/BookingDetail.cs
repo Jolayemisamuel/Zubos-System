@@ -50,9 +50,6 @@ namespace Zubos.System.Business
 
         }
 
-        public static int GetNextID()
-        {
 
-        }
     }
 }

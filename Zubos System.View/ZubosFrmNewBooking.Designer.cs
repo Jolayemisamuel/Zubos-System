@@ -69,7 +69,7 @@
             this.TxtName.Location = new System.Drawing.Point(12, 47);
             this.TxtName.MaxLength = 100;
             this.TxtName.Name = "TxtName";
-            this.TxtName.Size = new System.Drawing.Size(223, 22);
+            this.TxtName.Size = new System.Drawing.Size(240, 22);
             this.TxtName.TabIndex = 0;
             // 
             // GrpBoxNewBooking
@@ -310,6 +310,7 @@
             this.DtpDateFrom.Size = new System.Drawing.Size(200, 22);
             this.DtpDateFrom.TabIndex = 10;
             this.DtpDateFrom.Value = new System.DateTime(2016, 2, 25, 18, 35, 24, 0);
+            this.DtpDateFrom.ValueChanged += new System.EventHandler(this.DtpDateFrom_ValueChanged);
             // 
             // LblPostcode
             // 
@@ -327,6 +328,7 @@
             this.TxtPostcode.Name = "TxtPostcode";
             this.TxtPostcode.Size = new System.Drawing.Size(78, 22);
             this.TxtPostcode.TabIndex = 8;
+            this.TxtPostcode.TextChanged += new System.EventHandler(this.TxtPostcode_TextChanged);
             // 
             // LblStreet
             // 
@@ -342,7 +344,7 @@
             this.TxtStreet.Location = new System.Drawing.Point(12, 191);
             this.TxtStreet.MaxLength = 60;
             this.TxtStreet.Name = "TxtStreet";
-            this.TxtStreet.Size = new System.Drawing.Size(223, 22);
+            this.TxtStreet.Size = new System.Drawing.Size(265, 22);
             this.TxtStreet.TabIndex = 6;
             // 
             // LblHouseName
@@ -378,6 +380,7 @@
             this.TxtHouseNumber.Name = "TxtHouseNumber";
             this.TxtHouseNumber.Size = new System.Drawing.Size(63, 22);
             this.TxtHouseNumber.TabIndex = 2;
+            this.TxtHouseNumber.TextChanged += new System.EventHandler(this.TxtHouseNumber_TextChanged);
             // 
             // LblName
             // 
@@ -404,6 +407,7 @@
             this.TxtDays.Name = "TxtDays";
             this.TxtDays.Size = new System.Drawing.Size(48, 22);
             this.TxtDays.TabIndex = 11;
+            this.TxtDays.TextChanged += new System.EventHandler(this.TxtDays_TextChanged);
             // 
             // ZubosFrmNewBooking
             // 

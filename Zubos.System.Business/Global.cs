@@ -51,7 +51,7 @@ namespace Zubos.System.Business
 
         public static void test()
         {
-
+            
         }
     }
 }
