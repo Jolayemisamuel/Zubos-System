@@ -52,7 +52,11 @@ namespace Zubos.System.Business
         {
             return Name.ToString();
         }
-
+        /// <summary>
+        /// This method will return a list of Rooms with only selected info filled out.
+        /// </summary>
+        /// <param name="pRoomFieldNames"></param>
+        /// <returns></returns>
         public static List<Room> GetAllRoomsSelectiveAsList(List<string> pRoomFieldNames)
         {
             List<Room> ResultsList = DataAccess.ReturnSelectiveResultsAsList<Room>("ODS", "Room", pRoomFieldNames);
@@ -66,6 +70,10 @@ namespace Zubos.System.Business
                 return null;
             }
         }
+        /// <summary>
+        /// This method will return a list of all rooms.
+        /// </summary>
+        /// <returns></returns>
         public static List<Room> GetAllRoomsAsList()
         {
             List<Room> ResultsList = DataAccess.ReturnAllResultsAsList<Room>("ODS", "Room");
@@ -79,6 +87,10 @@ namespace Zubos.System.Business
                 return null;
             }
         }
+        /// <summary>
+        /// This method will return all rooms as SortedList(RoomID, Room)
+        /// </summary>
+        /// <returns></returns>
         public static SortedList<int, Room> GetAllRoomsAsSortedList()
         {
             SortedList<int, Room> ResultsSortedList = DataAccess.ReturnAllResultsAsSortedList<Room>("ODS", "Room");
@@ -92,6 +104,10 @@ namespace Zubos.System.Business
                 return null;
             }
         }
+        /// <summary>
+        /// This method will return all Rooms as a DataTable.
+        /// </summary>
+        /// <returns></returns>
         public static DataTable GetAllRoomsAsDataTable()
         {
             DataTable ResultsDataTable = DataAccess.ReturnAllResultsAsDataTable("ODS", "Room");
@@ -105,6 +121,11 @@ namespace Zubos.System.Business
                 return null;
             }
         }
+        /// <summary>
+        /// This method will return the room with the specified ID.
+        /// </summary>
+        /// <param name="pRoomID"></param>
+        /// <returns></returns>
         public static Room GetRoomByID(int pRoomID)
         {
             Room RoomToReturn = DataAccess.ReturnObjectByID<Room>("ODS", "Room", pRoomID);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Zubos.System.Data;
 
 namespace Zubos.System.Business
 {
@@ -45,11 +46,24 @@ namespace Zubos.System.Business
             Notes = pNotes;
         }
 
-        public static void CreateBooking(string pName, DateTime pDateFrom, int pDaysDuration, double pPaymentAmount)
+        public static void CreateBooking(string pName, int pHouseNumber, string pHouseName, string pStreet, string pPostcode, DateTime pDateFrom, int pDaysDuration, double pPaymentAmount, Room pMyRoom, string pNotes)
         {
-
+            bool customerExists = DataAccess.ExecuteBoolReturnQuery<Customer>("ODS",
+                                                                            "SELECT CASE WHEN EXISTS (SELECT * FROM [Customer] WHERE Name = '" + pName + "' AND HouseNumber = " + pHouseNumber +
+                                                                             "AND HouseName = '" + pHouseName + "' AND Street = '" + pStreet + "' AND Postcode = '" + pPostcode +
+                                                                             ") THEN 1 ELSE 0 END;");
+            Customer CustomerToBeAssigned;
+            if (!customerExists)
+            {//No customer exists, create one.
+                CustomerToBeAssigned = Customer.CreateCustomer(pName, pHouseNumber, pHouseName, pStreet, pPostcode);
+                DataAccess.
+            }
+            else
+            {//Customer exists, get data from database.
+                int CustomerID = DataAccess.ExecuteIntegerReturnQuery<Customer>("ODS", "SELECT [CustomerID] FROM [Customer] WHERE Name = '" + pName + "' AND HouseNumber = " + pHouseNumber +
+                                                                                "AND HouseName = '" + pHouseName + "' AND Street = '" + pStreet + "' AND Postcode = '" + pPostcode + ");");
+                CustomerToBeAssigned = DataAccess.ReturnObjectByID<Customer>("ODS", "Customer", CustomerID);
+            }
         }
-
-
     }
 }

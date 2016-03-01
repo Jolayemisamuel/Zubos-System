@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Zubos.System.Data;
 
 namespace Zubos.System.Business
 {
@@ -41,6 +42,12 @@ namespace Zubos.System.Business
             HouseName = pHouseName;
             Street = pStreet;
             Postcode = pPostCode;
+        }
+
+        public static Customer CreateCustomer(string pName, int pHouseNumber, string pHouseName, string pStreet, string pPostcode)
+        {
+            Customer createdCustomer = new Customer(HelperMethods.GetNextID<Customer>(), pName, pHouseNumber, pHouseName, pStreet, pPostcode);
+            return createdCustomer;
         }
     }
 }

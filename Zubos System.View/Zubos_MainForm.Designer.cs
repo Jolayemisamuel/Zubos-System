@@ -34,10 +34,11 @@
             this.PanelSideBar = new System.Windows.Forms.Panel();
             this.GrpBoxNav = new System.Windows.Forms.GroupBox();
             this.GrpBoxAdmin = new System.Windows.Forms.GroupBox();
+            this.BtnLogs = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.BtnNewBooking = new System.Windows.Forms.Button();
             this.BtnExitApp = new System.Windows.Forms.Button();
-            this.BtnLogs = new System.Windows.Forms.Button();
+            this.BtnCalendar = new System.Windows.Forms.Button();
             this.zMainStatusStrip.SuspendLayout();
             this.PanelSideBar.SuspendLayout();
             this.GrpBoxNav.SuspendLayout();
@@ -90,7 +91,9 @@
             // 
             // GrpBoxNav
             // 
+            this.GrpBoxNav.Controls.Add(this.BtnLogs);
             this.GrpBoxNav.Controls.Add(this.GrpBoxAdmin);
+            this.GrpBoxNav.Controls.Add(this.button1);
             this.GrpBoxNav.Controls.Add(this.BtnExitApp);
             this.GrpBoxNav.Dock = System.Windows.Forms.DockStyle.Fill;
             this.GrpBoxNav.Location = new System.Drawing.Point(0, 0);
@@ -104,8 +107,7 @@
             // 
             this.GrpBoxAdmin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.GrpBoxAdmin.Controls.Add(this.BtnLogs);
-            this.GrpBoxAdmin.Controls.Add(this.button1);
+            this.GrpBoxAdmin.Controls.Add(this.BtnCalendar);
             this.GrpBoxAdmin.Controls.Add(this.BtnNewBooking);
             this.GrpBoxAdmin.Location = new System.Drawing.Point(6, 23);
             this.GrpBoxAdmin.Name = "GrpBoxAdmin";
@@ -114,9 +116,19 @@
             this.GrpBoxAdmin.TabStop = false;
             this.GrpBoxAdmin.Text = "Admin";
             // 
+            // BtnLogs
+            // 
+            this.BtnLogs.Location = new System.Drawing.Point(26, 387);
+            this.BtnLogs.Name = "BtnLogs";
+            this.BtnLogs.Size = new System.Drawing.Size(86, 26);
+            this.BtnLogs.TabIndex = 6;
+            this.BtnLogs.Text = "button2";
+            this.BtnLogs.UseVisualStyleBackColor = true;
+            this.BtnLogs.Click += new System.EventHandler(this.BtnLogs_Click);
+            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(46, 114);
+            this.button1.Location = new System.Drawing.Point(64, 429);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(48, 30);
             this.button1.TabIndex = 6;
@@ -148,15 +160,17 @@
             this.BtnExitApp.UseVisualStyleBackColor = true;
             this.BtnExitApp.Click += new System.EventHandler(this.BtnExitApp_Click);
             // 
-            // BtnLogs
+            // BtnCalendar
             // 
-            this.BtnLogs.Location = new System.Drawing.Point(8, 72);
-            this.BtnLogs.Name = "BtnLogs";
-            this.BtnLogs.Size = new System.Drawing.Size(86, 26);
-            this.BtnLogs.TabIndex = 6;
-            this.BtnLogs.Text = "button2";
-            this.BtnLogs.UseVisualStyleBackColor = true;
-            this.BtnLogs.Click += new System.EventHandler(this.BtnLogs_Click);
+            this.BtnCalendar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnCalendar.Location = new System.Drawing.Point(8, 72);
+            this.BtnCalendar.Name = "BtnCalendar";
+            this.BtnCalendar.Size = new System.Drawing.Size(185, 45);
+            this.BtnCalendar.TabIndex = 9;
+            this.BtnCalendar.Text = "Calendar";
+            this.BtnCalendar.UseVisualStyleBackColor = true;
+            this.BtnCalendar.Click += new System.EventHandler(this.BtnCalendar_Click);
             // 
             // Zubos_MainForm
             // 
@@ -195,6 +209,7 @@
         private System.Windows.Forms.Button BtnNewBooking;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button BtnLogs;
+        private System.Windows.Forms.Button BtnCalendar;
     }
 }
 

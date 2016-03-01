@@ -30,6 +30,8 @@
         {
             this.TxtName = new System.Windows.Forms.TextBox();
             this.GrpBoxNewBooking = new System.Windows.Forms.GroupBox();
+            this.LblDays = new System.Windows.Forms.Label();
+            this.TxtDays = new System.Windows.Forms.TextBox();
             this.TxtBookingNotes = new System.Windows.Forms.TextBox();
             this.LblBookingNotes = new System.Windows.Forms.Label();
             this.ChkDone = new System.Windows.Forms.CheckBox();
@@ -58,8 +60,6 @@
             this.LblHouseNumber = new System.Windows.Forms.Label();
             this.TxtHouseNumber = new System.Windows.Forms.TextBox();
             this.LblName = new System.Windows.Forms.Label();
-            this.LblDays = new System.Windows.Forms.Label();
-            this.TxtDays = new System.Windows.Forms.TextBox();
             this.GrpBoxNewBooking.SuspendLayout();
             this.GrpBoxRoomDetail.SuspendLayout();
             this.SuspendLayout();
@@ -103,6 +103,24 @@
             this.GrpBoxNewBooking.Size = new System.Drawing.Size(588, 426);
             this.GrpBoxNewBooking.TabIndex = 1;
             this.GrpBoxNewBooking.TabStop = false;
+            // 
+            // LblDays
+            // 
+            this.LblDays.AutoSize = true;
+            this.LblDays.Location = new System.Drawing.Point(13, 317);
+            this.LblDays.Name = "LblDays";
+            this.LblDays.Size = new System.Drawing.Size(44, 17);
+            this.LblDays.TabIndex = 27;
+            this.LblDays.Text = "Days:";
+            // 
+            // TxtDays
+            // 
+            this.TxtDays.Location = new System.Drawing.Point(12, 337);
+            this.TxtDays.MaxLength = 2;
+            this.TxtDays.Name = "TxtDays";
+            this.TxtDays.Size = new System.Drawing.Size(48, 22);
+            this.TxtDays.TabIndex = 11;
+            this.TxtDays.TextChanged += new System.EventHandler(this.TxtDays_TextChanged);
             // 
             // TxtBookingNotes
             // 
@@ -387,27 +405,9 @@
             this.LblName.AutoSize = true;
             this.LblName.Location = new System.Drawing.Point(13, 24);
             this.LblName.Name = "LblName";
-            this.LblName.Size = new System.Drawing.Size(104, 17);
+            this.LblName.Size = new System.Drawing.Size(49, 17);
             this.LblName.TabIndex = 1;
-            this.LblName.Text = "Booking Name:";
-            // 
-            // LblDays
-            // 
-            this.LblDays.AutoSize = true;
-            this.LblDays.Location = new System.Drawing.Point(13, 317);
-            this.LblDays.Name = "LblDays";
-            this.LblDays.Size = new System.Drawing.Size(44, 17);
-            this.LblDays.TabIndex = 27;
-            this.LblDays.Text = "Days:";
-            // 
-            // TxtDays
-            // 
-            this.TxtDays.Location = new System.Drawing.Point(12, 337);
-            this.TxtDays.MaxLength = 2;
-            this.TxtDays.Name = "TxtDays";
-            this.TxtDays.Size = new System.Drawing.Size(48, 22);
-            this.TxtDays.TabIndex = 11;
-            this.TxtDays.TextChanged += new System.EventHandler(this.TxtDays_TextChanged);
+            this.LblName.Text = "Name:";
             // 
             // ZubosFrmNewBooking
             // 

@@ -34,13 +34,20 @@ namespace Zubos_System
 
         private void BtnSubmit_Click(object sender, EventArgs e)
         {
-            BookingDetail.CreateBooking(TxtName.Text, DtpDateFrom.Value, Convert.ToInt32(TxtDays.Text), Convert.ToDouble(TxtPrice.Text));
+            BookingDetail.CreateBooking(TxtName.Text, 
+                                        Convert.ToInt32(TxtHouseNumber.Text), 
+                                        TxtHouseName.Text, TxtStreet.Text, 
+                                        TxtPostcode.Text, DtpDateFrom.Value, 
+                                        Convert.ToInt32(TxtDays.Text), 
+                                        Convert.ToDouble(TxtPrice.Text), 
+                                        Room.GetRoomByID((int)CmbRoom.SelectedValue), 
+                                        TxtBookingNotes.Text);
         }
 
         private void ZubosFrmNewBooking_Load(object sender, EventArgs e)
         {
+            CmbRoom.DataSource = Room.GetAllRoomsAsList().OrderBy(O => O.Name).ToList();
             TxtName.Focus();
-            CmbRoom.DataSource = Room.GetAllRoomsAsList();
         }
 
         private void CmbRoom_SelectedIndexChanged(object sender, EventArgs e)

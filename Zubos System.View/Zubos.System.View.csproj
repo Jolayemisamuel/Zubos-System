@@ -50,6 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ZubosFrmCalendar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ZubosFrmCalendar.Designer.cs">
+      <DependentUpon>ZubosFrmCalendar.cs</DependentUpon>
+    </Compile>
     <Compile Include="ZubosFrmNewBooking.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,6 +70,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ZubosFrmCalendar.resx">
+      <DependentUpon>ZubosFrmCalendar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ZubosFrmNewBooking.resx">
       <DependentUpon>ZubosFrmNewBooking.cs</DependentUpon>
     </EmbeddedResource>
@@ -94,6 +103,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\System.Windows.Forms.Calendar\System.Windows.Forms.Calendar\System.Windows.Forms.Calendar.csproj">
+      <Project>{25649F08-3046-4891-ADB8-7EA787B57063}</Project>
+      <Name>System.Windows.Forms.Calendar</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Zubos.System.Business\Zubos.System.Business.csproj">
       <Project>{f2c5b358-7a47-41a6-9845-d6c1a05c27ff}</Project>
       <Name>Zubos.System.Business</Name>

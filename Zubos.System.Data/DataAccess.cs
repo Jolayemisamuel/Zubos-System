@@ -430,7 +430,12 @@ namespace Zubos.System.Data
             //-------//
             return default(T);
         }
-
+        /// <summary>
+        /// Will return the next ID for use for creating new objects.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="pConnectionToUse"></param>
+        /// <returns></returns>
         public static int ReturnNextID<T>(string pConnectionToUse)
         {
             SqlConnection SQL_CONNECTION = LookupConnection(pConnectionToUse);
@@ -461,6 +466,126 @@ namespace Zubos.System.Data
                 }
                 Logger.WriteLine("DEBUG", "Next ID query successful.");
                 return NextID;
+            }
+            else
+            {
+                Logger.WriteLine("ERROR", "No open connection, query execution failed.");
+            }
+            //-------//
+            return 0;
+        }
+
+        public static bool ExecuteBoolReturnQuery<T>(string pConnectionToUse, string pQueryText)
+        {
+            SqlConnection SQL_CONNECTION = LookupConnection(pConnectionToUse);
+            if (CheckConnectionIsReady(ref SQL_CONNECTION, "ODS") == 1)
+            {
+                List<PropertyInfo> TProperties = typeof(T).GetProperties().ToList();
+                SqlCommand sqlCmd = new SqlCommand(pQueryText, SQL_CONNECTION);
+                sqlCmd.CommandType = CommandType.Text;
+
+                Logger.WriteLine("DEBUG", "Executing bool query...");
+                bool returnBoolean;
+                try
+                {
+                    returnBoolean = (bool)sqlCmd.ExecuteScalar();
+                }
+                catch (SqlException sqlEx)
+                {
+                    string[] errorMsgs = new string[] { "A SQL exception occurred.", sqlEx.Message };
+                    Logger.WriteLine("ERROR", errorMsgs);
+                    return false;
+                }
+                catch (Exception Ex)
+                {
+                    string[] errorMsgs = new string[] { "An exception occured.", Ex.Message };
+                    Logger.WriteLine("ERROR", errorMsgs);
+                    return false;
+                }
+                Logger.WriteLine("DEBUG", "Boolean value returned successfully.");
+                return returnBoolean;
+            }
+            else
+            {
+                Logger.WriteLine("ERROR", "No open connection, query execution failed.");
+            }
+            //-------//
+            return false;
+        }
+
+        public static int ExecuteIntegerReturnQuery<T>(string pConnectionToUse, string pQueryText)
+        {
+            SqlConnection SQL_CONNECTION = LookupConnection(pConnectionToUse);
+            if (CheckConnectionIsReady(ref SQL_CONNECTION, "ODS") == 1)
+            {
+                List<PropertyInfo> TProperties = typeof(T).GetProperties().ToList();
+
+                SqlCommand sqlCmd = new SqlCommand(pQueryText, SQL_CONNECTION);
+                sqlCmd.CommandType = CommandType.Text;
+
+                Logger.WriteLine("DEBUG", "Executing bool query...");
+                int returnInt;
+                try
+                {
+                    returnInt = (int)sqlCmd.ExecuteScalar();
+                }
+                catch (SqlException sqlEx)
+                {
+                    string[] errorMsgs = new string[] { "A SQL exception occurred.", sqlEx.Message };
+                    Logger.WriteLine("ERROR", errorMsgs);
+                    return 0;
+                }
+                catch (Exception Ex)
+                {
+                    string[] errorMsgs = new string[] { "An exception occured.", Ex.Message };
+                    Logger.WriteLine("ERROR", errorMsgs);
+                    return 0;
+                }
+                Logger.WriteLine("DEBUG", "Boolean value returned successfully.");
+                return returnInt;
+            }
+            else
+            {
+                Logger.WriteLine("ERROR", "No open connection, query execution failed.");
+            }
+            //-------//
+            return 0;
+        }
+        /// <summary>
+        /// Executes an update query and returns the amount of rows affected.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="pConnectionToUse"></param>
+        /// <param name="pQueryText"></param>
+        /// <returns></returns>
+        public static int ExecuteUpdateQuery(string pConnectionToUse, string pQueryText)
+        {
+            SqlConnection SQL_CONNECTION = LookupConnection(pConnectionToUse);
+            if (CheckConnectionIsReady(ref SQL_CONNECTION, "ODS") == 1)
+            {
+                SqlCommand sqlCmd = new SqlCommand(pQueryText, SQL_CONNECTION);
+                sqlCmd.CommandType = CommandType.Text;
+
+                Logger.WriteLine("DEBUG", "Executing update query...");
+                int returnInt;
+                try
+                {
+                    returnInt = sqlCmd.ExecuteNonQuery();
+                }
+                catch (SqlException sqlEx)
+                {
+                    string[] errorMsgs = new string[] { "A SQL exception occurred.", sqlEx.Message };
+                    Logger.WriteLine("ERROR", errorMsgs);
+                    return 0;
+                }
+                catch (Exception Ex)
+                {
+                    string[] errorMsgs = new string[] { "An exception occured.", Ex.Message };
+                    Logger.WriteLine("ERROR", errorMsgs);
+                    return 0;
+                }
+                Logger.WriteLine("DEBUG", "Boolean value returned successfully.");
+                return returnInt;
             }
             else
             {

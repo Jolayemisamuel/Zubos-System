@@ -60,5 +60,11 @@ namespace Zubos_System
         {
             Global.OpenTodaysLog();
         }
+
+        private void BtnCalendar_Click(object sender, EventArgs e)
+        {
+            Form FrmNewCalendar = new ZubosFrmCalendar();
+            FrmNewCalendar.Show();
+        }
     }
 }
