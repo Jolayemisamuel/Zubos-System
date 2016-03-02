@@ -115,7 +115,7 @@ namespace Zubos.System.Data
             StackTrace st = new StackTrace();
             StackFrame sf = st.GetFrame(FrameIndex);
 
-            return " | " + sf.GetMethod().Name.PadRight(5) + " | ";
+            return " | " + sf.GetMethod().Name.PadRight(24) + " | ";
         }
         /// <summary>
         /// Returns active log file path

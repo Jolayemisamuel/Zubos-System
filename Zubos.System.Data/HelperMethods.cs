@@ -19,27 +19,102 @@ namespace Zubos.System.Data
         /// <returns></returns>
         public static string BuildSQLColumnCmdString(List<string> pColumns)
         {
-            string SqlCmdColumnBuilder = null;
+            StringBuilder SB = new StringBuilder();
             if (pColumns.Count != 0)
             {
                 for (int ColumnIndex = 0; ColumnIndex < pColumns.Count; ColumnIndex++)
                 {
                     if (ColumnIndex == 0)
                     {
-                        SqlCmdColumnBuilder += "[" + pColumns[ColumnIndex] + "]";
+                        SB.Append("[" + pColumns[ColumnIndex] + "]");
                     }
                     else
                     {
-                        SqlCmdColumnBuilder += ",[" + pColumns[ColumnIndex] + "]";
+                        SB.Append(",[" + pColumns[ColumnIndex] + "]");
                     }
                 }
-                return SqlCmdColumnBuilder;
+                return SB.ToString();
             }
             else
             {
                 return null;
             }
         }
+        /// <summary>
+        /// This method will build a string of column = value for each value in collection.
+        /// </summary>
+        /// <param name="pColumns"></param>
+        /// <param name="pValues"></param>
+        /// <returns></returns>
+        public static string BuildSQLUpdateColumnValueString(List<string> pColumns, List<string> pValues)
+        {
+            StringBuilder SB = new StringBuilder();
+            if (pColumns.Count != 0 && pColumns.Count == pValues.Count)
+            {
+                for (int ColumnIndex = 0; ColumnIndex < pColumns.Count; ColumnIndex++)
+                {
+                    if (ColumnIndex == 0)
+                    {
+                        SB.Append("[" + pColumns[ColumnIndex] + "] = " + pValues[ColumnIndex]);
+                    }
+                    else
+                    {
+                        SB.Append(",[" + pColumns[ColumnIndex] + "] = " + pValues[ColumnIndex]);
+                    }
+                }
+                return SB.ToString();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static string BuildSQLInsertIntoColumnValueString(List<PropertyInfo> pColumns, List<string> pValues)
+        {
+            StringBuilder SB = new StringBuilder();
+            if (pColumns.Count != 0 && pColumns.Count == pValues.Count)
+            {
+                //Columns
+                for (int ColumnIndex = 0; ColumnIndex < pColumns.Count; ColumnIndex++)
+                {
+                    if (ColumnIndex == 0)
+                    {
+                        SB.Append("(" + pColumns[ColumnIndex].Name);
+                    }
+                    else
+                    {
+                        SB.Append(", " + pColumns[ColumnIndex].Name);
+                    }
+                    if(ColumnIndex == (pColumns.Count - 1))
+                    {
+                        SB.Append(") VALUES ");
+                    }
+                }
+                ///Values
+                for (int ValueIndex = 0; ValueIndex < pValues.Count; ValueIndex++)
+                {
+                    if(ValueIndex == 0)
+                    {
+                        SB.Append("('" + pValues[ValueIndex] + "'");
+                    }
+                    else
+                    {
+                        SB.Append(", '" + pValues[ValueIndex] + "'");
+                    }
+                    if (ValueIndex == (pValues.Count - 1))
+                    {
+                        SB.Append(");");
+                    }
+                }
+                return SB.ToString();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         /// <summary>
         /// 1=String, 2=Int, 3=DateTime, 4=Double, 5=List(T), 6=SortedList(Int,T)
         /// </summary>
@@ -91,6 +166,28 @@ namespace Zubos.System.Data
         public static int GetNextID<T>()
         {
             return DataAccess.ReturnNextID<T>("ODS");
+        }
+        /// <summary>
+        /// This method will return a string of ID's e.g 99;65;2009;394;55
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="pObjects"></param>
+        /// <returns></returns>
+        public static string GetObjectIDsAsString<T>(List<T> pObjects)
+        {
+            StringBuilder SB = new StringBuilder();
+            for (int ObjectIndex = 0; ObjectIndex < pObjects.Count; ObjectIndex++)
+            {
+                if(ObjectIndex == 0)
+                {
+                    SB.Append(pObjects[ObjectIndex].GetType().GetProperties()[0].GetValue(pObjects[ObjectIndex], null));
+                }
+                else
+                {
+                    SB.Append(";" + pObjects[ObjectIndex].GetType().GetProperties()[0].GetValue(pObjects[ObjectIndex], null));
+                }
+            }
+            return SB.ToString();
         }
     }
 }

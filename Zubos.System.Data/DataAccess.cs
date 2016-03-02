@@ -474,13 +474,18 @@ namespace Zubos.System.Data
             //-------//
             return 0;
         }
-
-        public static bool ExecuteBoolReturnQuery<T>(string pConnectionToUse, string pQueryText)
+        /// <summary>
+        /// Executes a query and tries to return a boolean value from it.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="pConnectionToUse"></param>
+        /// <param name="pQueryText"></param>
+        /// <returns></returns>
+        public static bool ExecuteBoolReturnQuery(string pConnectionToUse, string pQueryText)
         {
             SqlConnection SQL_CONNECTION = LookupConnection(pConnectionToUse);
             if (CheckConnectionIsReady(ref SQL_CONNECTION, "ODS") == 1)
             {
-                List<PropertyInfo> TProperties = typeof(T).GetProperties().ToList();
                 SqlCommand sqlCmd = new SqlCommand(pQueryText, SQL_CONNECTION);
                 sqlCmd.CommandType = CommandType.Text;
 
@@ -488,7 +493,7 @@ namespace Zubos.System.Data
                 bool returnBoolean;
                 try
                 {
-                    returnBoolean = (bool)sqlCmd.ExecuteScalar();
+                    returnBoolean = ((string)sqlCmd.ExecuteScalar() == "1");
                 }
                 catch (SqlException sqlEx)
                 {
@@ -513,17 +518,15 @@ namespace Zubos.System.Data
             return false;
         }
 
-        public static int ExecuteIntegerReturnQuery<T>(string pConnectionToUse, string pQueryText)
+        public static int ExecuteIntegerReturnQuery(string pConnectionToUse, string pQueryText)
         {
             SqlConnection SQL_CONNECTION = LookupConnection(pConnectionToUse);
             if (CheckConnectionIsReady(ref SQL_CONNECTION, "ODS") == 1)
             {
-                List<PropertyInfo> TProperties = typeof(T).GetProperties().ToList();
-
                 SqlCommand sqlCmd = new SqlCommand(pQueryText, SQL_CONNECTION);
                 sqlCmd.CommandType = CommandType.Text;
 
-                Logger.WriteLine("DEBUG", "Executing bool query...");
+                Logger.WriteLine("DEBUG", "Executing integer query...");
                 int returnInt;
                 try
                 {
@@ -541,7 +544,7 @@ namespace Zubos.System.Data
                     Logger.WriteLine("ERROR", errorMsgs);
                     return 0;
                 }
-                Logger.WriteLine("DEBUG", "Boolean value returned successfully.");
+                Logger.WriteLine("DEBUG", "Integer value returned successfully.");
                 return returnInt;
             }
             else
@@ -558,19 +561,22 @@ namespace Zubos.System.Data
         /// <param name="pConnectionToUse"></param>
         /// <param name="pQueryText"></param>
         /// <returns></returns>
-        public static int ExecuteUpdateQuery(string pConnectionToUse, string pQueryText)
+        public static int ExecuteUpdateQuery(string pConnectionToUse, string pTableName, List<string> pColumnsToUpdate, List<string> pColumnValues, string pCondition)
         {
             SqlConnection SQL_CONNECTION = LookupConnection(pConnectionToUse);
             if (CheckConnectionIsReady(ref SQL_CONNECTION, "ODS") == 1)
             {
-                SqlCommand sqlCmd = new SqlCommand(pQueryText, SQL_CONNECTION);
+
+                string processedColumnString = HelperMethods.BuildSQLUpdateColumnValueString(pColumnsToUpdate, pColumnValues);
+
+                SqlCommand sqlCmd = new SqlCommand("UPDATE [" + pTableName + "] SET " + processedColumnString + " " + pCondition, SQL_CONNECTION);
                 sqlCmd.CommandType = CommandType.Text;
 
                 Logger.WriteLine("DEBUG", "Executing update query...");
                 int returnInt;
                 try
                 {
-                    returnInt = sqlCmd.ExecuteNonQuery();
+                    returnInt = (int)sqlCmd.ExecuteNonQuery();
                 }
                 catch (SqlException sqlEx)
                 {
@@ -584,7 +590,53 @@ namespace Zubos.System.Data
                     Logger.WriteLine("ERROR", errorMsgs);
                     return 0;
                 }
-                Logger.WriteLine("DEBUG", "Boolean value returned successfully.");
+                Logger.WriteLine("DEBUG", "Update query executed successfully.");
+                return returnInt;
+            }
+            else
+            {
+                Logger.WriteLine("ERROR", "No open connection, query execution failed.");
+            }
+            //-------//
+            return 0;
+        }
+        /// <summary>
+        /// Will execute an insert query to insert columns and values into table.
+        /// </summary>
+        /// <param name="pConnectionToUse"></param>
+        /// <param name="pTableName"></param>
+        /// <param name="pColumnsToUpdate"></param>
+        /// <param name="pColumnValues"></param>
+        /// <returns></returns>
+        public static int ExecuteInsertQuery(string pConnectionToUse, string pTableName, List<PropertyInfo> pColumnsToUpdate, List<string> pColumnValues)
+        {
+            SqlConnection SQL_CONNECTION = LookupConnection(pConnectionToUse);
+            if (CheckConnectionIsReady(ref SQL_CONNECTION, "ODS") == 1)
+            {
+                string processedColumnString = HelperMethods.BuildSQLInsertIntoColumnValueString(pColumnsToUpdate, pColumnValues);
+
+                SqlCommand sqlCmd = new SqlCommand("INSERT INTO [" + pTableName + "] " + processedColumnString, SQL_CONNECTION);
+                sqlCmd.CommandType = CommandType.Text;
+
+                Logger.WriteLine("DEBUG", "Executing insert query...");
+                int returnInt;
+                try
+                {
+                    returnInt = (int)sqlCmd.ExecuteNonQuery();
+                }
+                catch (SqlException sqlEx)
+                {
+                    string[] errorMsgs = new string[] { "A SQL exception occurred.", sqlEx.Message };
+                    Logger.WriteLine("ERROR", errorMsgs);
+                    return 0;
+                }
+                catch (Exception Ex)
+                {
+                    string[] errorMsgs = new string[] { "An exception occured.", Ex.Message };
+                    Logger.WriteLine("ERROR", errorMsgs);
+                    return 0;
+                }
+                Logger.WriteLine("DEBUG", "Insert query executed successfully.");
                 return returnInt;
             }
             else
