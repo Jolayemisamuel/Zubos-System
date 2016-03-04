@@ -28,7 +28,7 @@ namespace Zubos.System.Data
             {
                 Directory.CreateDirectory(LogDirectory);
             }
-            isDebugMode = ConfigurationHelper.ReadSettingAsString("isDebugMode").ToLower() == "true";
+            isDebugMode = (ConfigurationHelper.ReadSettingAsString("isDebugMode").ToLower() == "true");
 
             if (CurrentLogPath == null)
             {

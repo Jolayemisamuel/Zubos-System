@@ -18,8 +18,6 @@ namespace Zubos.System.Business
     /// </summary>
     public static class Global
     {
-        public static SortedList<int, RoomContainer> AllRoomContainers { get; }
-        public static SortedList<int, Customer> AllCustomers { get; }
 
         /// <summary>
         /// Method to initialise application for boot up.

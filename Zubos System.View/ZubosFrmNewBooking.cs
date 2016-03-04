@@ -46,7 +46,7 @@ namespace Zubos_System
 
         private void ZubosFrmNewBooking_Load(object sender, EventArgs e)
         {
-            CmbRoom.DataSource = Room.GetAllRoomsAsList().OrderBy(O => O.Name).ToList();
+            CmbRoom.DataSource = Room.GetAllUnassignedRoomsAsList().OrderBy(O => O.Name).ToList();
             TxtName.Focus();
         }
 

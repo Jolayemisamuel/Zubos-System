@@ -69,13 +69,17 @@ namespace Zubos.System.Data
                 return null;
             }
         }
-
-        public static string BuildSQLInsertIntoColumnValueString(List<PropertyInfo> pColumns, List<string> pValues)
+        /// <summary>
+        /// This method will build columns and values string to be inserted into a table. (COLUMN, COLUMN) VALUES ('VALUE', 'VALUE')
+        /// </summary>
+        /// <param name="pColumns"></param>
+        /// <param name="pValues"></param>
+        /// <returns></returns>
+        public static string BuildSQLInsertIntoColumnValueString(List<PropertyInfo> pColumns, List<Tuple<Type,string>> pValues)
         {
             StringBuilder SB = new StringBuilder();
             if (pColumns.Count != 0 && pColumns.Count == pValues.Count)
-            {
-                //Columns
+            {//Columns to insert to.
                 for (int ColumnIndex = 0; ColumnIndex < pColumns.Count; ColumnIndex++)
                 {
                     if (ColumnIndex == 0)
@@ -91,19 +95,35 @@ namespace Zubos.System.Data
                         SB.Append(") VALUES ");
                     }
                 }
-                ///Values
+                //Values to be inserted.
+                //ITEM 1 = Type
+                //ITEM 2 = Value
                 for (int ValueIndex = 0; ValueIndex < pValues.Count; ValueIndex++)
                 {
                     if(ValueIndex == 0)
-                    {
-                        SB.Append("('" + pValues[ValueIndex] + "'");
+                    {//First value
+                        if (pValues[ValueIndex].Item1 == typeof(int))
+                        {//Integer value
+                            SB.Append("(" + pValues[ValueIndex].Item2);
+                        }
+                        else
+                        {//Quoted value ''
+                            SB.Append("('" + pValues[ValueIndex].Item2 + "'");
+                        }
                     }
                     else
-                    {
-                        SB.Append(", '" + pValues[ValueIndex] + "'");
+                    {//Not first value
+                        if (pValues[ValueIndex].Item1 == typeof(int))
+                        {//Integer value
+                            SB.Append(", " + pValues[ValueIndex].Item2);
+                        }
+                        else
+                        {//Quoted value ''
+                            SB.Append(", '" + pValues[ValueIndex].Item2 + "'");
+                        }
                     }
                     if (ValueIndex == (pValues.Count - 1))
-                    {
+                    {//Last value to be added.
                         SB.Append(");");
                     }
                 }
@@ -111,6 +131,7 @@ namespace Zubos.System.Data
             }
             else
             {
+                Logger.WriteLine("DEBUG", "Failed to match values to columns, mismatch in totals.");
                 return null;
             }
         }
@@ -188,6 +209,55 @@ namespace Zubos.System.Data
                 }
             }
             return SB.ToString();
+        }
+        /// <summary>
+        /// This method will build WHERE [Key = Column] = @p[Key], Pass in values [Value = Value to search for].
+        /// </summary>
+        /// <param name="pColumnConditions"></param>
+        /// <returns></returns>
+        public static string BuildSQLConditionsWithParams(SortedList<string, string> pColumnConditions)
+        {
+            StringBuilder SB = new StringBuilder();
+            bool whereAdded = false;
+            for (int ParamIndex = 0; ParamIndex < pColumnConditions.Count; ParamIndex++)
+            {
+                if (ParamIndex == 0)
+                {
+                    if (!String.IsNullOrEmpty(pColumnConditions.Values[ParamIndex]))
+                    {
+                        whereAdded = true;
+                        SB.Append(" WHERE " + pColumnConditions.Keys[ParamIndex] + " = @p" + pColumnConditions.Keys[ParamIndex]);
+                    }
+                }
+                else
+                {
+                    if (!String.IsNullOrEmpty(pColumnConditions.Values[ParamIndex]))
+                    {
+                        if(whereAdded)
+                        {
+                            SB.Append(" AND " + pColumnConditions.Keys[ParamIndex] + " = @p" + pColumnConditions.Keys[ParamIndex]);
+                        }
+                        else
+                        {
+                            whereAdded = true;
+                            SB.Append(" WHERE " + pColumnConditions.Keys[ParamIndex] + " = @p" + pColumnConditions.Keys[ParamIndex]);
+                        }
+                    }
+                }
+            }
+            return SB.ToString();
+        }
+        /// <summary>
+        /// This method will return a date that SQL accepts from a dd/mm/yyyy format to a yyyy-mm-dd
+        /// </summary>
+        /// <param name="pDateTime"></param>
+        /// <returns></returns>
+        public static string FormatDateForSQLInsert(string pDateTime)
+        {
+            string day = pDateTime.Substring(0, 2);
+            string month = pDateTime.Substring(3, 2);
+            string year = pDateTime.Substring(6, 4);
+            return year + "-" + month + "-" + day;
         }
     }
 }

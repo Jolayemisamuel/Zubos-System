@@ -18,8 +18,9 @@ namespace Zubos.System.Business
         public string                           Name { get; set; }
         public double                           Price { get; set; }
         public string                           AdditionalInfo { get; set; }
-        public SortedList<int, Customer>        myCustomers { get; set; }
+        public int                              myCustomer { get; set; }
         public SortedList<int, RoomContainer>   myRoomContainers { get; set; }
+        public int                              BookingDetailID { get; set; }
 
         /// <summary>
         /// Default constructor for Room object.
@@ -33,14 +34,15 @@ namespace Zubos.System.Business
                     string pName,
                     double pPrice,
                     string pAdditionalInfo,
-                    SortedList<int, Customer> pMyCustomers, 
-                    SortedList<int, RoomContainer> pMyRoomContainers)
+                    int pMyCustomer, 
+                    SortedList<int, RoomContainer> pMyRoomContainers,
+                    int BookingDetailID)
         {
             RoomID = pID;
             Name = pName;
             Price = pPrice;
             AdditionalInfo = pAdditionalInfo;
-            myCustomers = pMyCustomers;
+            myCustomer = pMyCustomer;
             myRoomContainers = pMyRoomContainers;
         }
 
@@ -60,6 +62,24 @@ namespace Zubos.System.Business
         public static List<Room> GetAllRoomsSelectiveAsList(List<string> pRoomFieldNames)
         {
             List<Room> ResultsList = DataAccess.ReturnSelectiveResultsAsList<Room>("ODS", "Room", pRoomFieldNames);
+            if (ResultsList != null)
+            {
+                return ResultsList;
+            }
+            else
+            {
+                MessageBox.Show("An error occured retrieving rooms data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
+        /// <summary>
+        /// Get all rooms that dont have a BookingDetailID
+        /// </summary>
+        /// <returns></returns>
+        public static List<Room> GetAllUnassignedRoomsAsList()
+        {
+            List<Room> ResultsList = DataAccess.ReturnAllResultsAsList<Room>("ODS", "Room");
+            ResultsList.RemoveAll(R => R.BookingDetailID != 0);
             if (ResultsList != null)
             {
                 return ResultsList;

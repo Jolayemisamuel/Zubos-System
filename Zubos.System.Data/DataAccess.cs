@@ -443,14 +443,19 @@ namespace Zubos.System.Data
             {
                 List<PropertyInfo> TProperties = typeof(T).GetProperties().ToList();
                 string TableName = typeof(T).Name;
-                SqlCommand sqlCmd = new SqlCommand("SELECT MAX(" + TProperties[0].Name + ") FROM " + TableName, SQL_CONNECTION);
+                SqlCommand sqlCmd = new SqlCommand("IF EXISTS((SELECT TOP 1" + TProperties[0].Name +
+                                                     " FROM " + TableName + ")) BEGIN SELECT MAX(" +
+                                                     TProperties[0].Name + ") FROM " +
+                                                    TableName + " END ELSE BEGIN SELECT 1 END;", SQL_CONNECTION);
+
                 sqlCmd.CommandType = CommandType.Text;
 
                 Logger.WriteLine("DEBUG", "Retrieving next ID...");
                 int NextID;
                 try
                 {
-                    NextID = (1 + (int)sqlCmd.ExecuteScalar());
+                    NextID = (int)sqlCmd.ExecuteScalar();
+                    if (NextID != 1) { NextID++; }
                 }
                 catch (SqlException sqlEx)
                 {
@@ -479,21 +484,21 @@ namespace Zubos.System.Data
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="pConnectionToUse"></param>
-        /// <param name="pQueryText"></param>
+        /// <param name="pQuery"></param>
         /// <returns></returns>
-        public static bool ExecuteBoolReturnQuery(string pConnectionToUse, string pQueryText)
+        public static bool ExecuteBoolReturnQuery(string pConnectionToUse, SqlCommand pQuery)
         {
             SqlConnection SQL_CONNECTION = LookupConnection(pConnectionToUse);
             if (CheckConnectionIsReady(ref SQL_CONNECTION, "ODS") == 1)
             {
-                SqlCommand sqlCmd = new SqlCommand(pQueryText, SQL_CONNECTION);
-                sqlCmd.CommandType = CommandType.Text;
+                pQuery.Connection = SQL_CONNECTION; 
+                pQuery.CommandType = CommandType.Text;
 
                 Logger.WriteLine("DEBUG", "Executing bool query...");
                 bool returnBoolean;
                 try
                 {
-                    returnBoolean = ((string)sqlCmd.ExecuteScalar() == "1");
+                    returnBoolean = ((int)pQuery.ExecuteScalar() == 1);
                 }
                 catch (SqlException sqlEx)
                 {
@@ -517,20 +522,25 @@ namespace Zubos.System.Data
             //-------//
             return false;
         }
-
-        public static int ExecuteIntegerReturnQuery(string pConnectionToUse, string pQueryText)
+        /// <summary>
+        /// This method will attempt to execute a query and return an integer.
+        /// </summary>
+        /// <param name="pConnectionToUse"></param>
+        /// <param name="pQuery"></param>
+        /// <returns></returns>
+        public static int ExecuteIntegerReturnQuery(string pConnectionToUse, SqlCommand pQuery)
         {
             SqlConnection SQL_CONNECTION = LookupConnection(pConnectionToUse);
             if (CheckConnectionIsReady(ref SQL_CONNECTION, "ODS") == 1)
             {
-                SqlCommand sqlCmd = new SqlCommand(pQueryText, SQL_CONNECTION);
-                sqlCmd.CommandType = CommandType.Text;
+                pQuery.Connection = SQL_CONNECTION;
+                pQuery.CommandType = CommandType.Text;
 
                 Logger.WriteLine("DEBUG", "Executing integer query...");
                 int returnInt;
                 try
                 {
-                    returnInt = (int)sqlCmd.ExecuteScalar();
+                    returnInt = (int)pQuery.ExecuteScalar();
                 }
                 catch (SqlException sqlEx)
                 {
@@ -601,14 +611,14 @@ namespace Zubos.System.Data
             return 0;
         }
         /// <summary>
-        /// Will execute an insert query to insert columns and values into table.
+        /// Will execute an insert query to insert columns and values into table and returns amount of rows affected.
         /// </summary>
         /// <param name="pConnectionToUse"></param>
         /// <param name="pTableName"></param>
         /// <param name="pColumnsToUpdate"></param>
         /// <param name="pColumnValues"></param>
         /// <returns></returns>
-        public static int ExecuteInsertQuery(string pConnectionToUse, string pTableName, List<PropertyInfo> pColumnsToUpdate, List<string> pColumnValues)
+        public static int ExecuteInsertQuery(string pConnectionToUse, string pTableName, List<PropertyInfo> pColumnsToUpdate, List<Tuple<Type, string>> pColumnValues)
         {
             SqlConnection SQL_CONNECTION = LookupConnection(pConnectionToUse);
             if (CheckConnectionIsReady(ref SQL_CONNECTION, "ODS") == 1)
@@ -645,6 +655,29 @@ namespace Zubos.System.Data
             }
             //-------//
             return 0;
+        }
+        /// <summary>
+        /// This method will add parameters to a passed in SQLcommand object.
+        /// </summary>
+        /// <param name="pSQLCommandObj"></param>
+        /// <param name="pParametersAndValues"></param>
+        /// <returns></returns>
+        public static void AddParametersToSQLCMD(ref SqlCommand pSQLCommandObj, SortedList<string, object> pParametersAndValues)
+        {
+            if(pSQLCommandObj != null)
+            {
+                for (int Indexer = 0; Indexer < pParametersAndValues.Count; Indexer++)
+                {
+                    if(pParametersAndValues.Keys[Indexer].StartsWith("@"))
+                    {
+                        pSQLCommandObj.Parameters.Add(new SqlParameter(pParametersAndValues.Keys[Indexer], pParametersAndValues.Values[Indexer]));
+                    }
+                    else
+                    {
+                        pSQLCommandObj.Parameters.Add(new SqlParameter("@" + pParametersAndValues.Keys[Indexer], pParametersAndValues.Values[Indexer]));
+                    }
+                }
+            }
         }
     }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
+using System.Reflection;
 using Zubos.System.Data;
 
 namespace Zubos.System.Business
@@ -34,9 +36,8 @@ namespace Zubos.System.Business
         /// <param name="pHouseName"></param>
         /// <param name="pStreet"></param>
         /// <param name="pPostCode"></param>
-        public Customer(int pID, string pName, int pHouseNumber, string pHouseName, string pStreet, string pPostCode)
+        public Customer(string pName, int pHouseNumber, string pHouseName, string pStreet, string pPostCode)
         {
-            CustomerID = pID;
             Name = pName;
             HouseNumber = pHouseNumber;
             HouseName = pHouseName;
@@ -44,10 +45,70 @@ namespace Zubos.System.Business
             Postcode = pPostCode;
         }
 
-        public static Customer CreateCustomer(string pName, int pHouseNumber, string pHouseName, string pStreet, string pPostcode)
+        public static bool CheckCustomerExists(Customer pCustomer)
         {
-            Customer createdCustomer = new Customer(HelperMethods.GetNextID<Customer>(), pName, pHouseNumber, pHouseName, pStreet, pPostcode);
-            return createdCustomer;
+            string sqlCmdConditions = HelperMethods.BuildSQLConditionsWithParams
+            (new SortedList<string, string>()
+            {
+                { "Name", pCustomer.Name },
+                { "HouseNumber", Convert.ToString(pCustomer.HouseNumber) },
+                { "HouseName", pCustomer.HouseName },
+                { "Street", pCustomer.Street },
+                { "Postcode", pCustomer.Postcode }
+            });
+            SqlCommand SqlCmd = new SqlCommand("SELECT CASE WHEN EXISTS((SELECT TOP 1 * FROM [Customer]" + sqlCmdConditions + ")) THEN 1 ELSE 0 END;");
+            SqlCmd.Parameters.Add(new SqlParameter("@pName", pCustomer.Name));
+            SqlCmd.Parameters.Add(new SqlParameter("@pHouseNumber", pCustomer.HouseNumber));
+            SqlCmd.Parameters.Add(new SqlParameter("@pHouseName", pCustomer.HouseName));
+            SqlCmd.Parameters.Add(new SqlParameter("@pStreet", pCustomer.Street));
+            SqlCmd.Parameters.Add(new SqlParameter("@pPostcode", pCustomer.Postcode));
+
+            return DataAccess.ExecuteBoolReturnQuery("ODS", SqlCmd);
         }
+        /// <summary>
+        /// Will attempt to insert customers data into SQL.
+        /// </summary>
+        /// <param name="pCustomer"></param>
+        /// <returns></returns>
+        public static int CreateCustomerRecord(Customer pCustomer)
+        {
+            List<Tuple<Type, string>> CustomersAttributes = new List<Tuple<Type, string>>()
+            {
+                new Tuple<Type, string>( typeof(string), pCustomer.Name ),
+                new Tuple<Type, string>( typeof(int), pCustomer.HouseNumber.ToSafeString() ),
+                new Tuple<Type, string>( typeof(string), pCustomer.HouseName ),
+                new Tuple<Type, string>( typeof(string), pCustomer.Street ),
+                new Tuple<Type, string>( typeof(string), pCustomer.Postcode )
+            };
+            List<PropertyInfo> CustomerColumnsToBeAddedTo = typeof(Customer).GetProperties().ToList();
+            CustomerColumnsToBeAddedTo.RemoveAt(0); //RemoveID as it will be automatically assigned by SQL.
+
+            return DataAccess.ExecuteInsertQuery("ODS", "Customer", CustomerColumnsToBeAddedTo, CustomersAttributes);
+        }
+        /// <summary>
+        /// Will attempt to retrive customers ID from all fields in customer.
+        /// </summary>
+        /// <param name="pCustomer"></param>
+        /// <returns></returns>
+        public static int SearchForCustomerID(Customer pCustomer)
+        {
+            SqlCommand SqlCmd2 = new SqlCommand("SELECT TOP 1 [CustomerID] FROM [Customer]" +
+            HelperMethods.BuildSQLConditionsWithParams(new SortedList<string, string>()
+            {
+                { "Name", pCustomer.Name },
+                { "HouseNumber", Convert.ToString(pCustomer.HouseNumber) },
+                { "HouseName", pCustomer.HouseName },
+                { "Street", pCustomer.Street },
+                { "Postcode", pCustomer.Postcode }
+            }));
+            SqlCmd2.Parameters.Add(new SqlParameter("@pName", pCustomer.Name));
+            SqlCmd2.Parameters.Add(new SqlParameter("@pHouseNumber", pCustomer.HouseNumber));
+            SqlCmd2.Parameters.Add(new SqlParameter("@pHouseName", pCustomer.HouseName));
+            SqlCmd2.Parameters.Add(new SqlParameter("@pStreet", pCustomer.Street));
+            SqlCmd2.Parameters.Add(new SqlParameter("@pPostcode", pCustomer.Postcode));
+
+            return DataAccess.ExecuteIntegerReturnQuery("ODS", SqlCmd2);
+        }
+
     }
 }
