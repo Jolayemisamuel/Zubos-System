@@ -14,11 +14,11 @@ using Zubos.System.Data;
 namespace Zubos.System.Business
 {
     /// <summary>
-    /// Global static class, top level.
+    /// Global static class, public to all.
     /// </summary>
     public static class Global
     {
-
+        public static Dictionary<string, string> DBConfig = new Dictionary<string, string>();
         /// <summary>
         /// Method to initialise application for boot up.
         /// </summary>
@@ -26,6 +26,8 @@ namespace Zubos.System.Business
         {
             Logger.InitialiseLogger();
             Logger.WriteLine("EVENT", "Application Started.");
+            if(LoadDBConfigValues()) { Logger.WriteLine("EVENT", "Database configuration settings loaded successfully."); }
+            else { Logger.WriteLine("ERROR", "Failed to load database configuration settings."); }
         }
         /// <summary>
         /// Method to finalise for application exit.
@@ -45,6 +47,23 @@ namespace Zubos.System.Business
             {
                 Process.Start(logPath);
             }
+        }
+        public static bool LoadDBConfigValues()
+        {
+            try
+            {
+                DBConfig.Add("RoomsTN", ConfigurationHelper.ReadSettingAsString("Rooms_TableName"));
+                DBConfig.Add("BookingTN", ConfigurationHelper.ReadSettingAsString("Booking_TableName"));
+                DBConfig.Add("CustomerTN", ConfigurationHelper.ReadSettingAsString("Customer_TableName"));
+                DBConfig.Add("RoomContainerTN", ConfigurationHelper.ReadSettingAsString("RoomContainer_TableName"));
+            }
+            catch (Exception Ex)
+            {
+                string[] errorMsgs = new string[] { "An exception occured.", Ex.Message };
+                Logger.WriteLine("ERROR", errorMsgs);
+                return false;
+            }
+            return true;
         }
 
         public static void test()

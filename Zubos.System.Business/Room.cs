@@ -61,7 +61,7 @@ namespace Zubos.System.Business
         /// <returns></returns>
         public static List<Room> GetAllRoomsSelectiveAsList(List<string> pRoomFieldNames)
         {
-            List<Room> ResultsList = DataAccess.ReturnSelectiveResultsAsList<Room>("ODS", "Room", pRoomFieldNames);
+            List<Room> ResultsList = DataAccess.ReturnSelectiveResultsAsList<Room>("ODS", Global.DBConfig["RoomsTN"], pRoomFieldNames);
             if (ResultsList != null)
             {
                 return ResultsList;
@@ -78,7 +78,7 @@ namespace Zubos.System.Business
         /// <returns></returns>
         public static List<Room> GetAllUnassignedRoomsAsList()
         {
-            List<Room> ResultsList = DataAccess.ReturnAllResultsAsList<Room>("ODS", "Room");
+            List<Room> ResultsList = DataAccess.ReturnAllResultsAsList<Room>("ODS", Global.DBConfig["RoomsTN"]);
             ResultsList.RemoveAll(R => R.BookingDetailID != 0);
             if (ResultsList != null)
             {
@@ -96,7 +96,7 @@ namespace Zubos.System.Business
         /// <returns></returns>
         public static List<Room> GetAllRoomsAsList()
         {
-            List<Room> ResultsList = DataAccess.ReturnAllResultsAsList<Room>("ODS", "Room");
+            List<Room> ResultsList = DataAccess.ReturnAllResultsAsList<Room>("ODS", Global.DBConfig["RoomsTN"]);
             if (ResultsList != null)
             {
                 return ResultsList;
@@ -113,7 +113,7 @@ namespace Zubos.System.Business
         /// <returns></returns>
         public static SortedList<int, Room> GetAllRoomsAsSortedList()
         {
-            SortedList<int, Room> ResultsSortedList = DataAccess.ReturnAllResultsAsSortedList<Room>("ODS", "Room");
+            SortedList<int, Room> ResultsSortedList = DataAccess.ReturnAllResultsAsSortedList<Room>("ODS", Global.DBConfig["RoomsTN"]);
             if (ResultsSortedList != null)
             {
                 return ResultsSortedList;
@@ -130,7 +130,7 @@ namespace Zubos.System.Business
         /// <returns></returns>
         public static DataTable GetAllRoomsAsDataTable()
         {
-            DataTable ResultsDataTable = DataAccess.ReturnAllResultsAsDataTable("ODS", "Room");
+            DataTable ResultsDataTable = DataAccess.ReturnAllResultsAsDataTable("ODS", Global.DBConfig["RoomsTN"]);
             if (ResultsDataTable != null)
             {
                 return ResultsDataTable;
@@ -148,7 +148,7 @@ namespace Zubos.System.Business
         /// <returns></returns>
         public static Room GetRoomByID(int pRoomID)
         {
-            Room RoomToReturn = DataAccess.ReturnObjectByID<Room>("ODS", "Room", pRoomID);
+            Room RoomToReturn = DataAccess.ReturnObjectByID<Room>("ODS", Global.DBConfig["RoomsTN"], pRoomID);
             if (RoomToReturn != null)
             {
                 return RoomToReturn;

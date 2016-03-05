@@ -346,7 +346,6 @@
             this.TxtPostcode.Name = "TxtPostcode";
             this.TxtPostcode.Size = new System.Drawing.Size(78, 22);
             this.TxtPostcode.TabIndex = 8;
-            this.TxtPostcode.TextChanged += new System.EventHandler(this.TxtPostcode_TextChanged);
             // 
             // LblStreet
             // 

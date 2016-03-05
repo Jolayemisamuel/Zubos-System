@@ -46,6 +46,8 @@ namespace Zubos_System
 
         private void ZubosFrmNewBooking_Load(object sender, EventArgs e)
         {
+            DtpDateFrom.Value = DateTime.Today;
+            DtpDateTo.Value = DateTime.Today;
             CmbRoom.DataSource = Room.GetAllUnassignedRoomsAsList().OrderBy(O => O.Name).ToList();
             TxtName.Focus();
         }
@@ -82,16 +84,7 @@ namespace Zubos_System
                 DtpDateTo.Value = DtpDateFrom.Value.AddDays(Convert.ToInt32(TxtDays.Text));
             }
         }
-
-        private void TxtPostcode_TextChanged(object sender, EventArgs e)
-        {
-            //UK Postcode
-            Regex UKPostCodeRegEx = new Regex(@"(GIR 0AA)|((([A-Z-[QVX]][0-9][0-9]?)|
-                                                (([A-Z-[QVX]][A-Z-[IJZ]][0-9][0-9]?)|
-                                                (([A-Z-[QVX]][0-9][A-HJKPSTUW])|
-                                                ([A-Z-[QVX]][A-Z-[IJZ]][0-9][ABEHMNPRVWXY])))) 
-                                               [0-9][A-Z-[CIKMOV]]{2})");
-        }
+      
 
         private void TxtHouseNumber_TextChanged(object sender, EventArgs e)
         {

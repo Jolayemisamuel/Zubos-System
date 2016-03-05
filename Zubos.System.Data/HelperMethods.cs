@@ -46,20 +46,20 @@ namespace Zubos.System.Data
         /// <param name="pColumns"></param>
         /// <param name="pValues"></param>
         /// <returns></returns>
-        public static string BuildSQLUpdateColumnValueString(List<string> pColumns, List<string> pValues)
+        public static string BuildSQLUpdateColumnValueString(SortedList<string, string> pColumnsAndValues)
         {
             StringBuilder SB = new StringBuilder();
-            if (pColumns.Count != 0 && pColumns.Count == pValues.Count)
+            if (pColumnsAndValues.Count != 0 && pColumnsAndValues.Keys.Count == pColumnsAndValues.Values.Count)
             {
-                for (int ColumnIndex = 0; ColumnIndex < pColumns.Count; ColumnIndex++)
+                for (int ColumnIndex = 0; ColumnIndex < pColumnsAndValues.Count; ColumnIndex++)
                 {
                     if (ColumnIndex == 0)
                     {
-                        SB.Append("[" + pColumns[ColumnIndex] + "] = " + pValues[ColumnIndex]);
+                        SB.Append("[" + pColumnsAndValues.Keys[ColumnIndex] + "] = " + pColumnsAndValues.Values[ColumnIndex]);
                     }
                     else
                     {
-                        SB.Append(",[" + pColumns[ColumnIndex] + "] = " + pValues[ColumnIndex]);
+                        SB.Append(",[" + pColumnsAndValues.Keys[ColumnIndex] + "] = " + pColumnsAndValues.Values[ColumnIndex]);
                     }
                 }
                 return SB.ToString();
@@ -252,7 +252,7 @@ namespace Zubos.System.Data
         /// </summary>
         /// <param name="pDateTime"></param>
         /// <returns></returns>
-        public static string FormatDateForSQLInsert(string pDateTime)
+        public static string FormatDateForSQL(string pDateTime)
         {
             string day = pDateTime.Substring(0, 2);
             string month = pDateTime.Substring(3, 2);

@@ -56,14 +56,17 @@ namespace Zubos.System.Business
                 { "Street", pCustomer.Street },
                 { "Postcode", pCustomer.Postcode }
             });
-            SqlCommand SqlCmd = new SqlCommand("SELECT CASE WHEN EXISTS((SELECT TOP 1 * FROM [Customer]" + sqlCmdConditions + ")) THEN 1 ELSE 0 END;");
-            SqlCmd.Parameters.Add(new SqlParameter("@pName", pCustomer.Name));
-            SqlCmd.Parameters.Add(new SqlParameter("@pHouseNumber", pCustomer.HouseNumber));
-            SqlCmd.Parameters.Add(new SqlParameter("@pHouseName", pCustomer.HouseName));
-            SqlCmd.Parameters.Add(new SqlParameter("@pStreet", pCustomer.Street));
-            SqlCmd.Parameters.Add(new SqlParameter("@pPostcode", pCustomer.Postcode));
+            SqlCommand SqlCmd0 = new SqlCommand("SELECT CASE WHEN EXISTS((SELECT TOP 1 * FROM " +
+                                                Global.DBConfig["CustomerTN"] + 
+                                                sqlCmdConditions + 
+                                                ")) THEN 1 ELSE 0 END;");
+            SqlCmd0.Parameters.Add(new SqlParameter("@pName", pCustomer.Name));
+            SqlCmd0.Parameters.Add(new SqlParameter("@pHouseNumber", pCustomer.HouseNumber));
+            SqlCmd0.Parameters.Add(new SqlParameter("@pHouseName", pCustomer.HouseName));
+            SqlCmd0.Parameters.Add(new SqlParameter("@pStreet", pCustomer.Street));
+            SqlCmd0.Parameters.Add(new SqlParameter("@pPostcode", pCustomer.Postcode));
 
-            return DataAccess.ExecuteBoolReturnQuery("ODS", SqlCmd);
+            return DataAccess.ExecuteBoolReturnQuery("ODS", SqlCmd0);
         }
         /// <summary>
         /// Will attempt to insert customers data into SQL.
@@ -83,7 +86,7 @@ namespace Zubos.System.Business
             List<PropertyInfo> CustomerColumnsToBeAddedTo = typeof(Customer).GetProperties().ToList();
             CustomerColumnsToBeAddedTo.RemoveAt(0); //RemoveID as it will be automatically assigned by SQL.
 
-            return DataAccess.ExecuteInsertQuery("ODS", "Customer", CustomerColumnsToBeAddedTo, CustomersAttributes);
+            return DataAccess.ExecuteInsertQuery("ODS", Global.DBConfig["CustomerTN"], CustomerColumnsToBeAddedTo, CustomersAttributes);
         }
         /// <summary>
         /// Will attempt to retrive customers ID from all fields in customer.
@@ -92,7 +95,8 @@ namespace Zubos.System.Business
         /// <returns></returns>
         public static int SearchForCustomerID(Customer pCustomer)
         {
-            SqlCommand SqlCmd2 = new SqlCommand("SELECT TOP 1 [CustomerID] FROM [Customer]" +
+            SqlCommand SqlCmd2 = new SqlCommand("SELECT TOP 1 [CustomerID] FROM " +
+            Global.DBConfig["CustomerTN"] +
             HelperMethods.BuildSQLConditionsWithParams(new SortedList<string, string>()
             {
                 { "Name", pCustomer.Name },

@@ -20,7 +20,7 @@ namespace Zubos.System.Business
         public DateTime                         DateStart { get; set; }
         public DateTime                         DateComplete { get; set; }
         public double                           PaymentAmount { get; set; }
-        public Room                             myRoom { get; set; }
+        public int                              myRoom { get; set; }
         public int                              myCustomer { get; set; }
         public string                           Notes { get; set; }
 
@@ -36,7 +36,7 @@ namespace Zubos.System.Business
                             int pDays,
                             DateTime pDateStart,
                             double pPaymentAmount,
-                            Room pMyRoom,
+                            int pMyRoom,
                             int pMyCustomer,
                             string pNotes)
         {
@@ -56,10 +56,10 @@ namespace Zubos.System.Business
 
             if (!Customer.CheckCustomerExists(varCustomer))
             {//No customer exists, create one and update database.
-                int customerRowsAffected = Customer.CreateCustomerRecord(varCustomer);
+                int CustomerRowsAffected = Customer.CreateCustomerRecord(varCustomer);
 
-                if (customerRowsAffected == 1) { Logger.WriteLine("DEBUG", "Customer created and added to database successfully."); }
-                else if (customerRowsAffected == 0) { Logger.WriteLine("ERROR", "Failed to update the database with new customer."); return false; }
+                if (CustomerRowsAffected == 1) { Logger.WriteLine("DEBUG", "Customer created and added to database successfully."); }
+                else if (CustomerRowsAffected == 0) { Logger.WriteLine("ERROR", "Failed to update the database with new customer."); return false; }
             }
             else
             {//Customer already exists, get data from database.
@@ -68,20 +68,17 @@ namespace Zubos.System.Business
 
             if(CustomerID != 0)
             {//Customer ID exists
-                //NEED TO ADD -
-                                //UPDATE BOOKING DETAILID ON ROOM IN SQL FROM NEWLY CREATED BOOKINGID
-                //DataAccess.ExecuteUpdateQuery("ODS", "Room", new List<string>() { "BookingDetailID" }, new List<string>() { Convert.ToString(HelperMethods.GetNextID<BookingDetail>()) });
                 List<Tuple<Type, string>> BookingAttributes = new List<Tuple<Type, string>>()
-                {
+                {//Create list of values to be inserted.
                     new Tuple<Type, string>(typeof(int), pDaysDuration.ToSafeString() ),
-                    new Tuple<Type, string>(typeof(DateTime), HelperMethods.FormatDateForSQLInsert(pDateFrom.ToShortDateString()) ),
+                    new Tuple<Type, string>(typeof(DateTime), HelperMethods.FormatDateForSQL(pDateFrom.ToShortDateString()) ),
                     new Tuple<Type, string>(typeof(double), pPaymentAmount.ToSafeString() ),
                     new Tuple<Type, string>(typeof(int), pMyRoom.RoomID.ToSafeString() ),
                     new Tuple<Type, string>(typeof(int), CustomerID.ToSafeString() ),
                     new Tuple<Type, string>(typeof(string), pNotes )
                 };
                 List<PropertyInfo> ColumnsToBeAddedTo = new List<PropertyInfo>()
-                {
+                {//Get BookingDetail object propertys
                     typeof(BookingDetail).GetProperty("Days"),
                     typeof(BookingDetail).GetProperty("DateStart"),
                     typeof(BookingDetail).GetProperty("PaymentAmount"),
@@ -89,11 +86,43 @@ namespace Zubos.System.Business
                     typeof(BookingDetail).GetProperty("myCustomer"),
                     typeof(BookingDetail).GetProperty("Notes")
                 };
-                int BookingRowsAffected = DataAccess.ExecuteInsertQuery("ODS", "BookingDetail", ColumnsToBeAddedTo, BookingAttributes);
-                if (BookingRowsAffected == 1) { Logger.WriteLine("DEBUG", "Booking created and added to database successfully."); return true; }
+                int BookingRowsAffected = DataAccess.ExecuteInsertQuery("ODS", Global.DBConfig["BookingTN"], ColumnsToBeAddedTo, BookingAttributes);
+
+                if (BookingRowsAffected == 1) { Logger.WriteLine("DEBUG", "Booking created and added to database successfully."); }
                 else if (BookingRowsAffected == 0) { Logger.WriteLine("ERROR", "Failed to update the database with new booking."); return false; }
+
+                if(!SyncRoomRecord(pDaysDuration, pDateFrom, pPaymentAmount, pMyRoom.RoomID, CustomerID, pNotes)) { return false; }
             }
-            /////////////
+            return true;
+        }
+
+        private static bool SyncRoomRecord(int pDaysDuration, DateTime pDateFrom, double pPaymentAmount, int pMyRoomID, int pMyCustomerID, string pNotes)
+        {
+            SqlCommand SqlCmd = new SqlCommand("SELECT TOP 1 [BookingDetailID] FROM "+
+                Global.DBConfig["BookingTN"] +
+            HelperMethods.BuildSQLConditionsWithParams(new SortedList<string, string>()
+            {
+                { "Days", pDaysDuration.ToSafeString() },
+                { "DateStart", HelperMethods.FormatDateForSQL(pDateFrom.ToShortDateString()) },
+                { "PaymentAmount", pPaymentAmount.ToSafeString() },
+                { "myRoom", pMyRoomID.ToSafeString() },
+                { "myCustomer", pMyCustomerID.ToSafeString() },
+                { "Notes", pNotes }
+            }));
+            SqlCmd.Parameters.Add(new SqlParameter("@pDays", pDaysDuration));
+            SqlCmd.Parameters.Add(new SqlParameter("@pDateStart", pDateFrom));
+            SqlCmd.Parameters.Add(new SqlParameter("@pPaymentAmount", pPaymentAmount));
+            SqlCmd.Parameters.Add(new SqlParameter("@pmyRoom", pMyRoomID));
+            SqlCmd.Parameters.Add(new SqlParameter("@pmyCustomer", pMyCustomerID));
+            SqlCmd.Parameters.Add(new SqlParameter("@pNotes", pNotes));
+
+            int BookingID = DataAccess.ExecuteIntegerReturnQuery("ODS", SqlCmd);
+
+            int RoomRowsAffected = DataAccess.ExecuteUpdateQuery("ODS", Global.DBConfig["RoomsTN"], 
+                                                                new SortedList<string, string>() { { "BookingDetailID", BookingID.ToSafeString() } },
+                                                                "WHERE RoomID = " + pMyRoomID);
+            if (RoomRowsAffected == 1) { Logger.WriteLine("DEBUG", "Room record updated with booking detail ID succesfully."); return true; }
+            else if (RoomRowsAffected == 0) { Logger.WriteLine("ERROR", "Failed to update the room record with booking detail ID."); return false; }
             return false;
         }
     }

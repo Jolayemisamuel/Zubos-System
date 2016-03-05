@@ -571,13 +571,13 @@ namespace Zubos.System.Data
         /// <param name="pConnectionToUse"></param>
         /// <param name="pQueryText"></param>
         /// <returns></returns>
-        public static int ExecuteUpdateQuery(string pConnectionToUse, string pTableName, List<string> pColumnsToUpdate, List<string> pColumnValues, string pCondition)
+        public static int ExecuteUpdateQuery(string pConnectionToUse, string pTableName, SortedList<string,string> pColumnsAValues ,string pCondition)
         {
             SqlConnection SQL_CONNECTION = LookupConnection(pConnectionToUse);
             if (CheckConnectionIsReady(ref SQL_CONNECTION, "ODS") == 1)
             {
 
-                string processedColumnString = HelperMethods.BuildSQLUpdateColumnValueString(pColumnsToUpdate, pColumnValues);
+                string processedColumnString = HelperMethods.BuildSQLUpdateColumnValueString(pColumnsAValues);
 
                 SqlCommand sqlCmd = new SqlCommand("UPDATE [" + pTableName + "] SET " + processedColumnString + " " + pCondition, SQL_CONNECTION);
                 sqlCmd.CommandType = CommandType.Text;
@@ -655,29 +655,6 @@ namespace Zubos.System.Data
             }
             //-------//
             return 0;
-        }
-        /// <summary>
-        /// This method will add parameters to a passed in SQLcommand object.
-        /// </summary>
-        /// <param name="pSQLCommandObj"></param>
-        /// <param name="pParametersAndValues"></param>
-        /// <returns></returns>
-        public static void AddParametersToSQLCMD(ref SqlCommand pSQLCommandObj, SortedList<string, object> pParametersAndValues)
-        {
-            if(pSQLCommandObj != null)
-            {
-                for (int Indexer = 0; Indexer < pParametersAndValues.Count; Indexer++)
-                {
-                    if(pParametersAndValues.Keys[Indexer].StartsWith("@"))
-                    {
-                        pSQLCommandObj.Parameters.Add(new SqlParameter(pParametersAndValues.Keys[Indexer], pParametersAndValues.Values[Indexer]));
-                    }
-                    else
-                    {
-                        pSQLCommandObj.Parameters.Add(new SqlParameter("@" + pParametersAndValues.Keys[Indexer], pParametersAndValues.Values[Indexer]));
-                    }
-                }
-            }
         }
     }
 }
