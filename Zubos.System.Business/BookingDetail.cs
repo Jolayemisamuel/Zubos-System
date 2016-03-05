@@ -60,6 +60,7 @@ namespace Zubos.System.Business
 
                 if (CustomerRowsAffected == 1) { Logger.WriteLine("DEBUG", "Customer created and added to database successfully."); }
                 else if (CustomerRowsAffected == 0) { Logger.WriteLine("ERROR", "Failed to update the database with new customer."); return false; }
+                CustomerID = Customer.SearchForCustomerID(varCustomer);
             }
             else
             {//Customer already exists, get data from database.
@@ -93,6 +94,7 @@ namespace Zubos.System.Business
 
                 if(!SyncRoomRecord(pDaysDuration, pDateFrom, pPaymentAmount, pMyRoom.RoomID, CustomerID, pNotes)) { return false; }
             }
+            else { return false; }
             return true;
         }
 

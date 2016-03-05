@@ -34,14 +34,23 @@ namespace Zubos_System
 
         private void BtnSubmit_Click(object sender, EventArgs e)
         {
-            BookingDetail.CreateBooking(TxtName.Text, 
+            string formattedPostcode = TxtPostcode.Text.Replace(" ", String.Empty);
+            bool success = BookingDetail.CreateBooking(TxtName.Text, 
                                         Convert.ToInt32(TxtHouseNumber.Text), 
-                                        TxtHouseName.Text, TxtStreet.Text, 
-                                        TxtPostcode.Text, DtpDateFrom.Value, 
+                                        TxtHouseName.Text, TxtStreet.Text,
+                                        formattedPostcode, DtpDateFrom.Value, 
                                         Convert.ToInt32(TxtDays.Text), 
                                         Convert.ToDouble(TxtPrice.Text), 
                                         Room.GetRoomByID((int)CmbRoom.SelectedValue), 
                                         TxtBookingNotes.Text);
+            if(success)
+            {
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("An error occured creating booking.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void ZubosFrmNewBooking_Load(object sender, EventArgs e)
