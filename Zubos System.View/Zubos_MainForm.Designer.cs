@@ -33,12 +33,13 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.PanelSideBar = new System.Windows.Forms.Panel();
             this.GrpBoxNav = new System.Windows.Forms.GroupBox();
-            this.GrpBoxAdmin = new System.Windows.Forms.GroupBox();
             this.BtnLogs = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.BtnNewBooking = new System.Windows.Forms.Button();
-            this.BtnExitApp = new System.Windows.Forms.Button();
+            this.GrpBoxAdmin = new System.Windows.Forms.GroupBox();
             this.BtnCalendar = new System.Windows.Forms.Button();
+            this.BtnNewBooking = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.BtnExitApp = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.zMainStatusStrip.SuspendLayout();
             this.PanelSideBar.SuspendLayout();
             this.GrpBoxNav.SuspendLayout();
@@ -103,10 +104,21 @@
             this.GrpBoxNav.TabStop = false;
             this.GrpBoxNav.Text = "Navigation";
             // 
+            // BtnLogs
+            // 
+            this.BtnLogs.Location = new System.Drawing.Point(10, 497);
+            this.BtnLogs.Name = "BtnLogs";
+            this.BtnLogs.Size = new System.Drawing.Size(86, 26);
+            this.BtnLogs.TabIndex = 6;
+            this.BtnLogs.Text = "Open Log";
+            this.BtnLogs.UseVisualStyleBackColor = true;
+            this.BtnLogs.Click += new System.EventHandler(this.BtnLogs_Click);
+            // 
             // GrpBoxAdmin
             // 
             this.GrpBoxAdmin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.GrpBoxAdmin.Controls.Add(this.button2);
             this.GrpBoxAdmin.Controls.Add(this.BtnCalendar);
             this.GrpBoxAdmin.Controls.Add(this.BtnNewBooking);
             this.GrpBoxAdmin.Location = new System.Drawing.Point(6, 23);
@@ -114,39 +126,48 @@
             this.GrpBoxAdmin.Size = new System.Drawing.Size(199, 226);
             this.GrpBoxAdmin.TabIndex = 8;
             this.GrpBoxAdmin.TabStop = false;
-            this.GrpBoxAdmin.Text = "Admin";
             // 
-            // BtnLogs
+            // BtnCalendar
             // 
-            this.BtnLogs.Location = new System.Drawing.Point(26, 387);
-            this.BtnLogs.Name = "BtnLogs";
-            this.BtnLogs.Size = new System.Drawing.Size(86, 26);
-            this.BtnLogs.TabIndex = 6;
-            this.BtnLogs.Text = "button2";
-            this.BtnLogs.UseVisualStyleBackColor = true;
-            this.BtnLogs.Click += new System.EventHandler(this.BtnLogs_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(64, 429);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(48, 30);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.BtnCalendar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnCalendar.BackColor = System.Drawing.SystemColors.Info;
+            this.BtnCalendar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.BtnCalendar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.BtnCalendar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnCalendar.Location = new System.Drawing.Point(8, 72);
+            this.BtnCalendar.Name = "BtnCalendar";
+            this.BtnCalendar.Size = new System.Drawing.Size(185, 45);
+            this.BtnCalendar.TabIndex = 9;
+            this.BtnCalendar.Text = "Calendar";
+            this.BtnCalendar.UseVisualStyleBackColor = false;
+            this.BtnCalendar.Click += new System.EventHandler(this.BtnCalendar_Click);
             // 
             // BtnNewBooking
             // 
             this.BtnNewBooking.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnNewBooking.BackColor = System.Drawing.SystemColors.Info;
+            this.BtnNewBooking.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.BtnNewBooking.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.BtnNewBooking.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BtnNewBooking.Location = new System.Drawing.Point(8, 21);
             this.BtnNewBooking.Name = "BtnNewBooking";
             this.BtnNewBooking.Size = new System.Drawing.Size(185, 45);
             this.BtnNewBooking.TabIndex = 8;
             this.BtnNewBooking.Text = "New Booking";
-            this.BtnNewBooking.UseVisualStyleBackColor = true;
+            this.BtnNewBooking.UseVisualStyleBackColor = false;
             this.BtnNewBooking.Click += new System.EventHandler(this.BtnNewBooking_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(102, 478);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(97, 45);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "Global.test()";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // BtnExitApp
             // 
@@ -160,17 +181,19 @@
             this.BtnExitApp.UseVisualStyleBackColor = true;
             this.BtnExitApp.Click += new System.EventHandler(this.BtnExitApp_Click);
             // 
-            // BtnCalendar
+            // button2
             // 
-            this.BtnCalendar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnCalendar.Location = new System.Drawing.Point(8, 72);
-            this.BtnCalendar.Name = "BtnCalendar";
-            this.BtnCalendar.Size = new System.Drawing.Size(185, 45);
-            this.BtnCalendar.TabIndex = 9;
-            this.BtnCalendar.Text = "Calendar";
-            this.BtnCalendar.UseVisualStyleBackColor = true;
-            this.BtnCalendar.Click += new System.EventHandler(this.BtnCalendar_Click);
+            this.button2.BackColor = System.Drawing.SystemColors.Info;
+            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.button2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Location = new System.Drawing.Point(8, 123);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(185, 45);
+            this.button2.TabIndex = 10;
+            this.button2.UseVisualStyleBackColor = false;
             // 
             // Zubos_MainForm
             // 
@@ -210,6 +233,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button BtnLogs;
         private System.Windows.Forms.Button BtnCalendar;
+        private System.Windows.Forms.Button button2;
     }
 }
 
