@@ -35,11 +35,11 @@
             this.GrpBoxNav = new System.Windows.Forms.GroupBox();
             this.BtnLogs = new System.Windows.Forms.Button();
             this.GrpBoxAdmin = new System.Windows.Forms.GroupBox();
+            this.BtnViewBookings = new System.Windows.Forms.Button();
             this.BtnCalendar = new System.Windows.Forms.Button();
             this.BtnNewBooking = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.BtnExitApp = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.zMainStatusStrip.SuspendLayout();
             this.PanelSideBar.SuspendLayout();
             this.GrpBoxNav.SuspendLayout();
@@ -118,7 +118,7 @@
             // 
             this.GrpBoxAdmin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.GrpBoxAdmin.Controls.Add(this.button2);
+            this.GrpBoxAdmin.Controls.Add(this.BtnViewBookings);
             this.GrpBoxAdmin.Controls.Add(this.BtnCalendar);
             this.GrpBoxAdmin.Controls.Add(this.BtnNewBooking);
             this.GrpBoxAdmin.Location = new System.Drawing.Point(6, 23);
@@ -126,6 +126,22 @@
             this.GrpBoxAdmin.Size = new System.Drawing.Size(199, 226);
             this.GrpBoxAdmin.TabIndex = 8;
             this.GrpBoxAdmin.TabStop = false;
+            // 
+            // BtnViewBookings
+            // 
+            this.BtnViewBookings.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnViewBookings.BackColor = System.Drawing.SystemColors.Info;
+            this.BtnViewBookings.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.BtnViewBookings.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.BtnViewBookings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnViewBookings.Location = new System.Drawing.Point(8, 72);
+            this.BtnViewBookings.Name = "BtnViewBookings";
+            this.BtnViewBookings.Size = new System.Drawing.Size(185, 45);
+            this.BtnViewBookings.TabIndex = 10;
+            this.BtnViewBookings.Text = "View Bookings";
+            this.BtnViewBookings.UseVisualStyleBackColor = false;
+            this.BtnViewBookings.Click += new System.EventHandler(this.BtnViewBookings_Click);
             // 
             // BtnCalendar
             // 
@@ -135,7 +151,7 @@
             this.BtnCalendar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.BtnCalendar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.BtnCalendar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnCalendar.Location = new System.Drawing.Point(8, 72);
+            this.BtnCalendar.Location = new System.Drawing.Point(8, 123);
             this.BtnCalendar.Name = "BtnCalendar";
             this.BtnCalendar.Size = new System.Drawing.Size(185, 45);
             this.BtnCalendar.TabIndex = 9;
@@ -181,20 +197,6 @@
             this.BtnExitApp.UseVisualStyleBackColor = true;
             this.BtnExitApp.Click += new System.EventHandler(this.BtnExitApp_Click);
             // 
-            // button2
-            // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.BackColor = System.Drawing.SystemColors.Info;
-            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.button2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(8, 123);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(185, 45);
-            this.button2.TabIndex = 10;
-            this.button2.UseVisualStyleBackColor = false;
-            // 
             // Zubos_MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -233,7 +235,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button BtnLogs;
         private System.Windows.Forms.Button BtnCalendar;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button BtnViewBookings;
     }
 }
 

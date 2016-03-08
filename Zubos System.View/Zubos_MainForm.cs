@@ -66,5 +66,11 @@ namespace Zubos_System
             Form FrmNewCalendar = new ZubosFrmCalendar();
             FrmNewCalendar.Show();
         }
+
+        private void BtnViewBookings_Click(object sender, EventArgs e)
+        {
+            Form FrmViewBookings = new ZubosFrmViewBookings();
+            FrmViewBookings.Show();
+        }
     }
 }

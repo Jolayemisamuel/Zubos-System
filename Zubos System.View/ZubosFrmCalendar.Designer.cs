@@ -33,14 +33,14 @@
             System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange3 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
             System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange4 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
             System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange5 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
-            this.calendar1 = new System.Windows.Forms.Calendar.Calendar();
+            this.mainCalendar = new System.Windows.Forms.Calendar.Calendar();
             this.SuspendLayout();
             // 
-            // calendar1
+            // mainCalendar
             // 
-            this.calendar1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.calendar1.FirstDayOfWeek = System.DayOfWeek.Monday;
-            this.calendar1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.mainCalendar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainCalendar.FirstDayOfWeek = System.DayOfWeek.Monday;
+            this.mainCalendar.Font = new System.Drawing.Font("Segoe UI", 9F);
             calendarHighlightRange1.DayOfWeek = System.DayOfWeek.Monday;
             calendarHighlightRange1.EndTime = System.TimeSpan.Parse("17:00:00");
             calendarHighlightRange1.StartTime = System.TimeSpan.Parse("08:00:00");
@@ -56,34 +56,35 @@
             calendarHighlightRange5.DayOfWeek = System.DayOfWeek.Friday;
             calendarHighlightRange5.EndTime = System.TimeSpan.Parse("17:00:00");
             calendarHighlightRange5.StartTime = System.TimeSpan.Parse("08:00:00");
-            this.calendar1.HighlightRanges = new System.Windows.Forms.Calendar.CalendarHighlightRange[] {
+            this.mainCalendar.HighlightRanges = new System.Windows.Forms.Calendar.CalendarHighlightRange[] {
         calendarHighlightRange1,
         calendarHighlightRange2,
         calendarHighlightRange3,
         calendarHighlightRange4,
         calendarHighlightRange5};
-            this.calendar1.Location = new System.Drawing.Point(0, 0);
-            this.calendar1.Name = "calendar1";
-            this.calendar1.Size = new System.Drawing.Size(1347, 733);
-            this.calendar1.TabIndex = 0;
-            this.calendar1.Text = "calendar1";
+            this.mainCalendar.Location = new System.Drawing.Point(0, 0);
+            this.mainCalendar.Name = "mainCalendar";
+            this.mainCalendar.Size = new System.Drawing.Size(1347, 733);
+            this.mainCalendar.TabIndex = 0;
             // 
             // ZubosFrmCalendar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1347, 733);
-            this.Controls.Add(this.calendar1);
+            this.Controls.Add(this.mainCalendar);
             this.Name = "ZubosFrmCalendar";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Calendar";
             this.TopMost = true;
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.ZubosFrmCalendar_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Calendar.Calendar calendar1;
+        private System.Windows.Forms.Calendar.Calendar mainCalendar;
     }
 }

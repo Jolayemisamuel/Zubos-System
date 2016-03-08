@@ -7,6 +7,7 @@ using System.Reflection;
 using Zubos.System.Data;
 using System.Data.SqlClient;
 using System.Data;
+using System.Windows.Forms;
 
 namespace Zubos.System.Business
 {
@@ -126,6 +127,20 @@ namespace Zubos.System.Business
             if (RoomRowsAffected == 1) { Logger.WriteLine("DEBUG", "Room record updated with booking detail ID succesfully."); return true; }
             else if (RoomRowsAffected == 0) { Logger.WriteLine("ERROR", "Failed to update the room record with booking detail ID."); return false; }
             return false;
+        }
+
+        public static DataTable GetAllBookingsAsDataTable()
+        {
+            DataTable ResultsList = DataAccess.ReturnAllResultsAsDataTable("ODS", Global.DBConfig["BookingTN"]);
+            if (ResultsList != null)
+            {
+                return ResultsList;
+            }
+            else
+            {
+                MessageBox.Show("An error occured retrieving rooms data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
         }
     }
 }
