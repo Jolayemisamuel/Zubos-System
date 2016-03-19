@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Reflection;
 using Zubos.System.Data;
+using System.Windows.Forms;
 
 namespace Zubos.System.Business
 {
@@ -114,5 +115,25 @@ namespace Zubos.System.Business
             return DataAccess.ExecuteIntegerReturnQuery("ODS", SqlCmd2);
         }
 
+
+        /// <summary>
+        /// This method will return the room with the specified ID.
+        /// </summary>
+        /// <param name="pRoomID"></param>
+        /// <returns></returns>
+        public static Customer GetCustomerByID(int pCustomerID)
+        {
+            Customer CustomerToReturn = DataAccess.ReturnObjectByID<Customer>("ODS", Global.DBConfig["CustomerTN"], pCustomerID);
+            if (CustomerToReturn != null)
+            {
+                return CustomerToReturn;
+            }
+            else
+            {
+                MessageBox.Show("An error occured retrieving room data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+
+        }
     }
 }

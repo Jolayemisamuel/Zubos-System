@@ -56,6 +56,12 @@
     <Compile Include="ZubosFrmCalendar.Designer.cs">
       <DependentUpon>ZubosFrmCalendar.cs</DependentUpon>
     </Compile>
+    <Compile Include="ZubosFrmEditBooking.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ZubosFrmEditBooking.Designer.cs">
+      <DependentUpon>ZubosFrmEditBooking.cs</DependentUpon>
+    </Compile>
     <Compile Include="ZubosFrmNewBooking.cs">
       <SubType>Form</SubType>
     </Compile>
