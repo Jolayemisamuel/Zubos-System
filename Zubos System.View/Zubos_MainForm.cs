@@ -48,7 +48,7 @@ namespace Zubos_System
         private void BtnNewBooking_Click(object sender, EventArgs e)
         {
             Form FrmNewBooking = new ZubosFrmNewBooking();
-            FrmNewBooking.Show();
+            FrmNewBooking.ShowDialog();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -70,7 +70,7 @@ namespace Zubos_System
         private void BtnViewBookings_Click(object sender, EventArgs e)
         {
             Form FrmViewBookings = new ZubosFrmViewBookings();
-            FrmViewBookings.Show();
+            FrmViewBookings.ShowDialog();
         }
     }
 }

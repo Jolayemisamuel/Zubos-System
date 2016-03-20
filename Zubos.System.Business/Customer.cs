@@ -117,9 +117,9 @@ namespace Zubos.System.Business
 
 
         /// <summary>
-        /// This method will return the room with the specified ID.
+        /// This method will return the customer with the specified ID.
         /// </summary>
-        /// <param name="pRoomID"></param>
+        /// <param name="pCustomerID"></param>
         /// <returns></returns>
         public static Customer GetCustomerByID(int pCustomerID)
         {
@@ -130,7 +130,7 @@ namespace Zubos.System.Business
             }
             else
             {
-                MessageBox.Show("An error occured retrieving room data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("An error occured retrieving customer data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
 

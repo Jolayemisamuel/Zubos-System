@@ -128,7 +128,10 @@ namespace Zubos.System.Business
             else if (RoomRowsAffected == 0) { Logger.WriteLine("ERROR", "Failed to update the room record with booking detail ID."); return false; }
             return false;
         }
-
+        /// <summary>
+        /// This method will return all bookings as a DataTable
+        /// </summary>
+        /// <returns></returns>
         public static DataTable GetAllBookingsAsDataTable()
         {
             DataTable ResultsList = DataAccess.ReturnAllResultsAsDataTable("ODS", Global.DBConfig["BookingTN"]);
@@ -141,6 +144,26 @@ namespace Zubos.System.Business
                 MessageBox.Show("An error occured retrieving rooms data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// This method will return the bookingdetail with the specified ID.
+        /// </summary>
+        /// <param name="pBookingID"></param>
+        /// <returns></returns>
+        public static BookingDetail GetBookingByID(int pBookingID)
+        {
+            BookingDetail BookingToReturn = DataAccess.ReturnObjectByID<BookingDetail>("ODS", Global.DBConfig["BookingTN"], pBookingID);
+            if (BookingToReturn != null)
+            {
+                return BookingToReturn;
+            }
+            else
+            {
+                MessageBox.Show("An error occured retrieving booking detail data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+
         }
     }
 }

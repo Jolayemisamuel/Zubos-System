@@ -85,6 +85,9 @@
     <EmbeddedResource Include="ZubosFrmCalendar.resx">
       <DependentUpon>ZubosFrmCalendar.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ZubosFrmEditBooking.resx">
+      <DependentUpon>ZubosFrmEditBooking.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ZubosFrmNewBooking.resx">
       <DependentUpon>ZubosFrmNewBooking.cs</DependentUpon>
     </EmbeddedResource>

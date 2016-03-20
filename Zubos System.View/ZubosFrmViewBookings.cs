@@ -51,7 +51,14 @@ namespace Zubos_System
 
         private void BtnEditBooking_Click(object sender, EventArgs e)
         {
+            if(DgvBookings.SelectedRows.Count > 0)
+            {
+                int BookingID = (int)DgvBookings.SelectedRows[0].Cells["BookingDetailID"].Value;
 
+                BookingDetail selectedBooking = BookingDetail.GetBookingByID(BookingID);
+                ZubosFrmEditBooking frmEditBooking = new ZubosFrmEditBooking(selectedBooking);
+                frmEditBooking.ShowDialog();
+            }
         }
     }
 }
